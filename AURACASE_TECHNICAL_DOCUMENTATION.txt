@@ -1,0 +1,1179 @@
+AURACASE - ПЪЛНО ТЕХНИЧЕСКО ОПИСАНИЕ
+==========================================
+
+📚 AuraCase - Пълно Техническо Описание
+
+🏗️ АРХИТЕКТУРА НА ПРОЕКТА
+========================
+
+1. Обща Структура
+-----------------
+AuraCase/
+├── app/                    # Next.js App Router
+│   ├── (auth)/            # Автентификация групирани страници
+│   ├── admin/             # Административен панел
+│   ├── api/               # API маршрути
+│   ├── account/           # Потребителски акаунт
+│   ├── shop/              # Магазин
+│   ├── product/           # Продуктови страници
+│   ├── cart/              # Кошница
+│   ├── checkout/          # Поръчка
+│   └── globals.css        # Глобални стилове
+├── components/            # React компоненти
+├── contexts/              # React Context API
+├── lib/                   # Помощни функции
+├── prisma/                # База данни схема
+└── public/                # Статични файлове
+
+🔐 СИСТЕМА ЗА АВТЕНТИФИКАЦИЯ
+===========================
+
+1. JWT Базирана Автентификация
+------------------------------
+
+lib/simple-auth.ts
+- Основни функции за автентификация
+- signIn(email: string, password: string)
+- createSession(user: User)
+- getCurrentUser()
+- signOut()
+
+Как работи:
+1. Регистрация → Хешира парола с bcryptjs
+2. Вход → Проверява парола → Създава JWT токен
+3. Сесия → Запазва токен в HTTP-only cookie
+4. Верификация → Проверява токен при всяка заявка
+
+API Маршрути:
+- POST /api/auth/register - Регистрация
+- POST /api/auth/simple-signin - Вход
+- POST /api/auth/logout - Изход
+- GET /api/auth/me - Текущ потребител
+
+2. React Context за Автентификация
+----------------------------------
+
+contexts/AuthContext.tsx
+interface AuthContextType {
+  user: User | null;
+  loading: boolean;
+  login: (user: User) => void;
+  logout: () => void;
+  refreshUser: () => Promise<void>;
+}
+
+Функционалност:
+- Глобално състояние на потребителя
+- Автоматично обновяване при промени
+- Защита на маршрути (middleware)
+- Инстантни UI обновления
+
+🗄️ БАЗА ДАННИ (Prisma ORM)
+==========================
+
+1. Схема на Базата Данни
+------------------------
+
+prisma/schema.prisma
+
+model User {
+  id          String   @id @default(cuid())
+  name        String?
+  email       String   @unique
+  password    String
+  phone       String?
+  dateOfBirth DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Връзки
+  addresses      Address[]
+  paymentMethods PaymentMethod[]
+  orders         Order[]
+  cartItems      CartItem[]
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String
+  price       Float
+  discount    Float?
+  image       String
+  images      String[]
+  categoryId  String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Връзки
+  category   Category    @relation(fields: [categoryId], references: [id])
+  orderItems OrderItem[]
+  cartItems  CartItem[]
+}
+
+model Order {
+  id               String   @id @default(cuid())
+  userId           String
+  total            Float
+  status           OrderStatus @default(PENDING)
+  shippingAddress  String?
+  paymentMethod    String?
+  trackingNumber   String?
+  notes            String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  
+  // Връзки
+  user      User        @relation(fields: [userId], references: [id])
+  items     OrderItem[]
+  shippingAddressId String?
+  paymentMethodId   String?
+}
+
+2. Връзки между Таблиците
+-------------------------
+
+One-to-Many Връзки:
+- User → Order (един потребител, много поръчки)
+- User → Address (един потребител, много адреси)
+- User → PaymentMethod (един потребител, много карти)
+- Category → Product (една категория, много продукти)
+- Order → OrderItem (една поръчка, много артикули)
+
+Many-to-One Връзки:
+- Product → Category (много продукти, една категория)
+- OrderItem → Product (много артикули, един продукт)
+
+🛒 ЕЛЕКТРОННА ТЪРГОВИЯ
+=====================
+
+1. Каталог с Продукти
+---------------------
+
+app/shop/page.tsx
+
+Филтриране и търсене:
+const [searchQuery, setSearchQuery] = useState('');
+const [selectedCategory, setSelectedCategory] = useState('all');
+const [priceRange, setPriceRange] = useState([0, 200]);
+const [sortBy, setSortBy] = useState('name');
+
+Филтриране на продукти:
+const filteredProducts = useMemo(() => {
+  return products.filter(product => {
+    const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory = selectedCategory === 'all' || product.categoryId === selectedCategory;
+    const matchesPrice = product.price >= priceRange[0] && product.price <= priceRange[1];
+    
+    return matchesSearch && matchesCategory && matchesPrice;
+  });
+}, [products, searchQuery, selectedCategory, priceRange]);
+
+Функционалности:
+- Търсене по име на продукт
+- Филтриране по категория
+- Ценови диапазон с range slider
+- Сортиране по име, цена, дата
+- Grid/List view режими
+- Мобилни филтри с overlay
+
+2. Кошница за Пазаруване
+------------------------
+
+app/api/cart/route.ts
+
+GET - Вземи кошницата:
+export async function GET() {
+  const user = await getCurrentUser();
+  if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  
+  const cartItems = await prisma.cartItem.findMany({
+    where: { userId: user.id },
+    include: { product: true }
+  });
+  
+  return NextResponse.json(cartItems);
+}
+
+POST - Добави в кошницата:
+export async function POST(request: NextRequest) {
+  const user = await getCurrentUser();
+  const { productId, quantity } = await request.json();
+  
+  // Проверка дали продуктът вече е в кошницата
+  const existingItem = await prisma.cartItem.findFirst({
+    where: { userId: user.id, productId }
+  });
+  
+  if (existingItem) {
+    // Обнови количеството
+    await prisma.cartItem.update({
+      where: { id: existingItem.id },
+      data: { quantity: existingItem.quantity + quantity }
+    });
+  } else {
+    // Създай нов артикул
+    await prisma.cartItem.create({
+      data: { userId: user.id, productId, quantity }
+    });
+  }
+}
+
+Функционалности:
+- Добавяне/премахване на продукти
+- Обновяване на количество
+- Локално съхранение за нерегистрирани потребители
+- Синхронизация с базата данни при вход
+- Изчисляване на обща сума
+
+3. Процес на Поръчка
+--------------------
+
+app/checkout/page.tsx
+
+Стъпки на поръчката:
+const [currentStep, setCurrentStep] = useState(1);
+const [selectedAddress, setSelectedAddress] = useState(null);
+const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(null);
+
+Функция за създаване на поръчка:
+const handlePlaceOrder = async () => {
+  const orderData = {
+    userId: user.id,
+    items: cartItems,
+    shippingAddressId: selectedAddress.id,
+    paymentMethodId: selectedPaymentMethod.id,
+    total: calculateTotal()
+  };
+  
+  const response = await fetch('/api/orders', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(orderData)
+  });
+  
+  if (response.ok) {
+    // Изчисти кошницата и пренасочи
+    router.push('/account?tab=orders');
+  }
+};
+
+API за Поръчки:
+app/api/orders/route.ts
+export async function POST(request: NextRequest) {
+  const user = await getCurrentUser();
+  const { items, shippingAddressId, paymentMethodId, total } = await request.json();
+  
+  // Създай поръчка
+  const order = await prisma.order.create({
+    data: {
+      userId: user.id,
+      total,
+      shippingAddressId,
+      paymentMethodId,
+      status: 'PENDING'
+    }
+  });
+  
+  // Създай артикули за поръчката
+  for (const item of items) {
+    await prisma.orderItem.create({
+      data: {
+        orderId: order.id,
+        productId: item.productId,
+        quantity: item.quantity,
+        price: item.product.price
+      }
+    });
+  }
+  
+  // Изчисти кошницата
+  await prisma.cartItem.deleteMany({
+    where: { userId: user.id }
+  });
+  
+  return NextResponse.json(order);
+}
+
+👤 ПОТРЕБИТЕЛСКИ АКАУНТ
+======================
+
+1. Управление на Профил
+-----------------------
+
+app/api/account/profile/route.ts
+
+GET - Вземи профил:
+export async function GET() {
+  const user = await getCurrentUser();
+  const userProfile = await prisma.user.findUnique({
+    where: { id: user.id },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      phone: true,
+      dateOfBirth: true
+    }
+  });
+  return NextResponse.json(userProfile);
+}
+
+PUT - Обнови профил:
+export async function PUT(request: NextRequest) {
+  const user = await getCurrentUser();
+  const { name, email, phone, dateOfBirth } = await request.json();
+  
+  const updatedUser = await prisma.user.update({
+    where: { id: user.id },
+    data: {
+      ...(name !== undefined && { name }),
+      ...(email !== undefined && { email }),
+      ...(phone !== undefined && { phone }),
+      ...(dateOfBirth !== undefined && dateOfBirth !== "" && { dateOfBirth: new Date(dateOfBirth) }),
+      ...(dateOfBirth === "" && { dateOfBirth: null })
+    }
+  });
+  
+  return NextResponse.json(updatedUser);
+}
+
+2. Управление на Адреси
+-----------------------
+
+app/api/account/addresses/route.ts
+
+POST - Създай адрес:
+export async function POST(request: NextRequest) {
+  const user = await getCurrentUser();
+  const { firstName, lastName, address1, city, state, postalCode, country, phone, isDefault } = await request.json();
+  
+  // Ако е зададен като основен, премахни основния статус от другите
+  if (isDefault) {
+    await prisma.address.updateMany({
+      where: { userId: user.id },
+      data: { isDefault: false }
+    });
+  }
+  
+  const address = await prisma.address.create({
+    data: {
+      userId: user.id,
+      firstName,
+      lastName,
+      address1,
+      city,
+      state,
+      postalCode,
+      country,
+      phone,
+      isDefault: isDefault || false
+    }
+  });
+  
+  return NextResponse.json(address, { status: 201 });
+}
+
+3. Управление на Методи на Плащане
+----------------------------------
+
+app/api/account/payment-methods/route.ts
+
+POST - Създай метод на плащане:
+export async function POST(request: NextRequest) {
+  const user = await getCurrentUser();
+  const { type, cardNumber, cardBrand, expiryMonth, expiryYear, holderName, isDefault } = await request.json();
+  
+  // Ако е зададен като основен, премахни основния статус от другите
+  if (isDefault) {
+    await prisma.paymentMethod.updateMany({
+      where: { userId: user.id },
+      data: { isDefault: false }
+    });
+  }
+  
+  const paymentMethod = await prisma.paymentMethod.create({
+    data: {
+      userId: user.id,
+      type: type || 'CARD',
+      cardNumber,
+      cardBrand,
+      expiryMonth: parseInt(expiryMonth),
+      expiryYear: parseInt(expiryYear),
+      holderName,
+      isDefault: isDefault || false
+    }
+  });
+  
+  return NextResponse.json(paymentMethod, { status: 201 });
+}
+
+🛠️ АДМИНИСТРАТИВЕН ПАНЕЛ
+========================
+
+1. Структура на Админ Панела
+----------------------------
+
+app/admin/layout.tsx
+
+Защита на админ маршрутите:
+export default function AdminLayout({ children }: { children: React.ReactNode }) {
+  const { user, loading } = useAuth();
+  
+  if (loading) return <div>Loading...</div>;
+  if (!user || user.email !== 'admin@auracase.com') {
+    return <div>Access Denied</div>;
+  }
+  
+  return (
+    <div className="flex min-h-screen bg-background">
+      <AdminSidebar />
+      <main className="flex-1 p-6">
+        {children}
+      </main>
+    </div>
+  );
+}
+
+2. Управление на Продукти
+-------------------------
+
+app/api/admin/products/route.ts
+
+GET - Вземи всички продукти:
+export async function GET() {
+  const products = await prisma.product.findMany({
+    include: { category: true },
+    orderBy: { createdAt: 'desc' }
+  });
+  return NextResponse.json(products);
+}
+
+POST - Създай продукт:
+export async function POST(request: NextRequest) {
+  const { name, description, price, discount, image, images, categoryId } = await request.json();
+  
+  // Генерирай slug от името
+  const slug = name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+  
+  const product = await prisma.product.create({
+    data: {
+      name,
+      slug,
+      description,
+      price: parseFloat(price),
+      discount: discount ? parseFloat(discount) : null,
+      image,
+      images: images ? images.split(',').map((img: string) => img.trim()) : [],
+      categoryId
+    }
+  });
+  
+  return NextResponse.json(product, { status: 201 });
+}
+
+3. Управление на Поръчки
+------------------------
+
+app/api/admin/orders/route.ts
+
+GET - Вземи всички поръчки:
+export async function GET() {
+  const orders = await prisma.order.findMany({
+    include: {
+      user: {
+        select: { id: true, name: true, email: true }
+      },
+      items: {
+        include: {
+          product: {
+            select: { id: true, name: true, image: true }
+          }
+        }
+      }
+    },
+    orderBy: { createdAt: 'desc' }
+  });
+  
+  return NextResponse.json(orders);
+}
+
+🎨 ПОТРЕБИТЕЛСКИ ИНТЕРФЕЙС
+==========================
+
+1. Дизайн Система
+-----------------
+
+app/globals.css
+
+Цветова схема:
+:root {
+  --background: #0a0a0a;
+  --foreground: #fafafa;
+  --primary: #1a1a1a;
+  --secondary: #262626;
+  --accent: #3b82f6;
+  --text-primary: #ffffff;
+  --text-secondary: #a3a3a3;
+}
+
+Глобални стилове за бутони:
+.btn-primary {
+  @apply relative overflow-hidden transition-all duration-300 ease-out;
+  @apply bg-gradient-to-r from-accent to-accent/80 text-white;
+  @apply px-6 py-3 rounded-lg font-medium;
+  @apply hover:scale-105 hover:shadow-lg hover:shadow-accent/30;
+  @apply focus:outline-none focus:ring-2 focus:ring-accent/50;
+  @apply cursor-pointer;
+}
+
+.btn-primary::before {
+  content: '';
+  @apply absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent;
+  @apply transform -skew-x-12 -translate-x-full;
+  @apply transition-transform duration-700;
+}
+
+.btn-primary:hover::before {
+  @apply translate-x-full;
+}
+
+2. Анимации с GSAP
+------------------
+
+components/ScrollAnimation.tsx
+
+export function ScrollAnimation({ 
+  children, 
+  animation = 'fadeIn', 
+  delay = 0 
+}: ScrollAnimationProps) {
+  const elementRef = useRef<HTMLDivElement>(null);
+  
+  useEffect(() => {
+    if (!elementRef.current) return;
+    
+    const element = elementRef.current;
+    
+    // Начални стилове
+    gsap.set(element, {
+      opacity: animation === 'fadeIn' ? 0 : 1,
+      y: animation === 'slideUp' ? 50 : 0,
+      x: animation === 'slideLeft' ? -50 : animation === 'slideRight' ? 50 : 0,
+      scale: animation === 'scaleUp' ? 0.9 : 1
+    });
+    
+    // Анимация при скрол
+    gsap.to(element, {
+      opacity: 1,
+      y: 0,
+      x: 0,
+      scale: 1,
+      duration: 0.8,
+      delay,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: element,
+        start: 'top 90%',
+        toggleActions: 'play none none reverse'
+      }
+    });
+  }, [animation, delay]);
+  
+  return <div ref={elementRef}>{children}</div>;
+}
+
+3. Responsive Design
+--------------------
+
+Tailwind CSS Breakpoints:
+/* Мобилни устройства */
+@media (max-width: 640px) { /* sm */ }
+
+/* Таблети */
+@media (min-width: 768px) { /* md */ }
+
+/* Десктоп */
+@media (min-width: 1024px) { /* lg */ }
+
+/* Големи екрани */
+@media (min-width: 1280px) { /* xl */ }
+
+Мобилни Филтри:
+app/shop/page.tsx
+const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+
+// Мобилен overlay за филтри
+{mobileFiltersOpen && (
+  <div className="fixed inset-0 z-50 lg:hidden">
+    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm" 
+         onClick={() => setMobileFiltersOpen(false)} />
+    <div className="fixed left-0 top-0 h-full w-80 bg-primary p-6 overflow-y-auto">
+      {/* Филтри */}
+      <button onClick={() => setMobileFiltersOpen(false)}>
+        <FiX className="w-6 h-6" />
+      </button>
+    </div>
+  </div>
+)}
+
+🐳 DOCKER КОНТЕЙНЕРИЗАЦИЯ
+=========================
+
+1. Development Setup
+--------------------
+
+docker-compose.dev.yml
+version: '3.8'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    environment:
+      - NODE_ENV=development
+      - DATABASE_URL=file:./dev.db
+    command: npm run dev
+
+Dockerfile.dev
+FROM node:18-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+EXPOSE 3000
+CMD ["npm", "run", "dev"]
+
+2. Production Setup
+-------------------
+
+docker-compose.yml
+version: '3.8'
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - DATABASE_URL=file:./prod.db
+    volumes:
+      - ./prisma:/app/prisma
+    command: npm run start
+
+Dockerfile
+FROM node:18-alpine AS base
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production
+
+FROM base AS build
+RUN npm ci
+COPY . .
+RUN npm run build
+
+FROM base AS production
+COPY --from=build /app/.next ./.next
+COPY --from=build /app/public ./public
+COPY --from=build /app/prisma ./prisma
+RUN npx prisma generate
+EXPOSE 3000
+CMD ["npm", "start"]
+
+🔧 API АРХИТЕКТУРА
+=================
+
+1. RESTful API Design
+---------------------
+
+Маршрути за Продукти:
+GET    /api/products           # Всички продукти
+GET    /api/products/[id]      # Конкретен продукт
+POST   /api/products           # Създай продукт (admin)
+PUT    /api/products/[id]      # Обнови продукт (admin)
+DELETE /api/products/[id]      # Изтрий продукт (admin)
+
+Маршрути за Потребители:
+GET    /api/auth/me            # Текущ потребител
+POST   /api/auth/register      # Регистрация
+POST   /api/auth/simple-signin # Вход
+POST   /api/auth/logout        # Изход
+
+Маршрути за Акаунт:
+GET    /api/account/profile           # Профил
+PUT    /api/account/profile           # Обнови профил
+GET    /api/account/addresses         # Адреси
+POST   /api/account/addresses         # Създай адрес
+PUT    /api/account/addresses/[id]    # Обнови адрес
+DELETE /api/account/addresses/[id]    # Изтрий адрес
+
+2. Middleware за Автентификация
+-------------------------------
+
+lib/simple-auth.ts
+export async function getCurrentUser(): Promise<User | null> {
+  try {
+    const token = cookies().get('auth_token')?.value;
+    if (!token) return null;
+    
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { userId: string };
+    const user = await prisma.user.findUnique({
+      where: { id: decoded.userId },
+      select: { id: true, name: true, email: true, phone: true, dateOfBirth: true }
+    });
+    
+    return user;
+  } catch (error) {
+    return null;
+  }
+}
+
+3. Error Handling
+-----------------
+
+Стандартизирани Error Responses:
+// Успешни отговори
+return NextResponse.json(data, { status: 200 });
+return NextResponse.json(data, { status: 201 }); // Created
+
+// Грешки
+return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+return NextResponse.json({ error: 'Not Found' }, { status: 404 });
+return NextResponse.json({ error: 'Server Error' }, { status: 500 });
+
+📱 МОБИЛНА АДАПТАЦИЯ
+===================
+
+1. Responsive Grid System
+-------------------------
+
+Shop Page Layout:
+// Десктоп: 4 колони, Таблет: 2 колони, Мобилен: 1 колона
+<div className={`grid gap-6 ${
+  viewMode === 'grid' 
+    ? 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
+    : 'grid-cols-1'
+}`}>
+  {filteredProducts.map(product => (
+    <ProductCard key={product.id} product={product} />
+  ))}
+</div>
+
+2. Touch-Friendly Interface
+---------------------------
+
+Мобилни Бутони:
+/* Минимален размер за touch targets */
+.btn-mobile {
+  @apply min-h-[44px] min-w-[44px];
+  @apply touch-manipulation;
+  @apply active:scale-95;
+}
+
+3. Mobile-First Design
+----------------------
+
+Breakpoint Strategy:
+/* Mobile First Approach */
+.container {
+  @apply px-4; /* Mobile */
+}
+
+@screen md {
+  .container {
+    @apply px-6; /* Tablet */
+  }
+}
+
+@screen lg {
+  .container {
+    @apply px-8; /* Desktop */
+  }
+}
+
+🚀 PERFORMANCE ОПТИМИЗАЦИЯ
+=========================
+
+1. Next.js Optimizations
+------------------------
+
+Image Optimization:
+import Image from 'next/image';
+
+<Image
+  src={product.image}
+  alt={product.name}
+  width={300}
+  height={300}
+  className="w-full h-48 object-cover"
+  priority={index < 4} // Lazy load except first 4
+/>
+
+Code Splitting:
+// Динамично зареждане на компоненти
+const AdminPanel = dynamic(() => import('@/components/AdminPanel'), {
+  loading: () => <div>Loading...</div>
+});
+
+2. Database Optimizations
+-------------------------
+
+Prisma Query Optimization:
+// Включване на свързани данни в една заявка
+const products = await prisma.product.findMany({
+  include: {
+    category: true,
+    _count: {
+      select: { orderItems: true }
+    }
+  },
+  take: 20, // Пагинация
+  skip: page * 20
+});
+
+3. Caching Strategy
+-------------------
+
+API Response Caching:
+// Cache статични данни
+export async function GET() {
+  const products = await prisma.product.findMany();
+  
+  return NextResponse.json(products, {
+    headers: {
+      'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400'
+    }
+  });
+}
+
+🔒 СИГУРНОСТ
+============
+
+1. Authentication Security
+--------------------------
+
+JWT Token Security:
+// Сигурно генериране на токен
+const token = jwt.sign(
+  { userId: user.id },
+  process.env.JWT_SECRET!,
+  { expiresIn: '7d' }
+);
+
+// HTTP-only cookie
+cookies().set('auth_token', token, {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === 'production',
+  sameSite: 'lax',
+  maxAge: 7 * 24 * 60 * 60 // 7 дни
+});
+
+2. Input Validation
+-------------------
+
+API Input Sanitization:
+// Валидация на входни данни
+const { name, email, password } = await request.json();
+
+if (!name || !email || !password) {
+  return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
+}
+
+if (!isValidEmail(email)) {
+  return NextResponse.json({ error: 'Invalid email format' }, { status: 400 });
+}
+
+if (password.length < 6) {
+  return NextResponse.json({ error: 'Password too short' }, { status: 400 });
+}
+
+3. SQL Injection Protection
+---------------------------
+
+Prisma ORM Protection:
+// Prisma автоматично защитава от SQL injection
+const user = await prisma.user.findUnique({
+  where: { email: userEmail } // Безопасно
+});
+
+// Вместо небезопасно:
+// const query = `SELECT * FROM users WHERE email = '${userEmail}'`;
+
+📊 МОНИТОРИНГ И ЛОГИРАНЕ
+========================
+
+1. Error Logging
+----------------
+
+API Error Handling:
+export async function POST(request: NextRequest) {
+  try {
+    // API логика
+  } catch (error) {
+    console.error('API Error:', error);
+    
+    // Логиране в production
+    if (process.env.NODE_ENV === 'production') {
+      // Интеграция с logging service
+    }
+    
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    );
+  }
+}
+
+2. Performance Monitoring
+-------------------------
+
+Request Timing:
+const startTime = Date.now();
+
+// API логика
+
+const duration = Date.now() - startTime;
+console.log(`API Request took ${duration}ms`);
+
+🧪 ТЕСТВАНЕ
+===========
+
+1. Unit Tests (За бъдещо развитие)
+-----------------------------------
+
+Примерен тест:
+// __tests__/auth.test.ts
+import { signIn, createSession } from '@/lib/simple-auth';
+
+describe('Authentication', () => {
+  test('should sign in with valid credentials', async () => {
+    const result = await signIn('test@example.com', 'password123');
+    expect(result.success).toBe(true);
+    expect(result.user).toBeDefined();
+  });
+  
+  test('should reject invalid credentials', async () => {
+    const result = await signIn('test@example.com', 'wrongpassword');
+    expect(result.success).toBe(false);
+    expect(result.error).toBe('Invalid credentials');
+  });
+});
+
+2. Integration Tests
+--------------------
+
+API Endpoint Testing:
+// __tests__/api/products.test.ts
+import { GET, POST } from '@/app/api/products/route';
+
+describe('/api/products', () => {
+  test('GET should return products', async () => {
+    const response = await GET();
+    const data = await response.json();
+    
+    expect(response.status).toBe(200);
+    expect(Array.isArray(data)).toBe(true);
+  });
+});
+
+📈 АНАЛИТИКА И МЕТРИКИ
+======================
+
+1. User Analytics
+-----------------
+
+Tracking User Actions:
+// Компонент за проследяване
+const trackEvent = (eventName: string, properties: any) => {
+  if (typeof window !== 'undefined') {
+    // Google Analytics, Mixpanel, etc.
+    gtag('event', eventName, properties);
+  }
+};
+
+// Използване
+const handleAddToCart = (product: Product) => {
+  trackEvent('add_to_cart', {
+    product_id: product.id,
+    product_name: product.name,
+    price: product.price
+  });
+  
+  // Добави в кошницата
+  addToCart(product);
+};
+
+2. Performance Metrics
+----------------------
+
+Core Web Vitals:
+// Измерване на производителност
+const measurePerformance = () => {
+  if (typeof window !== 'undefined' && 'performance' in window) {
+    const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
+    
+    console.log('Page Load Time:', navigation.loadEventEnd - navigation.loadEventStart);
+    console.log('DOM Content Loaded:', navigation.domContentLoadedEventEnd - navigation.domContentLoadedEventStart);
+  }
+};
+
+🔄 STATE MANAGEMENT
+===================
+
+1. React Context API
+--------------------
+
+Global State:
+// contexts/AuthContext.tsx
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+  
+  const login = (userData: User) => {
+    setUser(userData);
+  };
+  
+  const logout = () => {
+    setUser(null);
+    // Изчисти cookie
+    document.cookie = 'auth_token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+  };
+  
+  const refreshUser = async () => {
+    try {
+      const response = await fetch('/api/auth/me');
+      if (response.ok) {
+        const userData = await response.json();
+        setUser(userData);
+      }
+    } catch (error) {
+      console.error('Failed to refresh user:', error);
+    }
+  };
+  
+  return (
+    <AuthContext.Provider value={{ user, loading, login, logout, refreshUser }}>
+      {children}
+    </AuthContext.Provider>
+  );
+}
+
+2. Local State Management
+-------------------------
+
+Component State:
+// Хук за управление на кошницата
+const useCart = () => {
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [loading, setLoading] = useState(false);
+  
+  const addToCart = async (product: Product, quantity: number = 1) => {
+    setLoading(true);
+    try {
+      const response = await fetch('/api/cart', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ productId: product.id, quantity })
+      });
+      
+      if (response.ok) {
+        await fetchCartItems(); // Обнови кошницата
+      }
+    } catch (error) {
+      console.error('Failed to add to cart:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  return { cartItems, loading, addToCart };
+};
+
+🌐 ИНТЕРНАЦИОНАЛИЗАЦИЯ
+=====================
+
+1. Български Език
+-----------------
+
+Текстове в Компоненти:
+// app/page.tsx
+const heroText = {
+  title: "НАМЕРЕТЕ ПЕРФЕКТНИТЕ АКСЕСОАРИ ЗА ВАШЕТО УСТРОЙСТВО",
+  subtitle: "Открийте най-добрите калъфи, слушалки и аксесоари за вашия телефон",
+  cta: "Пазарувай сега",
+  learnMore: "Научи повече"
+};
+
+// components/Header.tsx
+const navigation = [
+  { name: "Начало", href: "/" },
+  { name: "Магазин", href: "/shop" },
+  { name: "За нас", href: "/about" },
+  { name: "Контакти", href: "/contact" }
+];
+
+2. Форматиране на Дати и Цени
+-----------------------------
+
+Локализация:
+// Форматиране на цени
+const formatPrice = (price: number) => {
+  return new Intl.NumberFormat('bg-BG', {
+    style: 'currency',
+    currency: 'BGN'
+  }).format(price);
+};
+
+// Форматиране на дати
+const formatDate = (date: Date) => {
+  return new Intl.DateTimeFormat('bg-BG', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  }).format(date);
+};
+
+📋 ЗАКЛЮЧЕНИЕ
+=============
+
+🎯 Ключови Постижения:
+
+1. Модерна Архитектура - Next.js 14 с App Router
+2. Пълна Функционалност - От регистрация до поръчка
+3. Професионален Дизайн - Тъмен тема с анимации
+4. Мобилна Адаптация - Responsive design
+5. Сигурност - JWT автентификация
+6. Контейнеризация - Docker ready
+7. Административен Панел - Пълно управление
+8. Български Език - Локализация
+
+🚀 Технологичен Стек:
+
+- Frontend: Next.js, React, TypeScript, Tailwind CSS, GSAP
+- Backend: Next.js API Routes, Prisma ORM
+- Database: SQLite (development), PostgreSQL (production ready)
+- Authentication: JWT, bcryptjs
+- Deployment: Docker, Docker Compose
+- Development: Hot reload, TypeScript, ESLint
+
+📊 Статистики:
+
+- 36 продукта в 6 категории
+- Пълна електронна търговия функционалност
+- Административен панел с 5 секции
+- Мобилна адаптация за всички устройства
+- Docker контейнеризация за лесен деплоймент
+
+Този проект демонстрира модерни уеб технологии и е готов за production използване! 🎉
+
+==========================================
+КРАЙ НА ДОКУМЕНТАЦИЯТА
+==========================================
