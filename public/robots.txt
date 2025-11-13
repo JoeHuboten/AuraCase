@@ -1,0 +1,30 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://auracase.bg/sitemap.xml
+
+# Disallow admin and API routes
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_next/
+Disallow: /auth/
+
+# Allow important pages
+Allow: /shop
+Allow: /about
+Allow: /features
+Allow: /works
+Allow: /contact
+Allow: /support
+Allow: /delivery
+Allow: /career
+Allow: /terms
+Allow: /privacy
+Allow: /account
+Allow: /deliveries
+Allow: /orders-faq
+Allow: /payments
+
+# Crawl delay (optional)
+Crawl-delay: 1
