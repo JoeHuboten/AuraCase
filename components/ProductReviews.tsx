@@ -45,16 +45,31 @@ export default function ProductReviews({ productId, productName }: ProductReview
       const response = await fetch(
         `/api/reviews?productId=${productId}&sortBy=${sortBy}&page=${page}&limit=5`
       );
-      const data = await response.json();
       
-      if (response.ok) {
-        setReviews(data.reviews);
-        setTotalPages(data.pagination.pages);
-        setAverageRating(data.averageRating);
-        setTotalReviews(data.totalReviews);
+      if (!response.ok) {
+        console.log('Reviews API not available, using empty state');
+        setReviews([]);
+        setTotalPages(0);
+        setAverageRating(0);
+        setTotalReviews(0);
+        return;
       }
+
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        console.log('Response is not JSON, using empty state');
+        setReviews([]);
+        return;
+      }
+
+      const data = await response.json();
+      setReviews(data.reviews);
+      setTotalPages(data.pagination.pages);
+      setAverageRating(data.averageRating);
+      setTotalReviews(data.totalReviews);
     } catch (error) {
       console.error('Error fetching reviews:', error);
+      setReviews([]);
     } finally {
       setLoading(false);
     }

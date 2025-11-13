@@ -1,14 +1,43 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/database';
 import { hashPassword, createToken } from '@/lib/auth-utils';
+import { authRateLimit } from '@/lib/rate-limit';
+import { emailSchema, passwordSchema } from '@/lib/validation';
 
 export async function POST(request: NextRequest) {
+  // Rate limiting - 5 attempts per 15 minutes
+  const rateLimitResult = await authRateLimit(request);
+  if (!rateLimitResult.success) {
+    return NextResponse.json(
+      { error: 'Too many signup attempts. Please try again later.' },
+      { status: 429 }
+    );
+  }
+
   try {
     const { email, password, name } = await request.json();
 
     if (!email || !password) {
       return NextResponse.json(
         { error: 'Email and password are required' },
+        { status: 400 }
+      );
+    }
+
+    // Validate email
+    const emailValidation = emailSchema.safeParse(email);
+    if (!emailValidation.success) {
+      return NextResponse.json(
+        { error: 'Invalid email format' },
+        { status: 400 }
+      );
+    }
+
+    // Validate password strength
+    const passwordValidation = passwordSchema.safeParse(password);
+    if (!passwordValidation.success) {
+      return NextResponse.json(
+        { error: 'Password must be at least 8 characters with uppercase, lowercase, and number' },
         { status: 400 }
       );
     }

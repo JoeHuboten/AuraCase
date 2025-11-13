@@ -1,14 +1,25 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/database';
 import { requireAdmin } from '@/lib/auth-utils';
+import { orderStatusSchema } from '@/lib/validation';
 
 export const POST = requireAdmin(async (request: NextRequest, context: any) => {
   try {
-    const { orderId, status, notes, trackingNumber, courierService, estimatedDelivery } = await request.json();
+    const body = await request.json();
+    const { orderId, status, notes, trackingNumber, courierService, estimatedDelivery } = body;
 
     if (!orderId || !status) {
       return NextResponse.json(
         { error: 'Order ID and status are required' },
+        { status: 400 }
+      );
+    }
+
+    // Validate status
+    const statusValidation = orderStatusSchema.safeParse(status);
+    if (!statusValidation.success) {
+      return NextResponse.json(
+        { error: 'Invalid order status' },
         { status: 400 }
       );
     }

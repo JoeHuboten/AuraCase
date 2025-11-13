@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { requireAdmin } from '@/lib/auth-utils';
+import { discountCodeSchema } from '@/lib/validation';
 
 // GET - Fetch all discount codes
-export async function GET(request: NextRequest) {
+export const GET = requireAdmin(async (request: NextRequest) => {
   try {
     // TODO: Add authentication check for admin users
     
@@ -20,35 +22,17 @@ export async function GET(request: NextRequest) {
       { status: 500 }
     );
   }
-}
+});
 
 // POST - Create new discount code
-export async function POST(request: NextRequest) {
+export const POST = requireAdmin(async (request: NextRequest) => {
   try {
-    // TODO: Add authentication check for admin users
-    
     const body = await request.json();
-    const { code, percentage, expiresAt, maxUses, active } = body;
-
-    // Validate required fields
-    if (!code || !percentage) {
-      return NextResponse.json(
-        { error: 'Code and percentage are required' },
-        { status: 400 }
-      );
-    }
-
-    // Validate percentage range
-    if (percentage < 1 || percentage > 100) {
-      return NextResponse.json(
-        { error: 'Percentage must be between 1 and 100' },
-        { status: 400 }
-      );
-    }
+    const validatedData = discountCodeSchema.parse(body);
 
     // Check if code already exists
     const existing = await prisma.discountCode.findUnique({
-      where: { code: code.toUpperCase() },
+      where: { code: validatedData.code.toUpperCase() },
     });
 
     if (existing) {
@@ -61,20 +45,26 @@ export async function POST(request: NextRequest) {
     // Create discount code
     const discountCode = await prisma.discountCode.create({
       data: {
-        code: code.toUpperCase(),
-        percentage,
-        expiresAt: expiresAt ? new Date(expiresAt) : null,
-        maxUses: maxUses || null,
-        active: active !== undefined ? active : true,
+        code: validatedData.code.toUpperCase(),
+        percentage: validatedData.percentage,
+        expiresAt: validatedData.expiresAt ? new Date(validatedData.expiresAt) : null,
+        maxUses: validatedData.maxUses || null,
+        active: validatedData.active !== undefined ? validatedData.active : true,
       },
     });
 
     return NextResponse.json(discountCode, { status: 201 });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error creating discount code:', error);
+    if (error.name === 'ZodError') {
+      return NextResponse.json(
+        { error: 'Validation failed', details: error.errors },
+        { status: 400 }
+      );
+    }
     return NextResponse.json(
       { error: 'Failed to create discount code' },
       { status: 500 }
     );
   }
-}
+});

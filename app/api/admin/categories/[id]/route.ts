@@ -1,11 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { requireAdmin } from '@/lib/auth-utils';
+import { categorySchema } from '@/lib/validation';
 
 // PUT - Update category
-export async function PUT(
+export const PUT = requireAdmin(async (
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
-) {
+) => {
   try {
     const { id } = await params;
     const body = await request.json();
@@ -29,13 +31,13 @@ export async function PUT(
       { status: 500 }
     );
   }
-}
+});
 
 // DELETE - Delete category
-export async function DELETE(
+export const DELETE = requireAdmin(async (
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
-) {
+) => {
   try {
     const { id } = await params;
     // Check if category has products
@@ -62,5 +64,5 @@ export async function DELETE(
       { status: 500 }
     );
   }
-}
+});
 

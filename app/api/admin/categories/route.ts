@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { requireAdmin } from '@/lib/auth-utils';
+import { categorySchema } from '@/lib/validation';
 
 // GET - Fetch all categories
-export async function GET(request: NextRequest) {
+export const GET = requireAdmin(async (request: NextRequest) => {
   try {
     const categories = await prisma.category.findMany({
       include: {
@@ -23,12 +25,13 @@ export async function GET(request: NextRequest) {
       { status: 500 }
     );
   }
-}
+});
 
 // POST - Create new category
-export async function POST(request: NextRequest) {
+export const POST = requireAdmin(async (request: NextRequest) => {
   try {
     const body = await request.json();
+    const validatedData = categorySchema.parse(body);
     const { name, slug, description, image } = body;
 
     // Validate required fields

@@ -1,11 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { requireAdmin } from '@/lib/auth-utils';
+import { discountCodeSchema } from '@/lib/validation';
 
 // PUT - Update discount code
-export async function PUT(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export const PUT = requireAdmin(async (request: NextRequest, { params }: { params: Promise<{ id: string }> }) => {
   try {
     // TODO: Add authentication check for admin users
     
@@ -54,13 +53,7 @@ export async function PUT(
       { status: 500 }
     );
   }
-}
-
-// DELETE - Delete discount code
-export async function DELETE(
-  request: NextRequest,
-  { params }: { params: { id: string } }
-) {
+});\n\n// DELETE - Delete discount code\nexport const DELETE = requireAdmin(async (\n  request: NextRequest,\n  { params }: { params: { id: string } }\n) => {
   try {
     // TODO: Add authentication check for admin users
     
@@ -76,4 +69,4 @@ export async function DELETE(
       { status: 500 }
     );
   }
-}
+});

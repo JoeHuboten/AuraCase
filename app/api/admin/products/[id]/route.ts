@@ -1,11 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { requireAdmin } from '@/lib/auth-utils';
+import { productSchema } from '@/lib/validation';
 
 // GET - Fetch single product
-export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export const GET = requireAdmin(async (request: NextRequest, { params }: { params: Promise<{ id: string }> }) => {
   try {
     const { id } = await params;
     const product = await prisma.product.findUnique({
@@ -27,13 +26,13 @@ export async function GET(
       { status: 500 }
     );
   }
-}
+});
 
 // PUT - Update product
-export async function PUT(
+export const PUT = requireAdmin(async (
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
-) {
+) => {
   try {
     const { id } = await params;
     const body = await request.json();
@@ -89,13 +88,13 @@ export async function PUT(
       { status: 500 }
     );
   }
-}
+});
 
 // DELETE - Delete product
-export async function DELETE(
+export const DELETE = requireAdmin(async (
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
-) {
+) => {
   try {
     const { id } = await params;
     await prisma.product.delete({
@@ -110,5 +109,5 @@ export async function DELETE(
       { status: 500 }
     );
   }
-}
+});
 

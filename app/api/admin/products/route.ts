@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { requireAdmin } from '@/lib/auth-utils';
+import { productSchema } from '@/lib/validation';
 
 // GET - Fetch all products
-export async function GET(request: NextRequest) {
+export const GET = requireAdmin(async (request: NextRequest) => {
   try {
     const products = await prisma.product.findMany({
       include: {
@@ -21,69 +23,46 @@ export async function GET(request: NextRequest) {
       { status: 500 }
     );
   }
-}
+});
 
 // POST - Create new product
-export async function POST(request: NextRequest) {
+export const POST = requireAdmin(async (request: NextRequest) => {
   try {
     const body = await request.json();
-    const {
-      name,
-      slug,
-      description,
-      price,
-      oldPrice,
-      discount,
-      image,
-      images,
-      categoryId,
-      colors,
-      sizes,
-      rating,
-      reviews,
-      inStock,
-      featured,
-      specifications,
-    } = body;
+    
+    // Validate input
+    const validatedData = productSchema.parse(body);
+    
+    // Validate input
+    const validatedData = productSchema.parse(body);
 
-    // Validate required fields
-    if (!name || !slug || !price || !image || !categoryId) {
+    // Check if slug already exists
+    const existingProduct = await prisma.product.findUnique({
+      where: { slug: validatedData.slug },
+    });
+
+    if (existingProduct) {
       return NextResponse.json(
-        { error: 'Missing required fields' },
+        { error: 'Product with this slug already exists' },
         { status: 400 }
       );
     }
 
     const product = await prisma.product.create({
-      data: {
-        name,
-        slug,
-        description,
-        price: parseFloat(price),
-        oldPrice: oldPrice ? parseFloat(oldPrice) : null,
-        discount: discount ? parseInt(discount) : null,
-        image,
-        images: images || image,
-        categoryId,
-        colors: colors || '[]',
-        sizes: sizes || '[]',
-        rating: rating ? parseFloat(rating) : 0,
-        reviews: reviews ? parseInt(reviews) : 0,
-        inStock: inStock !== undefined ? inStock : true,
-        featured: featured !== undefined ? featured : false,
-        specifications: specifications || null,
-      },
-      include: {
-        category: true,
-      },
-    });
+      data: validatedData,
 
     return NextResponse.json({ product }, { status: 201 });
-  } catch (error) {
+  } catch (error: any) {
     console.error('Error creating product:', error);
+    if (error.name === 'ZodError') {
+      return NextResponse.json(
+        { error: 'Validation failed', details: error.errors },
+        { status: 400 }
+      );
+    }
     return NextResponse.json(
       { error: 'Failed to create product' },
       { status: 500 }
     );
   }
-}
+});

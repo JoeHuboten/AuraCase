@@ -67,8 +67,16 @@ const Header = () => {
     const fetchProducts = async () => {
       try {
         const response = await fetch('/api/products');
-        const data = await response.json();
-        setProducts(data);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const contentType = response.headers.get('content-type');
+        if (contentType && contentType.includes('application/json')) {
+          const data = await response.json();
+          setProducts(data);
+        } else {
+          console.error('Response is not JSON');
+        }
       } catch (error) {
         console.error('Error fetching products:', error);
       }

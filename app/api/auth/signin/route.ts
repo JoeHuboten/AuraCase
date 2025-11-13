@@ -1,8 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/database';
 import { verifyPassword, createToken } from '@/lib/auth-utils';
+import { authRateLimit } from '@/lib/rate-limit';
+import { emailSchema, passwordSchema } from '@/lib/validation';
 
 export async function POST(request: NextRequest) {
+  // Rate limiting - 5 attempts per 15 minutes
+  const rateLimitResult = await authRateLimit(request);
+  if (!rateLimitResult.success) {
+    return NextResponse.json(
+      { error: 'Too many login attempts. Please try again later.' },
+      { status: 429 }
+    );
+  }
+
   try {
     console.log('=== SIGNIN REQUEST ===');
     const body = await request.json();
@@ -14,6 +25,15 @@ export async function POST(request: NextRequest) {
       console.log('Missing email or password');
       return NextResponse.json(
         { error: 'Email and password are required' },
+        { status: 400 }
+      );
+    }
+
+    // Validate email format
+    const emailValidation = emailSchema.safeParse(email);
+    if (!emailValidation.success) {
+      return NextResponse.json(
+        { error: 'Invalid email format' },
         { status: 400 }
       );
     }
