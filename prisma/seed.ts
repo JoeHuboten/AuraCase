@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcryptjs';
 
 const prisma = new PrismaClient();
 
@@ -85,6 +86,8 @@ async function main() {
         rating: 4.5,
         reviews: 95,
         inStock: true,
+        stock: 50,
+        lowStockThreshold: 10,
         featured: true,
         specifications: {
           material: 'Genuine Leather',
@@ -109,6 +112,8 @@ async function main() {
         rating: 4.3,
         reviews: 120,
         inStock: true,
+        stock: 50,
+        lowStockThreshold: 10,
         featured: false,
         specifications: {
           material: 'TPU',
@@ -133,6 +138,8 @@ async function main() {
         rating: 4.4,
         reviews: 180,
         inStock: true,
+        stock: 50,
+        lowStockThreshold: 10,
         featured: true,
         specifications: {
           material: 'Polycarbonate + TPU',
@@ -157,6 +164,8 @@ async function main() {
         rating: 4.2,
         reviews: 95,
         inStock: true,
+        stock: 50,
+        lowStockThreshold: 10,
         featured: false,
         specifications: {
           material: 'Premium Silicone',
@@ -181,6 +190,8 @@ async function main() {
         rating: 4.6,
         reviews: 150,
         inStock: true,
+        stock: 50,
+        lowStockThreshold: 10,
         featured: true,
         specifications: {
           material: 'Genuine Leather + TPU',
@@ -205,6 +216,8 @@ async function main() {
         rating: 4.7,
         reviews: 200,
         inStock: true,
+        stock: 50,
+        lowStockThreshold: 10,
         featured: true,
         specifications: {
           material: 'Real Carbon Fiber',
@@ -229,6 +242,8 @@ async function main() {
         rating: 4.7,
         reviews: 230,
         inStock: true,
+        stock: 50,
+        lowStockThreshold: 10,
         featured: false,
         specifications: {
           material: '9H Tempered Glass',
@@ -253,6 +268,8 @@ async function main() {
         rating: 4.5,
         reviews: 180,
         inStock: true,
+        stock: 50,
+        lowStockThreshold: 10,
         featured: true,
         specifications: {
           material: '9H Tempered Glass',
@@ -277,6 +294,8 @@ async function main() {
         rating: 4.3,
         reviews: 120,
         inStock: true,
+        stock: 50,
+        lowStockThreshold: 10,
         featured: false,
         specifications: {
           material: '9H Tempered Glass',
@@ -301,6 +320,8 @@ async function main() {
         rating: 4.4,
         reviews: 160,
         inStock: true,
+        stock: 50,
+        lowStockThreshold: 10,
         featured: false,
         specifications: {
           material: '9H Tempered Glass',
@@ -325,6 +346,8 @@ async function main() {
         rating: 4.6,
         reviews: 140,
         inStock: true,
+        stock: 50,
+        lowStockThreshold: 10,
         featured: true,
         specifications: {
           material: '9H Tempered Glass',
@@ -349,6 +372,8 @@ async function main() {
         rating: 4.8,
         reviews: 220,
         inStock: true,
+        stock: 50,
+        lowStockThreshold: 10,
         featured: true,
         specifications: {
           material: 'Self-Healing Polymer',
@@ -375,6 +400,8 @@ async function main() {
         rating: 4.8,
         reviews: 340,
         inStock: true,
+        stock: 50,
+        lowStockThreshold: 10,
         featured: true,
         specifications: {
           battery: '30 hours total',
@@ -398,6 +425,8 @@ async function main() {
         rating: 4.5,
         reviews: 280,
         inStock: true,
+        stock: 50,
+        lowStockThreshold: 10,
         featured: true,
         specifications: {
           battery: '24 hours total',
@@ -421,6 +450,8 @@ async function main() {
         rating: 4.2,
         reviews: 450,
         inStock: true,
+        stock: 50,
+        lowStockThreshold: 10,
         featured: false,
         specifications: {
           battery: '20 hours total',
@@ -444,6 +475,8 @@ async function main() {
         rating: 4.6,
         reviews: 190,
         inStock: true,
+        stock: 50,
+        lowStockThreshold: 10,
         featured: true,
         specifications: {
           battery: '25 hours total',
@@ -467,6 +500,8 @@ async function main() {
         rating: 4.7,
         reviews: 320,
         inStock: true,
+        stock: 50,
+        lowStockThreshold: 10,
         featured: true,
         specifications: {
           battery: '35 hours total',
@@ -490,6 +525,8 @@ async function main() {
         rating: 4.9,
         reviews: 280,
         inStock: true,
+        stock: 50,
+        lowStockThreshold: 10,
         featured: true,
         specifications: {
           battery: '32 hours total',
@@ -515,6 +552,8 @@ async function main() {
         rating: 4.6,
         reviews: 445,
         inStock: true,
+        stock: 50,
+        lowStockThreshold: 10,
         featured: false,
         specifications: {
           power: '100W',
@@ -539,6 +578,8 @@ async function main() {
         rating: 4.4,
         reviews: 320,
         inStock: true,
+        stock: 50,
+        lowStockThreshold: 10,
         featured: true,
         specifications: {
           power: '15W',
@@ -562,6 +603,8 @@ async function main() {
         rating: 4.5,
         reviews: 280,
         inStock: true,
+        stock: 50,
+        lowStockThreshold: 10,
         featured: false,
         specifications: {
           power: '24W Total',
@@ -585,6 +628,8 @@ async function main() {
         rating: 4.3,
         reviews: 190,
         inStock: true,
+        stock: 50,
+        lowStockThreshold: 10,
         featured: false,
         specifications: {
           power: '60W',
@@ -608,6 +653,8 @@ async function main() {
         rating: 4.7,
         reviews: 150,
         inStock: true,
+        stock: 50,
+        lowStockThreshold: 10,
         featured: true,
         specifications: {
           power: '60W Total',
@@ -631,6 +678,8 @@ async function main() {
         rating: 4.6,
         reviews: 380,
         inStock: true,
+        stock: 50,
+        lowStockThreshold: 10,
         featured: true,
         specifications: {
           power: '20W',
@@ -656,6 +705,8 @@ async function main() {
         rating: 4.6,
         reviews: 512,
         inStock: true,
+        stock: 50,
+        lowStockThreshold: 10,
         featured: true,
         specifications: {
           capacity: '20000mAh',
@@ -680,6 +731,8 @@ async function main() {
         rating: 4.4,
         reviews: 380,
         inStock: true,
+        stock: 50,
+        lowStockThreshold: 10,
         featured: false,
         specifications: {
           capacity: '10000mAh',
@@ -704,6 +757,8 @@ async function main() {
         rating: 4.5,
         reviews: 180,
         inStock: true,
+        stock: 50,
+        lowStockThreshold: 10,
         featured: true,
         specifications: {
           capacity: '30000mAh',
@@ -728,6 +783,8 @@ async function main() {
         rating: 4.6,
         reviews: 220,
         inStock: true,
+        stock: 50,
+        lowStockThreshold: 10,
         featured: true,
         specifications: {
           capacity: '15000mAh',
@@ -752,6 +809,8 @@ async function main() {
         rating: 4.3,
         reviews: 290,
         inStock: true,
+        stock: 50,
+        lowStockThreshold: 10,
         featured: false,
         specifications: {
           capacity: '5000mAh',
@@ -776,6 +835,8 @@ async function main() {
         rating: 4.7,
         reviews: 160,
         inStock: true,
+        stock: 50,
+        lowStockThreshold: 10,
         featured: true,
         specifications: {
           capacity: '10000mAh',
@@ -802,6 +863,8 @@ async function main() {
         rating: 4.4,
         reviews: 180,
         inStock: true,
+        stock: 50,
+        lowStockThreshold: 10,
         featured: false,
         specifications: {
           compatibility: 'USB-C to Lightning',
@@ -825,6 +888,8 @@ async function main() {
         rating: 4.5,
         reviews: 220,
         inStock: true,
+        stock: 50,
+        lowStockThreshold: 10,
         featured: true,
         specifications: {
           compatibility: 'HDMI to USB-C',
@@ -848,6 +913,8 @@ async function main() {
         rating: 4.6,
         reviews: 190,
         inStock: true,
+        stock: 50,
+        lowStockThreshold: 10,
         featured: true,
         specifications: {
           compatibility: 'USB-C',
@@ -871,6 +938,8 @@ async function main() {
         rating: 4.3,
         reviews: 250,
         inStock: true,
+        stock: 50,
+        lowStockThreshold: 10,
         featured: false,
         specifications: {
           compatibility: '3.5mm to USB-C',
@@ -894,6 +963,8 @@ async function main() {
         rating: 4.5,
         reviews: 170,
         inStock: true,
+        stock: 50,
+        lowStockThreshold: 10,
         featured: true,
         specifications: {
           compatibility: 'Qi Wireless',
@@ -917,6 +988,8 @@ async function main() {
         rating: 4.6,
         reviews: 140,
         inStock: true,
+        stock: 50,
+        lowStockThreshold: 10,
         featured: true,
         specifications: {
           compatibility: 'Universal',
@@ -927,6 +1000,27 @@ async function main() {
   ]);
 
   console.log(`✅ Created ${products.length} products`);
+  // Create an admin user for local development if it doesn't exist
+  const adminEmail = 'nstoyanov639@gmail.com';
+  const adminPassword = '123123';
+
+  const existingAdmin = await prisma.user.findUnique({ where: { email: adminEmail } });
+  if (!existingAdmin) {
+    const hashed = await bcrypt.hash(adminPassword, 10);
+    await prisma.user.create({
+      data: {
+        email: adminEmail,
+        password: hashed,
+        name: 'Admin',
+        role: 'ADMIN',
+        emailVerified: new Date(),
+      },
+    });
+    console.log(`✅ Created admin user ${adminEmail}`);
+  } else {
+    console.log(`ℹ️ Admin user ${adminEmail} already exists`);
+  }
+
   console.log('🎉 Database seeded successfully!');
 }
 
