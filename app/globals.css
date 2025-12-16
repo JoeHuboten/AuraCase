@@ -1,24 +1,70 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #1f2937;
-  --color-primary-light: #374151;
-  --color-background: #111827;
-  --color-background-secondary: #1f2937;
-  --color-text-primary: #ffffff;
-  --color-text-secondary: #d1d5db;
+  /* Enhanced color palette with richer tones */
+  --color-primary: #1a1f2e;
+  --color-primary-light: #2d3548;
+  --color-background: #0f1219;
+  --color-background-secondary: #1a1f2e;
+  --color-text-primary: #f8fafc;
+  --color-text-secondary: #94a3b8;
+  --color-text-muted: #64748b;
+  
+  /* Accent colors with gradient support */
   --color-accent: #3b82f6;
   --color-accent-light: #60a5fa;
   --color-accent-dark: #2563eb;
+  --color-accent-glow: rgba(59, 130, 246, 0.35);
+  
+  /* Success, warning, error states */
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+  
+  /* Card and surface colors */
+  --color-surface: rgba(30, 41, 59, 0.5);
+  --color-surface-hover: rgba(51, 65, 85, 0.6);
+  --color-border: rgba(148, 163, 184, 0.1);
+  --color-border-hover: rgba(148, 163, 184, 0.2);
 }
 
 html {
   scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  background-color: var(--color-background);
+  background: linear-gradient(180deg, var(--color-background) 0%, #0a0d12 100%);
+  background-attachment: fixed;
   color: var(--color-text-primary);
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  letter-spacing: -0.011em;
+}
+
+/* Selection styling */
+::selection {
+  background: rgba(59, 130, 246, 0.3);
+  color: #fff;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-primary-light);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent);
 }
 
 @layer utilities {
@@ -329,9 +375,10 @@ body {
 
   /* Enhanced Button Animations */
   .btn-primary {
-    @apply relative overflow-hidden px-6 py-3 bg-gradient-to-r from-accent to-accent/80 text-white font-semibold rounded-xl transition-all duration-300 ease-out cursor-pointer;
-    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
-    border: 2px solid transparent;
+    @apply relative overflow-hidden px-7 py-3.5 text-white font-semibold rounded-2xl transition-all duration-300 ease-out cursor-pointer;
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 50%, #1d4ed8 100%);
+    box-shadow: 0 4px 20px rgba(59, 130, 246, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(96, 165, 250, 0.3);
   }
 
   .btn-primary::before {
@@ -341,23 +388,30 @@ body {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: left 0.5s ease;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+    transition: left 0.6s ease;
   }
 
   .btn-primary:hover {
-    @apply from-accent/90 to-accent/70 transform -translate-y-1 scale-105;
-    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4), 0 0 20px rgba(59, 130, 246, 0.2);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 12px 35px rgba(59, 130, 246, 0.45), 0 0 30px rgba(59, 130, 246, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    border-color: rgba(96, 165, 250, 0.5);
   }
 
   .btn-primary:hover::before {
     left: 100%;
   }
 
+  .btn-primary:active {
+    transform: translateY(-1px) scale(1.01);
+  }
+
   .btn-secondary {
-    @apply relative overflow-hidden px-6 py-3 bg-gradient-to-r from-gray-700/50 to-gray-600/50 text-white font-semibold rounded-xl transition-all duration-300 ease-out cursor-pointer;
-    box-shadow: 0 4px 15px rgba(107, 114, 128, 0.2);
-    border: 2px solid rgba(255, 255, 255, 0.1);
+    @apply relative overflow-hidden px-7 py-3.5 text-white font-semibold rounded-2xl transition-all duration-300 ease-out cursor-pointer;
+    background: linear-gradient(135deg, rgba(51, 65, 85, 0.8) 0%, rgba(30, 41, 59, 0.9) 100%);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(148, 163, 184, 0.15);
+    backdrop-filter: blur(10px);
   }
 
   .btn-secondary::before {
@@ -367,13 +421,14 @@ body {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-    transition: left 0.5s ease;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+    transition: left 0.6s ease;
   }
 
   .btn-secondary:hover {
-    @apply from-gray-600/60 to-gray-500/60 transform -translate-y-1 scale-105;
-    box-shadow: 0 8px 25px rgba(107, 114, 128, 0.3), 0 0 20px rgba(107, 114, 128, 0.1);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    border-color: rgba(148, 163, 184, 0.3);
   }
 
   .btn-secondary:hover::before {
@@ -381,8 +436,9 @@ body {
   }
 
   .btn-ghost {
-    @apply relative overflow-hidden px-6 py-3 bg-transparent text-white font-semibold rounded-xl transition-all duration-300 ease-out cursor-pointer;
-    border: 2px solid rgba(255, 255, 255, 0.2);
+    @apply relative overflow-hidden px-7 py-3.5 bg-transparent text-white font-semibold rounded-2xl transition-all duration-300 ease-out cursor-pointer;
+    border: 2px solid rgba(148, 163, 184, 0.25);
+    backdrop-filter: blur(4px);
   }
 
   .btn-ghost::before {
@@ -392,15 +448,15 @@ body {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-    transition: left 0.5s ease;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+    transition: left 0.6s ease;
   }
 
   .btn-ghost:hover {
-    @apply transform -translate-y-1 scale-105;
-    background: rgba(59, 130, 246, 0.05);
-    border-color: rgba(59, 130, 246, 0.3);
-    box-shadow: 0 8px 25px rgba(59, 130, 246, 0.2);
+    transform: translateY(-3px) scale(1.02);
+    background: rgba(59, 130, 246, 0.08);
+    border-color: rgba(59, 130, 246, 0.4);
+    box-shadow: 0 12px 30px rgba(59, 130, 246, 0.15);
   }
 
   .btn-ghost:hover::before {
@@ -409,7 +465,8 @@ body {
 
   .btn-icon {
     @apply relative overflow-hidden p-3 bg-transparent text-white rounded-xl transition-all duration-300 ease-out cursor-pointer;
-    border: 2px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(148, 163, 184, 0.15);
+    backdrop-filter: blur(4px);
   }
 
   .btn-icon::before {
@@ -419,15 +476,16 @@ body {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
     transition: left 0.5s ease;
   }
 
   .btn-icon:hover {
-    @apply transform -translate-y-1 scale-110;
-    background: rgba(59, 130, 246, 0.1);
-    border-color: rgba(59, 130, 246, 0.3);
+    transform: translateY(-2px) scale(1.1);
+    background: rgba(59, 130, 246, 0.12);
+    border-color: rgba(59, 130, 246, 0.35);
     box-shadow: 0 8px 25px rgba(59, 130, 246, 0.2);
+    color: #60a5fa;
   }
 
   .btn-icon:hover::before {
@@ -435,9 +493,10 @@ body {
   }
 
   .btn-fab {
-    @apply relative overflow-hidden w-14 h-14 rounded-full bg-gradient-to-r from-accent to-accent/80 text-white transition-all duration-300 ease-out cursor-pointer;
-    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
-    border: 2px solid rgba(255, 255, 255, 0.2);
+    @apply relative overflow-hidden w-14 h-14 rounded-full text-white transition-all duration-300 ease-out cursor-pointer flex items-center justify-center;
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 50%, #1d4ed8 100%);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(96, 165, 250, 0.3);
   }
 
   .btn-fab::before {
@@ -447,14 +506,14 @@ body {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
     transition: left 0.5s ease;
   }
 
   .btn-fab:hover {
-    @apply from-accent/90 to-accent/70 transform -translate-y-2 scale-110;
-    box-shadow: 0 12px 30px rgba(59, 130, 246, 0.4), 0 0 25px rgba(59, 130, 246, 0.3);
-    border-color: rgba(255, 255, 255, 0.4);
+    transform: translateY(-4px) scale(1.1);
+    box-shadow: 0 15px 40px rgba(59, 130, 246, 0.45), 0 0 35px rgba(59, 130, 246, 0.3);
+    border-color: rgba(96, 165, 250, 0.5);
   }
 
   .btn-fab:hover::before {
@@ -740,6 +799,128 @@ body {
   .high-contrast .skip-to-main {
     background: #00ff00;
     color: #000000;
+  }
+
+  /* Enhanced Card Styles */
+  .card {
+    @apply relative overflow-hidden rounded-2xl transition-all duration-300;
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 0.9) 100%);
+    border: 1px solid rgba(148, 163, 184, 0.08);
+    backdrop-filter: blur(10px);
+  }
+
+  .card:hover {
+    border-color: rgba(59, 130, 246, 0.2);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 40px rgba(59, 130, 246, 0.08);
+    transform: translateY(-4px);
+  }
+
+  .card-glass {
+    @apply relative overflow-hidden rounded-2xl;
+    background: rgba(30, 41, 59, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+  }
+
+  /* Enhanced Input Styles */
+  .input-field {
+    @apply w-full rounded-xl transition-all duration-300;
+    background: rgba(30, 41, 59, 0.6);
+    border: 1px solid rgba(148, 163, 184, 0.1);
+    color: #f8fafc;
+    padding: 0.875rem 1rem;
+  }
+
+  .input-field::placeholder {
+    color: rgba(148, 163, 184, 0.5);
+  }
+
+  .input-field:focus {
+    outline: none;
+    border-color: rgba(59, 130, 246, 0.5);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15), 0 4px 20px rgba(0, 0, 0, 0.2);
+    background: rgba(30, 41, 59, 0.8);
+  }
+
+  .input-field:hover:not(:focus) {
+    border-color: rgba(148, 163, 184, 0.2);
+  }
+
+  /* Enhanced Badge Styles */
+  .badge {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-xs font-medium transition-all duration-200;
+  }
+
+  .badge-accent {
+    background: rgba(59, 130, 246, 0.15);
+    color: #60a5fa;
+    border: 1px solid rgba(59, 130, 246, 0.2);
+  }
+
+  .badge-success {
+    background: rgba(16, 185, 129, 0.15);
+    color: #34d399;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+  }
+
+  .badge-warning {
+    background: rgba(245, 158, 11, 0.15);
+    color: #fbbf24;
+    border: 1px solid rgba(245, 158, 11, 0.2);
+  }
+
+  .badge-error {
+    background: rgba(239, 68, 68, 0.15);
+    color: #f87171;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+  }
+
+  /* Section Dividers */
+  .divider-gradient {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(148, 163, 184, 0.2), transparent);
+  }
+
+  /* Text Gradient */
+  .text-gradient {
+    background: linear-gradient(135deg, #f8fafc 0%, #94a3b8 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .text-gradient-accent {
+    background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 50%, #2563eb 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Hover lift effect */
+  .hover-lift {
+    @apply transition-all duration-300;
+  }
+
+  .hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Shimmer loading effect */
+  .shimmer {
+    background: linear-gradient(
+      90deg,
+      rgba(30, 41, 59, 0.8) 0%,
+      rgba(51, 65, 85, 0.8) 50%,
+      rgba(30, 41, 59, 0.8) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+  }
+
+  @keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
   }
 }
 
