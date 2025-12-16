@@ -62,46 +62,29 @@ const Header = () => {
   const cartItemsCount = mounted ? cartItems.reduce((sum, item) => sum + item.quantity, 0) : 0;
   const wishlistItemsCount = mounted ? wishlistItems.length : 0;
 
-  // Fetch products for search
+  // Server-side search with debounce
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await fetch('/api/products');
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const contentType = response.headers.get('content-type');
-        if (contentType && contentType.includes('application/json')) {
-          const data = await response.json();
-          setProducts(data);
-        } else {
-          console.error('Response is not JSON');
-        }
-      } catch (error) {
-        console.error('Error fetching products:', error);
-      }
-    };
-    fetchProducts();
-  }, []);
-
-  // Search suggestions effect
-  useEffect(() => {
-    if (searchQuery.trim().length > 1) {
-      const suggestions = products.filter(product =>
-        product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        product.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        product.category.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        product.colors?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        product.sizes?.toLowerCase().includes(searchQuery.toLowerCase())
-      ).slice(0, 5); // Limit to 5 suggestions
-      
-      setSearchSuggestions(suggestions);
-      setShowSuggestions(true);
-    } else {
+    if (searchQuery.trim().length < 2) {
       setSearchSuggestions([]);
       setShowSuggestions(false);
+      return;
     }
-  }, [searchQuery, products]);
+
+    const debounceTimer = setTimeout(async () => {
+      try {
+        const response = await fetch(`/api/products/search?q=${encodeURIComponent(searchQuery.trim())}&limit=5`);
+        if (response.ok) {
+          const data = await response.json();
+          setSearchSuggestions(data.products || []);
+          setShowSuggestions(true);
+        }
+      } catch (error) {
+        console.error('Search error:', error);
+      }
+    }, 300); // 300ms debounce
+
+    return () => clearTimeout(debounceTimer);
+  }, [searchQuery]);
 
   const handleSearch = (query: string, filters?: any) => {
     if (query.trim()) {

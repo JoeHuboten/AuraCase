@@ -14,7 +14,7 @@ import {
   FiMail,
   FiPercent
 } from 'react-icons/fi';
-import { signOut } from 'next-auth/react';
+import { useAuth } from '@/contexts/AuthContext';
 
 const navigation = [
   { name: 'Dashboard', href: '/admin', icon: FiHome },

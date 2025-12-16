@@ -14,6 +14,9 @@ interface Product {
   colors?: string | null;
   sizes?: string | null;
   image: string;
+  inStock: boolean;
+  stock: number;
+  lowStockThreshold: number;
 }
 
 interface ProductDetailsProps {
@@ -60,6 +63,32 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
 
   return (
     <div className="space-y-6">
+      {/* Stock Status */}
+      <div className="flex items-center gap-3">
+        {product.inStock ? (
+          <>
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+              <span className="text-green-400 font-semibold">
+                {t('common.inStock', 'In Stock')}
+              </span>
+            </div>
+            {product.stock <= product.lowStockThreshold && (
+              <span className="text-yellow-400 text-sm">
+                ({t('product.onlyLeft', 'Only')} {product.stock} {t('product.left', 'left')})
+              </span>
+            )}
+          </>
+        ) : (
+          <div className="flex items-center gap-2">
+            <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+            <span className="text-red-400 font-semibold">
+              {t('common.outOfStock', 'Out of Stock')}
+            </span>
+          </div>
+        )}
+      </div>
+
       {/* Colors */}
       {colors.length > 0 && (
         <div>
@@ -112,11 +141,15 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
       <div className="flex gap-4">
         <button 
           onClick={handleAddToCart}
-          disabled={isAddingToCart}
+          disabled={isAddingToCart || !product.inStock}
           className="btn-primary flex-1 py-4 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <FiShoppingCart size={20} />
-          {isAddingToCart ? t('product.adding', 'Adding...') : t('product.addToCart', 'Add to Cart')}
+          {!product.inStock 
+            ? t('product.outOfStock', 'Out of Stock')
+            : isAddingToCart 
+            ? t('product.adding', 'Adding...') 
+            : t('product.addToCart', 'Add to Cart')}
         </button>
         <button 
           onClick={handleWishlist}

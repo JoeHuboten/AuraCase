@@ -6,8 +6,6 @@ import { discountCodeSchema } from '@/lib/validation';
 // GET - Fetch all discount codes
 export const GET = requireAdmin(async (request: NextRequest) => {
   try {
-    // TODO: Add authentication check for admin users
-    
     const codes = await prisma.discountCode.findMany({
       orderBy: {
         createdAt: 'desc',

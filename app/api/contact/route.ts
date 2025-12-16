@@ -1,40 +1,56 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { strictRateLimit } from '@/lib/rate-limit';
+import { contactFormSchema, sanitizeInput } from '@/lib/validation';
+import { validateCsrf } from '@/lib/csrf';
+import { requireAdmin } from '@/lib/auth-utils';
 
 export async function POST(request: NextRequest) {
+  // CSRF protection
+  const csrfResult = validateCsrf(request);
+  if (!csrfResult.valid) {
+    return NextResponse.json(
+      { error: 'Invalid request. Please refresh and try again.' },
+      { status: 403 }
+    );
+  }
+
+  // Rate limiting - strict for contact forms
+  const rateLimitResult = await strictRateLimit(request);
+  if (!rateLimitResult.success) {
+    return NextResponse.json(
+      { error: 'Too many requests. Please try again later.' },
+      { status: 429 }
+    );
+  }
+
   try {
     const body = await request.json();
-    const { name, email, subject, message } = body;
 
-    // Validate required fields
-    if (!name || !email || !subject || !message) {
+    // Validate with Zod schema
+    const validationResult = contactFormSchema.safeParse(body);
+    if (!validationResult.success) {
+      const errors = validationResult.error.errors.map(e => e.message).join(', ');
       return NextResponse.json(
-        { error: 'All fields are required' },
+        { error: errors },
         { status: 400 }
       );
     }
 
-    // Validate email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      return NextResponse.json(
-        { error: 'Invalid email format' },
-        { status: 400 }
-      );
-    }
+    const { name, email, subject, message } = validationResult.data;
+
+    // Sanitize inputs to prevent XSS
+    const sanitizedData = {
+      name: sanitizeInput(name),
+      email: sanitizeInput(email),
+      subject: sanitizeInput(subject),
+      message: sanitizeInput(message),
+    };
 
     // Save contact message to database
     const contactMessage = await prisma.contactMessage.create({
-      data: {
-        name,
-        email,
-        subject,
-        message,
-      },
+      data: sanitizedData,
     });
-
-    // TODO: Send email notification to admin (optional)
-    // You can integrate with services like SendGrid, Mailgun, or Nodemailer
 
     return NextResponse.json(
       {
@@ -54,10 +70,8 @@ export async function POST(request: NextRequest) {
 }
 
 // GET endpoint to retrieve contact messages (admin only)
-export async function GET(request: NextRequest) {
+export const GET = requireAdmin(async (request: NextRequest) => {
   try {
-    // TODO: Add authentication check for admin users
-    
     const messages = await prisma.contactMessage.findMany({
       orderBy: {
         createdAt: 'desc',
@@ -72,4 +86,4 @@ export async function GET(request: NextRequest) {
       { status: 500 }
     );
   }
-}
+});

@@ -59,4 +59,4 @@ export const POST = requireAdmin(async (request: NextRequest) => {
       { status: 500 }
     );
   }
-}
+});

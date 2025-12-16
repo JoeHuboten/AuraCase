@@ -69,3 +69,36 @@ export function requireAdmin(handler: Function) {
     return handler(request, { ...context, user });
   };
 }
+
+/**
+ * Wrapper to add CSRF protection to mutation endpoints
+ */
+export function withCsrf(handler: Function) {
+  return async (request: NextRequest, context?: any) => {
+    // Skip CSRF for safe methods
+    if (['GET', 'HEAD', 'OPTIONS'].includes(request.method)) {
+      return handler(request, context);
+    }
+
+    const headerToken = request.headers.get('x-csrf-token');
+    const cookieToken = request.cookies.get('csrf-token')?.value;
+
+    if (!headerToken || !cookieToken || headerToken !== cookieToken) {
+      return Response.json({ error: 'Invalid request' }, { status: 403 });
+    }
+
+    return handler(request, context);
+  };
+}
+
+/**
+ * Sanitize error messages to prevent information leakage
+ */
+export function safeError(error: unknown, fallbackMessage = 'An error occurred'): string {
+  // In development, return the actual error
+  if (process.env.NODE_ENV === 'development' && error instanceof Error) {
+    return error.message;
+  }
+  // In production, return generic message
+  return fallbackMessage;
+}

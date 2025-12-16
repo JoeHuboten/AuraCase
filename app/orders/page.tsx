@@ -1,15 +1,21 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { FiPackage, FiTruck, FiCheckCircle, FiXCircle, FiCreditCard } from 'react-icons/fi';
+import { FiPackage, FiTruck, FiCheckCircle, FiXCircle, FiCreditCard, FiChevronRight } from 'react-icons/fi';
 import Link from 'next/link';
+import Image from 'next/image';
+import { OrderListSkeleton } from '@/components/SkeletonLoaders';
 
 interface Order {
   id: string;
   total: number;
   subtotal: number;
   deliveryFee: number;
+  discount: number;
   status: string;
+  trackingNumber: string | null;
+  courierService: string | null;
+  estimatedDelivery: string | null;
   createdAt: string;
   items: Array<{
     id: string;
@@ -21,12 +27,19 @@ interface Order {
       id: string;
       name: string;
       image: string;
+      slug: string;
       category?: {
         id: string;
         name: string;
       };
     };
   }>;
+  shippingAddress?: {
+    fullName: string;
+    address: string;
+    city: string;
+    postalCode: string;
+  } | null;
 }
 
 export default function OrdersPage() {
@@ -107,8 +120,14 @@ export default function OrdersPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-white text-xl">Loading orders...</div>
+      <div className="min-h-screen bg-background">
+        <div className="container-custom py-8">
+          <div className="flex justify-between items-center mb-8">
+            <div className="h-9 w-40 bg-gray-700/50 rounded animate-pulse" />
+            <div className="h-10 w-40 bg-gray-700/50 rounded-lg animate-pulse" />
+          </div>
+          <OrderListSkeleton count={3} />
+        </div>
       </div>
     );
   }
@@ -141,45 +160,51 @@ export default function OrdersPage() {
         ) : (
           <div className="space-y-6">
             {orders.map((order) => (
-              <div key={order.id} className="bg-background-secondary rounded-lg p-6">
+              <Link 
+                key={order.id} 
+                href={`/orders/${order.id}`}
+                className="block bg-background-secondary rounded-lg p-6 hover:ring-2 hover:ring-accent/50 transition-all"
+              >
                 <div className="flex justify-between items-start mb-4">
                   <div>
                     <h3 className="text-white font-semibold text-lg">
                       Order #{order.id.slice(-8).toUpperCase()}
                     </h3>
                     <p className="text-text-secondary text-sm">
-                      Placed on {new Date(order.createdAt).toLocaleDateString()}
+                      Placed on {new Date(order.createdAt).toLocaleDateString('bg-BG')}
                     </p>
                   </div>
-                  <div className="text-right">
-                    <div className="text-white font-semibold text-lg">
-                      ${order.total.toFixed(2)}
+                  <div className="text-right flex items-center gap-4">
+                    <div>
+                      <div className="text-white font-semibold text-lg">
+                        {order.total.toFixed(2)} лв
+                      </div>
+                      <div className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(order.status)}`}>
+                        {getStatusIcon(order.status)}
+                        <span className="ml-2">{getStatusText(order.status)}</span>
+                      </div>
                     </div>
-                    <div className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(order.status)}`}>
-                      {getStatusIcon(order.status)}
-                      <span className="ml-2">{getStatusText(order.status)}</span>
-                    </div>
+                    <FiChevronRight className="text-gray-500" size={24} />
                   </div>
                 </div>
 
                 <div className="border-t border-gray-700 pt-4">
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {order.items.map((item) => (
+                    {order.items.slice(0, 3).map((item) => (
                       <div key={item.id} className="flex items-center space-x-3">
                         <div className="relative w-12 h-12 flex-shrink-0">
-                          <img
+                          <Image
                             src={item.product.image}
                             alt={item.product.name}
-                            className="w-full h-full object-cover rounded-lg"
+                            fill
+                            className="object-cover rounded-lg"
+                            sizes="48px"
                           />
                         </div>
                         <div className="flex-1 min-w-0">
                           <h4 className="text-white font-medium text-sm truncate">
                             {item.product.name}
                           </h4>
-                          <p className="text-text-secondary text-xs">
-                            {item.product.category?.name || 'Unknown Category'}
-                          </p>
                           <div className="flex items-center space-x-2 text-xs text-text-secondary">
                             <span>Qty: {item.quantity}</span>
                             {item.color && <span>• {item.color}</span>}
@@ -187,31 +212,28 @@ export default function OrdersPage() {
                           </div>
                         </div>
                         <div className="text-white font-medium text-sm">
-                          ${(item.price * item.quantity).toFixed(2)}
+                          {(item.price * item.quantity).toFixed(2)} лв
                         </div>
                       </div>
                     ))}
+                    {order.items.length > 3 && (
+                      <div className="text-text-secondary text-sm self-center">
+                        +{order.items.length - 3} more items
+                      </div>
+                    )}
                   </div>
                 </div>
 
                 <div className="border-t border-gray-700 pt-4 mt-4">
                   <div className="flex justify-between items-center">
-                    <div className="flex justify-between text-sm text-text-secondary">
-                      <span>Subtotal: ${order.subtotal.toFixed(2)}</span>
-                      <span className="ml-4">Delivery: {order.deliveryFee === 0 ? 'Free' : `$${order.deliveryFee.toFixed(2)}`}</span>
+                    <div className="flex gap-4 text-sm text-text-secondary">
+                      <span>Subtotal: {order.subtotal.toFixed(2)} лв</span>
+                      <span>Delivery: {order.deliveryFee === 0 ? 'Free' : `${order.deliveryFee.toFixed(2)} лв`}</span>
                     </div>
-                    {order.status === 'PENDING' && (
-                      <Link
-                        href={`/payment/${order.id}`}
-                        className="inline-flex items-center gap-2 bg-accent text-white px-4 py-2 rounded-lg hover:bg-accent-light transition-colors"
-                      >
-                        <FiCreditCard size={16} />
-                        Pay Now
-                      </Link>
-                    )}
+                    <span className="text-accent text-sm font-medium">View Details →</span>
                   </div>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         )}

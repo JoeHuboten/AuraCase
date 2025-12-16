@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getUserFromRequest } from '@/lib/auth-utils';
 import { prisma } from '@/lib/prisma';
+import { sendOrderConfirmationEmail } from '@/lib/email';
 
 export async function POST(request: NextRequest) {
   try {
@@ -89,10 +90,24 @@ export async function POST(request: NextRequest) {
     };
 
     // Add shipping address if provided
-    if (shippingAddress) {
-      orderData.shippingAddress = {
-        create: shippingAddress,
-      };
+    if (shippingAddress && shippingAddress.firstName) {
+      // Create address record first
+      const addressRecord = await prisma.address.create({
+        data: {
+          userId: user.id,
+          type: 'SHIPPING',
+          firstName: shippingAddress.firstName,
+          lastName: shippingAddress.lastName,
+          phone: shippingAddress.phone || '',
+          street: shippingAddress.address,
+          city: shippingAddress.city,
+          postalCode: shippingAddress.postalCode,
+          country: shippingAddress.country || 'България',
+          isDefault: true,
+        },
+      });
+      orderData.shippingAddressId = addressRecord.id;
+      orderData.customerNotes = shippingAddress.notes || null;
     }
 
     // Create order in database
@@ -106,6 +121,32 @@ export async function POST(request: NextRequest) {
         },
       },
     });
+
+    // Update product stock quantities
+    for (const item of items) {
+      await prisma.product.update({
+        where: { id: item.id },
+        data: {
+          stock: { decrement: item.quantity },
+          inStock: {
+            set: true, // Will be updated based on stock level
+          },
+        },
+      });
+
+      // Check if product should be marked as out of stock
+      const updatedProduct = await prisma.product.findUnique({
+        where: { id: item.id },
+        select: { stock: true },
+      });
+
+      if (updatedProduct && updatedProduct.stock <= 0) {
+        await prisma.product.update({
+          where: { id: item.id },
+          data: { inStock: false },
+        });
+      }
+    }
 
     // Update discount code usage
     if (discountCodeRecord) {
@@ -124,6 +165,25 @@ export async function POST(request: NextRequest) {
         createdBy: user.id,
       },
     });
+
+    // Send order confirmation email
+    try {
+      await sendOrderConfirmationEmail(user.email!, {
+        orderId: dbOrder.id,
+        customerName: user.name || 'Customer',
+        total: dbOrder.total,
+        items: dbOrder.items.map((item: any) => ({
+          name: item.product.name,
+          quantity: item.quantity,
+          price: item.price,
+        })),
+        trackingNumber: dbOrder.trackingNumber || undefined,
+        language: 'bg', // Default to Bulgarian, can be determined from user preferences
+      });
+    } catch (emailError) {
+      console.error('Failed to send order confirmation email:', emailError);
+      // Don't fail the order if email fails
+    }
 
     return NextResponse.json({
       success: true,

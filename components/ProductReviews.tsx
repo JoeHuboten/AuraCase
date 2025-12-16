@@ -63,13 +63,16 @@ export default function ProductReviews({ productId, productName }: ProductReview
       }
 
       const data = await response.json();
-      setReviews(data.reviews);
-      setTotalPages(data.pagination.pages);
-      setAverageRating(data.averageRating);
-      setTotalReviews(data.totalReviews);
+      setReviews(data.reviews || []);
+      setTotalPages(data.pagination?.pages || 0);
+      setAverageRating(data.averageRating || 0);
+      setTotalReviews(data.totalReviews || 0);
     } catch (error) {
       console.error('Error fetching reviews:', error);
       setReviews([]);
+      setTotalPages(0);
+      setAverageRating(0);
+      setTotalReviews(0);
     } finally {
       setLoading(false);
     }

@@ -20,6 +20,8 @@ interface Product {
   rating: number;
   reviews: number;
   inStock: boolean;
+  stock: number;
+  lowStockThreshold: number;
   featured: boolean;
   category: {
     id: string;
@@ -55,6 +57,8 @@ export default function AdminProducts() {
     rating: '0',
     reviews: '0',
     inStock: true,
+    stock: '0',
+    lowStockThreshold: '5',
     featured: false,
   });
 
@@ -265,6 +269,22 @@ export default function AdminProducts() {
                     {product.oldPrice && (
                       <div className="text-sm text-text-secondary line-through">${product.oldPrice}</div>
                     )}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="flex flex-col">
+                      <span className={`text-sm font-semibold ${
+                        product.stock <= 0 
+                          ? 'text-red-400' 
+                          : product.stock <= product.lowStockThreshold 
+                          ? 'text-yellow-400' 
+                          : 'text-green-400'
+                      }`}>
+                        {product.stock} units
+                      </span>
+                      {product.stock <= product.lowStockThreshold && product.stock > 0 && (
+                        <span className="text-xs text-yellow-400">Low stock</span>
+                      )}
+                    </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span

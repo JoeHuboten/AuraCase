@@ -170,10 +170,10 @@ export default function CartPage() {
                     {/* Price */}
                     <div className="flex items-baseline gap-2">
                       <p className="text-accent font-bold text-2xl">
-                        ${(item.price * item.quantity).toFixed(2)}
+                        {(item.price * item.quantity).toFixed(2)} лв
                       </p>
                       <span className="text-text-secondary text-sm">
-                        ${item.price.toFixed(2)} each
+                        {item.price.toFixed(2)} лв each
                       </span>
                     </div>
                   </div>
@@ -258,7 +258,7 @@ export default function CartPage() {
                     Subtotal ({items.length} items)
                   </span>
                   <span className="text-white font-semibold text-lg">
-                    ${getSubtotal().toFixed(2)}
+                    {getSubtotal().toFixed(2)} лв
                   </span>
                 </div>
 
@@ -269,7 +269,7 @@ export default function CartPage() {
                       Discount ({discountCode.percentage}%)
                     </span>
                     <span className="text-green-400 font-semibold">
-                      -${getDiscount().toFixed(2)}
+                      -{getDiscount().toFixed(2)} лв
                     </span>
                   </div>
                 )}
@@ -285,11 +285,11 @@ export default function CartPage() {
                   <span className="text-white text-lg font-bold">Total</span>
                   <div className="text-right">
                     <div className="text-accent text-3xl font-bold">
-                      ${getTotal().toFixed(2)}
+                      {getTotal().toFixed(2)} лв
                     </div>
                     {discountCode && (
                       <div className="text-text-secondary text-xs line-through mt-1">
-                        ${getSubtotal().toFixed(2)}
+                        {getSubtotal().toFixed(2)} лв
                       </div>
                     )}
                   </div>

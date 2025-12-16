@@ -32,9 +32,6 @@ export const POST = requireAdmin(async (request: NextRequest) => {
     
     // Validate input
     const validatedData = productSchema.parse(body);
-    
-    // Validate input
-    const validatedData = productSchema.parse(body);
 
     // Check if slug already exists
     const existingProduct = await prisma.product.findUnique({
@@ -50,6 +47,7 @@ export const POST = requireAdmin(async (request: NextRequest) => {
 
     const product = await prisma.product.create({
       data: validatedData,
+    });
 
     return NextResponse.json({ product }, { status: 201 });
   } catch (error: any) {

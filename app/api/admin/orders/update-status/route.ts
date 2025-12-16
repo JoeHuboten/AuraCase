@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/database';
 import { requireAdmin } from '@/lib/auth-utils';
 import { orderStatusSchema } from '@/lib/validation';
+import { sendOrderStatusUpdateEmail } from '@/lib/email';
 
 export const POST = requireAdmin(async (request: NextRequest, context: any) => {
   try {
@@ -77,8 +78,23 @@ export const POST = requireAdmin(async (request: NextRequest, context: any) => {
       },
     });
 
-    // TODO: Send email notification to customer
-    // await sendOrderStatusEmail(order.user.email, order.id, status);
+    // Send email notification to customer
+    try {
+      if (order.user.email) {
+        await sendOrderStatusUpdateEmail(order.user.email, {
+          orderId: order.id,
+          customerName: order.user.name || 'Customer',
+          status,
+          trackingNumber: order.trackingNumber || undefined,
+          courierService: order.courierService || undefined,
+          estimatedDelivery: order.estimatedDelivery?.toISOString(),
+          language: 'bg',
+        });
+      }
+    } catch (emailError) {
+      console.error('Failed to send status update email:', emailError);
+      // Don't fail the status update if email fails
+    }
 
     return NextResponse.json({
       success: true,

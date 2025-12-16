@@ -126,6 +126,12 @@ export default function SignInPage() {
                 />
                 <span className="text-text-secondary text-sm">Remember me for 7 days</span>
               </label>
+              <Link
+                href="/auth/forgot-password"
+                className="text-accent hover:text-accent-light transition-colors text-sm"
+              >
+                Forgot password?
+              </Link>
             </div>
 
             <button

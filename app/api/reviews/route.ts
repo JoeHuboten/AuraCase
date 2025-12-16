@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { apiRateLimit } from '@/lib/rate-limit';
+import { validateCsrf } from '@/lib/csrf';
+import { reviewSchema, sanitizeInput } from '@/lib/validation';
+import { getUserFromRequest } from '@/lib/auth-utils';
 
 // GET - Fetch product reviews
 export async function GET(request: NextRequest) {
@@ -16,6 +19,9 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
     const productId = searchParams.get('productId');
+    const page = parseInt(searchParams.get('page') || '1');
+    const limit = parseInt(searchParams.get('limit') || '5');
+    const sortBy = searchParams.get('sortBy') || 'newest';
 
     if (!productId) {
       return NextResponse.json(
@@ -24,6 +30,25 @@ export async function GET(request: NextRequest) {
       );
     }
 
+    // Determine sort order
+    let orderBy: any = { createdAt: 'desc' };
+    if (sortBy === 'highest') orderBy = { rating: 'desc' };
+    else if (sortBy === 'lowest') orderBy = { rating: 'asc' };
+    else if (sortBy === 'helpful') orderBy = { helpful: 'desc' };
+
+    // Get total count
+    const totalReviews = await prisma.review.count({
+      where: {
+        productId,
+        verified: true,
+      },
+    });
+
+    // Calculate pagination
+    const totalPages = Math.ceil(totalReviews / limit);
+    const skip = (page - 1) * limit;
+
+    // Fetch reviews
     const reviews = await prisma.review.findMany({
       where: {
         productId,
@@ -32,17 +57,43 @@ export async function GET(request: NextRequest) {
       include: {
         user: {
           select: {
+            id: true,
             name: true,
             email: true,
+            image: true,
           },
         },
       },
-      orderBy: {
-        createdAt: 'desc',
+      orderBy,
+      skip,
+      take: limit,
+    });
+
+    // Calculate average rating
+    const allReviews = await prisma.review.findMany({
+      where: {
+        productId,
+        verified: true,
+      },
+      select: {
+        rating: true,
       },
     });
 
-    return NextResponse.json({ reviews });
+    const averageRating = allReviews.length > 0
+      ? allReviews.reduce((sum, review) => sum + review.rating, 0) / allReviews.length
+      : 0;
+
+    return NextResponse.json({
+      reviews,
+      pagination: {
+        page,
+        limit,
+        totalPages,
+      },
+      averageRating: Math.round(averageRating * 10) / 10,
+      totalReviews,
+    });
   } catch (error) {
     console.error('Error fetching reviews:', error);
     return NextResponse.json(
@@ -54,6 +105,15 @@ export async function GET(request: NextRequest) {
 
 // POST - Create a new review
 export async function POST(request: NextRequest) {
+  // CSRF protection
+  const csrfResult = validateCsrf(request);
+  if (!csrfResult.valid) {
+    return NextResponse.json(
+      { error: 'Invalid request. Please refresh and try again.' },
+      { status: 403 }
+    );
+  }
+
   // Rate limiting - 60 requests per minute
   const rateLimitResult = await apiRateLimit(request);
   if (!rateLimitResult.success) {
@@ -64,13 +124,22 @@ export async function POST(request: NextRequest) {
   }
 
   try {
+    // Require authentication
+    const user = await getUserFromRequest(request);
+    if (!user) {
+      return NextResponse.json(
+        { error: 'Please sign in to leave a review' },
+        { status: 401 }
+      );
+    }
+
     const body = await request.json();
-    const { productId, userId, rating, comment, title } = body;
+    const { productId, rating, comment, title } = body;
 
     // Validate required fields
-    if (!productId || !rating || !userId) {
+    if (!productId || !rating) {
       return NextResponse.json(
-        { error: 'Product ID, user ID, and rating are required' },
+        { error: 'Product ID and rating are required' },
         { status: 400 }
       );
     }
@@ -83,14 +152,18 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Sanitize text inputs
+    const sanitizedTitle = title ? sanitizeInput(title) : null;
+    const sanitizedComment = comment ? sanitizeInput(comment) : null;
+
     // Create review (not verified by default)
     const review = await prisma.review.create({
       data: {
         productId,
-        userId,
+        userId: user.id,
         rating: parseInt(rating),
-        comment: comment || null,
-        title: title || null,
+        comment: sanitizedComment,
+        title: sanitizedTitle,
         verified: false, // Require admin verification
       },
     });

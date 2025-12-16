@@ -1,6 +1,7 @@
 'use client';
 
 import ProductCard from '@/components/ProductCard';
+import { ProductGridSkeleton, ShopSidebarSkeleton } from '@/components/SkeletonLoaders';
 import { FiChevronRight, FiFilter, FiX, FiSearch, FiGrid, FiList, FiSliders } from 'react-icons/fi';
 import Link from 'next/link';
 import { useState, useEffect, Suspense } from 'react';
@@ -201,10 +202,32 @@ function ShopContent() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-background via-primary/20 to-background flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-16 h-16 border-4 border-accent/30 border-t-accent rounded-full animate-spin mx-auto mb-4"></div>
-          <div className="text-white text-lg font-medium">Loading products...</div>
+      <div className="min-h-screen bg-gradient-to-br from-background via-primary/20 to-background">
+        {/* Breadcrumb */}
+        <div className="container-custom py-6">
+          <div className="flex items-center gap-2 text-sm">
+            <span className="text-text-secondary">Home</span>
+            <FiChevronRight className="text-text-secondary" />
+            <span className="text-white font-medium">Shop</span>
+          </div>
+        </div>
+        
+        <div className="container-custom pb-20">
+          <div className="flex flex-col lg:flex-row gap-8">
+            {/* Sidebar Skeleton */}
+            <aside className="hidden lg:block w-72 flex-shrink-0">
+              <ShopSidebarSkeleton />
+            </aside>
+            
+            {/* Main Content Skeleton */}
+            <main className="flex-1">
+              <div className="flex justify-between items-center mb-6">
+                <div className="h-6 w-32 bg-gray-700/50 rounded animate-pulse" />
+                <div className="h-10 w-48 bg-gray-700/50 rounded animate-pulse" />
+              </div>
+              <ProductGridSkeleton count={8} />
+            </main>
+          </div>
         </div>
       </div>
     );

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { FiStar } from 'react-icons/fi';
 import ProductDetails from '@/components/ProductDetails';
 import ProductReviews from '@/components/ProductReviews';
+import ProductImageGallery from '@/components/ProductImageGallery';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 interface Product {
@@ -16,8 +17,14 @@ interface Product {
   rating: number;
   reviews: number;
   image: string;
+  images: string;
   description: string | null;
   specifications?: any;
+  inStock: boolean;
+  stock: number;
+  lowStockThreshold: number;
+  colors?: string | null;
+  sizes?: string | null;
   category: {
     name: string;
     slug: string;
@@ -40,6 +47,15 @@ interface ProductPageClientProps {
 
 export default function ProductPageClient({ product, relatedProducts }: ProductPageClientProps) {
   const { t, formatPrice } = useLanguage();
+
+  // Parse images from JSON string or create array with single image
+  const productImages = (() => {
+    try {
+      return product.images ? JSON.parse(product.images) : [product.image];
+    } catch {
+      return [product.image];
+    }
+  })();
 
   return (
     <div className="min-h-screen bg-background text-white">
@@ -64,22 +80,8 @@ export default function ProductPageClient({ product, relatedProducts }: ProductP
 
       <div className="container-custom pb-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Product Images */}
-          <div className="space-y-4">
-            <div className="relative aspect-square bg-background-secondary rounded-2xl overflow-hidden">
-              <Image
-                src={product.image}
-                alt={`${product.name} - ${t('product.premiumAccessory', 'Premium mobile accessory from AURACASE')}`}
-                fill
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 50vw"
-                className="object-cover"
-                priority={true}
-                quality={90}
-                placeholder="blur"
-                blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
-              />
-            </div>
-          </div>
+          {/* Product Image Gallery */}
+          <ProductImageGallery images={productImages} productName={product.name} />
 
           {/* Product Info */}
           <div className="space-y-6">
