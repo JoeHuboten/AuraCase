@@ -152,7 +152,7 @@ const Header = () => {
             {/* Search Bar */}
             <div className="hidden md:flex items-center flex-1 max-w-sm mx-6">
               <div className="relative w-full group">
-                <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-white/70 group-focus-within:text-accent transition-colors duration-300" size={18} />
+                <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-white/60 group-focus-within:text-accent transition-colors duration-300" />
                 <input
                   type="text"
                   placeholder={t('search.placeholder', 'Search products...')}
@@ -161,7 +161,7 @@ const Header = () => {
                   onKeyPress={(e) => e.key === 'Enter' && handleSearch(searchQuery)}
                   onFocus={() => setShowSuggestions(searchQuery.trim().length > 1)}
                   onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
-                  className="w-full bg-white/5 backdrop-blur-sm text-white pl-11 pr-10 py-2.5 rounded-xl border border-white/20 focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent/40 focus:bg-white/8 transition-all duration-300 placeholder:text-white/40"
+                  className="w-full bg-background-secondary/80 backdrop-blur-sm text-white pl-11 pr-10 py-2.5 rounded-xl border border-white/10 focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent/40 transition-all duration-300 placeholder:text-text-secondary/60"
                   suppressHydrationWarning
                 />
                 {searchQuery && (
@@ -170,7 +170,7 @@ const Header = () => {
                       setSearchQuery('');
                       setShowSuggestions(false);
                     }}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-white/70 hover:text-white transition-colors p-1 hover:bg-white/10 rounded-full"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary hover:text-white transition-colors p-1 hover:bg-white/10 rounded-full"
                   >
                     <FiX size={14} />
                   </button>
