@@ -1,10 +1,13 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import ProductCard from '@/components/ProductCard';
 import MagicBentoCategory from '@/components/MagicBentoCategory';
 import ScrollAnimation, { StaggerAnimation } from '@/components/ScrollAnimation';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { CountUp } from '@/components/InteractiveElements';
+import QuickViewModal from '@/components/QuickViewModal';
 
 interface HomePageProps {
   categories: any[];
@@ -14,14 +17,28 @@ interface HomePageProps {
 
 export default function HomePage({ categories, featuredProducts, topSelling }: HomePageProps) {
   const { t } = useLanguage();
+  const [quickViewProduct, setQuickViewProduct] = useState<any>(null);
+  const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
 
   // Add safety checks for undefined data
   const safeCategories = categories || [];
   const safeFeaturedProducts = featuredProducts || [];
   const safeTopSelling = topSelling || [];
 
+  const handleQuickView = (product: any) => {
+    setQuickViewProduct(product);
+    setIsQuickViewOpen(true);
+  };
+
   return (
     <div className="min-h-screen">
+      {/* Quick View Modal */}
+      <QuickViewModal 
+        product={quickViewProduct}
+        isOpen={isQuickViewOpen}
+        onClose={() => setIsQuickViewOpen(false)}
+      />
+
       {/* Hero Section */}
       <section className="relative overflow-hidden">
         {/* Background gradient orbs */}
@@ -66,21 +83,27 @@ export default function HomePage({ categories, featuredProducts, topSelling }: H
                 <div className="relative">
                   <div className="absolute -inset-1 bg-gradient-to-r from-accent/20 to-transparent rounded-xl blur-sm"></div>
                   <div className="relative bg-primary-light/30 backdrop-blur-sm rounded-xl p-4 border border-white/5">
-                    <h3 className="text-3xl font-bold text-white mb-1">200+</h3>
+                    <h3 className="text-3xl font-bold text-white mb-1">
+                      <CountUp end={200} duration={2000} suffix="+" />
+                    </h3>
                     <p className="text-text-secondary text-sm">{t('home.stats.brands', 'Марки')}</p>
                   </div>
                 </div>
                 <div className="relative">
                   <div className="absolute -inset-1 bg-gradient-to-r from-accent/20 to-transparent rounded-xl blur-sm"></div>
                   <div className="relative bg-primary-light/30 backdrop-blur-sm rounded-xl p-4 border border-white/5">
-                    <h3 className="text-3xl font-bold text-white mb-1">2,000+</h3>
+                    <h3 className="text-3xl font-bold text-white mb-1">
+                      <CountUp end={2000} duration={2000} suffix="+" />
+                    </h3>
                     <p className="text-text-secondary text-sm">{t('home.stats.products', 'Продукти')}</p>
                   </div>
                 </div>
                 <div className="relative">
                   <div className="absolute -inset-1 bg-gradient-to-r from-accent/20 to-transparent rounded-xl blur-sm"></div>
                   <div className="relative bg-primary-light/30 backdrop-blur-sm rounded-xl p-4 border border-white/5">
-                    <h3 className="text-3xl font-bold text-white mb-1">30,000+</h3>
+                    <h3 className="text-3xl font-bold text-white mb-1">
+                      <CountUp end={30000} duration={2500} suffix="+" />
+                    </h3>
                     <p className="text-text-secondary text-sm">{t('home.stats.customers', 'Клиенти')}</p>
                   </div>
                 </div>
@@ -150,7 +173,7 @@ export default function HomePage({ categories, featuredProducts, topSelling }: H
 
           <StaggerAnimation animation="slideUp" stagger={0.1} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {safeFeaturedProducts.map((product: any) => (
-              <ProductCard key={product.id} {...product} />
+              <ProductCard key={product.id} {...product} onQuickView={handleQuickView} />
             ))}
           </StaggerAnimation>
         </div>
@@ -175,7 +198,7 @@ export default function HomePage({ categories, featuredProducts, topSelling }: H
 
           <StaggerAnimation animation="slideUp" stagger={0.1} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {safeTopSelling.map((product: any) => (
-              <ProductCard key={product.id} {...product} />
+              <ProductCard key={product.id} {...product} onQuickView={handleQuickView} />
             ))}
           </StaggerAnimation>
 

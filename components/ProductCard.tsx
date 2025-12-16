@@ -2,11 +2,12 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { FiStar, FiShoppingCart, FiHeart } from 'react-icons/fi';
+import { FiStar, FiShoppingCart, FiHeart, FiEye } from 'react-icons/fi';
 import { useCartStore } from '@/store/cartStore';
 import { useWishlistStore } from '@/store/wishlistStore';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useState } from 'react';
+import { useToast } from '@/components/Toast';
 
 interface Product {
   id: string;
@@ -24,7 +25,9 @@ interface Product {
   };
 }
 
-interface ProductCardProps extends Product {}
+interface ProductCardProps extends Product {
+  onQuickView?: (product: Product) => void;
+}
 
 const ProductCard = ({
   id,
@@ -37,10 +40,12 @@ const ProductCard = ({
   rating = 0,
   reviews = 0,
   category,
+  onQuickView,
 }: ProductCardProps) => {
   const { addItem: addToCart } = useCartStore();
   const { addItem: addToWishlist, removeItem: removeFromWishlist, isInWishlist } = useWishlistStore();
   const { formatPrice, t } = useLanguage();
+  const { showToast } = useToast();
   const [isWishlistLoading, setIsWishlistLoading] = useState(false);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
 
@@ -59,8 +64,10 @@ const ProductCard = ({
         image,
         quantity: 1,
       });
+      showToast(`${name} добавен в количката`, 'cart');
     } catch (error) {
       console.error('Error adding to cart:', error);
+      showToast('Грешка при добавяне', 'error');
     } finally {
       setIsAddingToCart(false);
     }
@@ -74,6 +81,7 @@ const ProductCard = ({
     try {
       if (isInWishlist(id)) {
         await removeFromWishlist(id);
+        showToast('Премахнат от любими', 'wishlist');
       } else {
         await addToWishlist({
           id,
@@ -85,6 +93,7 @@ const ProductCard = ({
           image,
           category: category || { name: '', slug: '' }
         });
+        showToast('Добавен в любими', 'wishlist');
       }
     } catch (error) {
       console.error('Error toggling wishlist:', error);
@@ -127,22 +136,36 @@ const ProductCard = ({
           <button
             onClick={handleWishlistToggle}
             disabled={isWishlistLoading}
-            className={`absolute top-4 right-4 w-11 h-11 rounded-2xl flex items-center justify-center opacity-0 group-hover:opacity-100 disabled:opacity-50 z-20 cursor-pointer transition-all duration-500 ease-out hover:scale-110 backdrop-blur-md transform hover:-translate-y-1 ${
+            className={`absolute top-4 right-4 w-10 h-10 rounded-xl flex items-center justify-center opacity-0 group-hover:opacity-100 disabled:opacity-50 z-20 cursor-pointer transition-all duration-500 ease-out hover:scale-110 backdrop-blur-md transform hover:-translate-y-1 ${
               isInWishlist(id)
                 ? 'bg-red-500/90 text-white shadow-lg shadow-red-500/30'
                 : 'bg-white/10 text-white hover:bg-white/20'
             }`}
           >
-            <FiHeart size={18} className={isInWishlist(id) ? 'fill-current' : ''} />
+            <FiHeart size={16} className={isInWishlist(id) ? 'fill-current' : ''} />
           </button>
+
+          {/* Quick View Button */}
+          {onQuickView && (
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onQuickView({ id, name, slug, price, oldPrice, discount, image, rating, reviews, category });
+              }}
+              className="absolute bottom-4 left-4 w-10 h-10 rounded-xl flex items-center justify-center bg-white/10 text-white opacity-0 group-hover:opacity-100 z-20 cursor-pointer transition-all duration-500 ease-out hover:scale-110 backdrop-blur-md hover:bg-white/20 transform hover:-translate-y-1"
+            >
+              <FiEye size={16} />
+            </button>
+          )}
           
           {/* Add to Cart Button */}
           <button
             onClick={handleAddToCart}
             disabled={isAddingToCart}
-            className="absolute bottom-4 right-4 w-11 h-11 rounded-2xl flex items-center justify-center bg-gradient-to-br from-accent to-accent-dark text-white opacity-0 group-hover:opacity-100 disabled:opacity-50 z-20 cursor-pointer transition-all duration-500 ease-out hover:scale-110 shadow-lg shadow-accent/30 backdrop-blur-md transform hover:-translate-y-1"
+            className="absolute bottom-4 right-4 w-10 h-10 rounded-xl flex items-center justify-center bg-gradient-to-br from-accent to-accent-dark text-white opacity-0 group-hover:opacity-100 disabled:opacity-50 z-20 cursor-pointer transition-all duration-500 ease-out hover:scale-110 shadow-lg shadow-accent/30 backdrop-blur-md transform hover:-translate-y-1"
           >
-            <FiShoppingCart size={18} />
+            <FiShoppingCart size={16} />
           </button>
         </div>
 

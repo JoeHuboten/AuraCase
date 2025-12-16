@@ -10,6 +10,8 @@ import AccessibilityPanel from "@/components/AccessibilityPanel";
 import KeyboardShortcuts from "@/components/KeyboardShortcuts";
 import PWAInstallPrompt from "@/components/PWAInstallPrompt";
 import ServiceWorkerRegistration from "@/components/ServiceWorkerRegistration";
+import { ToastProvider } from "@/components/Toast";
+import BackToTop from "@/components/BackToTop";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -160,16 +162,19 @@ export default function RootLayout({
                <AccessibilityProvider>
                  <LanguageProvider>
                    <AuthProvider>
-                     <a href="#main-content" className="skip-to-main">Skip to main content</a>
-                     <Header />
-                     <main id="main-content">
-                       {children}
-                     </main>
-                    <Footer />
-                    <AccessibilityPanel />
-                    <KeyboardShortcuts />
-                    <PWAInstallPrompt />
-                    <ServiceWorkerRegistration />
+                     <ToastProvider>
+                       <a href="#main-content" className="skip-to-main">Skip to main content</a>
+                       <Header />
+                       <main id="main-content">
+                         {children}
+                       </main>
+                       <Footer />
+                       <BackToTop />
+                       <AccessibilityPanel />
+                       <KeyboardShortcuts />
+                       <PWAInstallPrompt />
+                       <ServiceWorkerRegistration />
+                     </ToastProvider>
                    </AuthProvider>
                  </LanguageProvider>
                </AccessibilityProvider>
