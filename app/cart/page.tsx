@@ -4,6 +4,7 @@ import { useCartStore } from "@/store/cartStore";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import { useLanguage } from "@/contexts/LanguageContext";
 import {
   FiTrash2,
   FiMinus,
@@ -17,6 +18,7 @@ import {
 
 export default function CartPage() {
   const router = useRouter();
+  const { t, formatPrice } = useLanguage();
   const {
     items,
     updateQuantity,
@@ -76,17 +78,17 @@ export default function CartPage() {
               </div>
             </div>
             <h1 className="text-4xl font-bold mb-4 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-              Your cart is empty
+              {t('cart.yourCart')}
             </h1>
             <p className="text-text-secondary mb-8 text-lg">
-              Discover amazing products and start shopping today!
+              {t('cart.emptyDescription')}
             </p>
             <Link
               href="/shop"
               className="inline-flex items-center gap-2 bg-gradient-to-r from-accent to-accent-light text-white px-8 py-4 rounded-xl font-medium hover:scale-105 transition-transform shadow-lg shadow-accent/20"
             >
               <FiShoppingCart size={20} />
-              <span>Start Shopping</span>
+              <span>{t('cart.startShopping')}</span>
               <FiArrowRight size={20} />
             </Link>
           </div>
@@ -105,10 +107,9 @@ export default function CartPage() {
               <FiShoppingCart size={24} className="text-white" />
             </div>
             <div>
-              <h1 className="text-4xl font-bold text-white">Shopping Cart</h1>
+              <h1 className="text-4xl font-bold text-white">{t('cart.shoppingCart')}</h1>
               <p className="text-text-secondary">
-                {items.length} {items.length === 1 ? "item" : "items"} in your
-                cart
+                {t('cart.youHave')} {items.length} {t('cart.items')} {t('cart.inYourCart')}
               </p>
             </div>
           </div>
@@ -170,10 +171,10 @@ export default function CartPage() {
                     {/* Price */}
                     <div className="flex items-baseline gap-2">
                       <p className="text-accent font-bold text-2xl">
-                        {(item.price * item.quantity).toFixed(2)} лв
+                        {formatPrice(item.price * item.quantity)}
                       </p>
                       <span className="text-text-secondary text-sm">
-                        {item.price.toFixed(2)} лв each
+                        {formatPrice(item.price)} each
                       </span>
                     </div>
                   </div>
@@ -220,7 +221,7 @@ export default function CartPage() {
                         size={18}
                         className="group-hover/btn:scale-110 transition-transform"
                       />
-                      <span className="text-sm">Remove</span>
+                      <span className="text-sm">{t('cart.remove')}</span>
                     </button>
                   </div>
                 </div>
@@ -233,7 +234,7 @@ export default function CartPage() {
               className="flex items-center justify-center gap-2 bg-gradient-to-br from-primary/60 to-primary/40 backdrop-blur-xl border border-gray-800/50 rounded-2xl p-6 text-text-secondary hover:text-white hover:border-accent/50 transition-all group"
             >
               <FiShoppingCart size={20} />
-              <span>Continue Shopping</span>
+              <span>{t('cart.continueShopping')}</span>
               <FiArrowRight
                 size={20}
                 className="group-hover:translate-x-1 transition-transform"
@@ -248,17 +249,17 @@ export default function CartPage() {
                 <div className="w-10 h-10 bg-gradient-to-br from-accent/20 to-accent-light/20 rounded-lg flex items-center justify-center">
                   <FiPackage size={20} className="text-accent" />
                 </div>
-                <h2 className="text-2xl font-bold text-white">Order Summary</h2>
+                <h2 className="text-2xl font-bold text-white">{t('cart.orderSummary')}</h2>
               </div>
 
               {/* Price Breakdown */}
               <div className="space-y-3 mb-8">
                 <div className="flex justify-between items-center py-2">
                   <span className="text-text-secondary text-sm">
-                    Subtotal ({items.length} items)
+                    {t('cart.subtotal')} ({items.length} {t('cart.items')})
                   </span>
                   <span className="text-white font-semibold text-lg">
-                    {getSubtotal().toFixed(2)} лв
+                    {formatPrice(getSubtotal())}
                   </span>
                 </div>
 
@@ -266,30 +267,30 @@ export default function CartPage() {
                   <div className="flex justify-between items-center bg-green-500/10 rounded-lg p-3 border border-green-500/30 my-2">
                     <span className="text-green-400 flex items-center gap-2 text-sm">
                       <FiTag size={14} />
-                      Discount ({discountCode.percentage}%)
+                      {t('cart.discount')} ({discountCode.percentage}%)
                     </span>
                     <span className="text-green-400 font-semibold">
-                      -{getDiscount().toFixed(2)} лв
+                      -{formatPrice(getDiscount())}
                     </span>
                   </div>
                 )}
 
                 <div className="flex justify-between items-center py-2">
-                  <span className="text-text-secondary text-sm">Shipping</span>
+                  <span className="text-text-secondary text-sm">{t('cart.shipping')}</span>
                   <span className="font-semibold text-green-400 text-sm">
-                    FREE
+                    {t('cart.freeShipping')}
                   </span>
                 </div>
 
                 <div className="border-t border-gray-700/50 pt-4 mt-4 flex justify-between items-center">
-                  <span className="text-white text-lg font-bold">Total</span>
+                  <span className="text-white text-lg font-bold">{t('cart.total')}</span>
                   <div className="text-right">
                     <div className="text-accent text-3xl font-bold">
-                      {getTotal().toFixed(2)} лв
+                      {formatPrice(getTotal())}
                     </div>
                     {discountCode && (
                       <div className="text-text-secondary text-xs line-through mt-1">
-                        {getSubtotal().toFixed(2)} лв
+                        {formatPrice(getSubtotal())}
                       </div>
                     )}
                   </div>
@@ -300,7 +301,7 @@ export default function CartPage() {
               <div className="mb-6">
                 <label className="flex items-center gap-2 text-white font-medium mb-3">
                   <FiTag size={18} />
-                  Discount Code
+                  {t('cart.discountCode')}
                 </label>
                 {discountCode ? (
                   <div className="bg-gradient-to-r from-green-500/10 to-emerald-500/10 border border-green-500/50 rounded-xl p-4">
@@ -361,7 +362,7 @@ export default function CartPage() {
                 onClick={handleCheckout}
                 className="w-full bg-gradient-to-r from-accent to-accent-light text-white py-4 rounded-xl font-bold text-lg flex items-center justify-center gap-3 hover:scale-105 transition-all transform active:scale-95 shadow-lg shadow-accent/20 group"
               >
-                <span>Proceed to Checkout</span>
+                <span>{t('cart.proceedToCheckout')}</span>
                 <FiArrowRight
                   size={20}
                   className="group-hover:translate-x-1 transition-transform"
@@ -374,13 +375,13 @@ export default function CartPage() {
                   <div className="w-8 h-8 bg-green-500/10 rounded-lg flex items-center justify-center">
                     <span className="text-green-400">✓</span>
                   </div>
-                  <span>Secure checkout</span>
+                  <span>{t('cart.secureCheckout')}</span>
                 </div>
                 <div className="flex items-center gap-3 text-text-secondary text-sm">
                   <div className="w-8 h-8 bg-blue-500/10 rounded-lg flex items-center justify-center">
                     <FiTruck size={16} className="text-blue-400" />
                   </div>
-                  <span>Free shipping on all orders</span>
+                  <span>{t('cart.freeShipping')}</span>
                 </div>
                 <div className="flex items-center gap-3 text-text-secondary text-sm">
                   <div className="w-8 h-8 bg-purple-500/10 rounded-lg flex items-center justify-center">

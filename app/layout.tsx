@@ -116,6 +116,8 @@ export const viewport = {
   userScalable: true,
 };
 
+import RootLayoutClient from '@/components/RootLayoutClient';
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -159,26 +161,8 @@ export default function RootLayout({
             })
           }}
         />
-               <AccessibilityProvider>
-                 <LanguageProvider>
-                   <AuthProvider>
-                     <ToastProvider>
-                       <a href="#main-content" className="skip-to-main">Skip to main content</a>
-                       <Header />
-                       <main id="main-content">
-                         {children}
-                       </main>
-                       <Footer />
-                       <BackToTop />
-                       <AccessibilityPanel />
-                       <KeyboardShortcuts />
-                       <PWAInstallPrompt />
-                       <ServiceWorkerRegistration />
-                     </ToastProvider>
-                   </AuthProvider>
-                 </LanguageProvider>
-               </AccessibilityProvider>
-             </body>
+        <RootLayoutClient>{children}</RootLayoutClient>
+      </body>
     </html>
   );
 }

@@ -13,15 +13,20 @@ export async function GET(request: NextRequest) {
   }
 
   try {
+    const token = request.cookies.get('auth-token')?.value;
+    console.log('🔍 Auth check - Cookie present:', !!token);
+    
     const user = await getUserFromRequest(request);
 
     if (!user) {
+      console.log('❌ Auth check - No user found');
       return NextResponse.json(
         { error: 'Not authenticated' },
         { status: 401 }
       );
     }
 
+    console.log('✅ Auth check - User found:', user.email);
     return NextResponse.json({ user });
   } catch (error) {
     console.error('Auth check error:', error);

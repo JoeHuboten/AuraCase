@@ -4,46 +4,10 @@ import ProductCard from '@/components/ProductCard';
 import { ProductGridSkeleton, ShopSidebarSkeleton } from '@/components/SkeletonLoaders';
 import { FiChevronRight, FiFilter, FiX, FiSearch, FiGrid, FiList, FiSliders } from 'react-icons/fi';
 import Link from 'next/link';
-import { useState, useEffect, Suspense } from 'react';
+import { useState, useEffect, Suspense, useMemo } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Head from 'next/head';
-
-interface Product {
-  id: string;
-  name: string;
-  slug: string;
-  description: string | null;
-  price: number;
-  oldPrice: number | null;
-  discount: number | null;
-  image: string;
-  images: string;
-  categoryId: string;
-  colors: string;
-  sizes: string;
-  rating: number;
-  reviews: number;
-  inStock: boolean;
-  featured: boolean;
-  specifications: any;
-  createdAt: Date;
-  updatedAt: Date;
-  category: {
-    id: string;
-    name: string;
-    slug: string;
-    description: string | null;
-    image: string | null;
-  };
-}
-
-interface Category {
-  id: string;
-  name: string;
-  slug: string;
-  description: string | null;
-  image: string | null;
-}
+import type { Product, Category } from '@/types';
 
 function ShopContent() {
   const searchParams = useSearchParams();
@@ -80,7 +44,6 @@ function ShopContent() {
     }
   };
   const [categories, setCategories] = useState<Category[]>([]);
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 200]);
   const [tempPriceRange, setTempPriceRange] = useState<[number, number]>([0, 200]);
@@ -96,18 +59,20 @@ function ShopContent() {
     const fetchData = async () => {
       try {
         const [productsResponse, categoriesResponse] = await Promise.all([
-          fetch('/api/products'),
+          fetch('/api/products?limit=100'),
           fetch('/api/categories')
         ]);
         
-        const [productsData, categoriesData] = await Promise.all([
+        const [productsResult, categoriesData] = await Promise.all([
           productsResponse.json(),
           categoriesResponse.json()
         ]);
         
+        // Handle new API response format with pagination
+        const productsData = Array.isArray(productsResult) ? productsResult : productsResult.products || [];
+        
         setProducts(productsData);
         setCategories(categoriesData);
-        setFilteredProducts(productsData);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -137,7 +102,7 @@ function ShopContent() {
       const suggestions = products.filter(product =>
         product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         product.description?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        product.category.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        product.category?.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         product.colors?.toLowerCase().includes(searchQuery.toLowerCase()) ||
         product.sizes?.toLowerCase().includes(searchQuery.toLowerCase())
       ).slice(0, 5); // Limit to 5 suggestions
@@ -158,20 +123,22 @@ function ShopContent() {
     }
   };
 
-  useEffect(() => {
+  // Use useMemo for optimized filtering and sorting
+  const filteredAndSortedProducts = useMemo(() => {
     let filtered = [...products];
 
     // Filter by search query
     if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
       filtered = filtered.filter(product => 
-        product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        product.description?.toLowerCase().includes(searchQuery.toLowerCase())
+        product.name.toLowerCase().includes(query) ||
+        product.description?.toLowerCase().includes(query)
       );
     }
 
     // Filter by category
     if (selectedCategory !== 'all') {
-      filtered = filtered.filter(product => product.category.slug === selectedCategory);
+      filtered = filtered.filter(product => product.category?.slug === selectedCategory);
     }
 
     // Filter by price range
@@ -197,7 +164,7 @@ function ShopContent() {
         filtered.sort((a, b) => b.reviews - a.reviews);
     }
 
-    setFilteredProducts(filtered);
+    return filtered;
   }, [products, selectedCategory, priceRange, sortBy, searchQuery]);
 
   if (loading) {
@@ -417,7 +384,6 @@ function ShopContent() {
                   <button
                     onClick={() => {
                       setPriceRange(tempPriceRange);
-                      console.log('Price filter applied:', tempPriceRange);
                     }}
                     className="w-full bg-accent text-white px-4 py-2 rounded-lg hover:bg-accent-light transition-colors font-medium"
                   >
@@ -437,7 +403,7 @@ function ShopContent() {
                   {selectedCategory === 'all' ? 'All Products' : categories.find(c => c.slug === selectedCategory)?.name}
                 </h1>
                 <p className="text-text-secondary">
-                  Showing <span className="text-accent font-semibold">{filteredProducts.length}</span> products
+                  Showing <span className="text-accent font-semibold">{filteredAndSortedProducts.length}</span> products
                 </p>
               </div>
               
@@ -490,7 +456,7 @@ function ShopContent() {
                 ? 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3' 
                 : 'grid-cols-1'
             }`}>
-              {filteredProducts.map((product) => (
+              {filteredAndSortedProducts.map((product) => (
                 <ProductCard 
                   key={product.id} 
                   {...product} 
@@ -500,7 +466,7 @@ function ShopContent() {
               ))}
             </div>
 
-            {filteredProducts.length === 0 && (
+            {filteredAndSortedProducts.length === 0 && (
               <div className="text-center py-20">
                 <div className="w-24 h-24 bg-gradient-to-br from-accent/20 to-accent/10 rounded-full flex items-center justify-center mx-auto mb-6">
                   <FiSearch className="text-accent" size={32} />
@@ -594,7 +560,7 @@ function ShopContent() {
                             {product.name}
                           </div>
                           <div className="text-text-secondary text-xs">
-                            ${product.price} • {product.category.name}
+                            ${product.price} • {product.category?.name || 'Uncategorized'}
                           </div>
                         </div>
                       </button>

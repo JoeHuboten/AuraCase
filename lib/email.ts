@@ -416,6 +416,158 @@ AURACASE
 
     return { subject, html, text };
   },
+
+  // Newsletter Welcome Email
+  newsletterWelcome: (data: {
+    email: string;
+    language?: 'bg' | 'en';
+  }): EmailTemplate => {
+    const isBulgarian = data.language === 'bg';
+    
+    const subject = isBulgarian 
+      ? '🎉 Добре дошли в AURACASE бюлетина!' 
+      : '🎉 Welcome to AURACASE Newsletter!';
+
+    const html = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; background: #f4f4f4; margin: 0; padding: 0; }
+    .container { max-width: 600px; margin: 20px auto; background: #fff; border-radius: 8px; overflow: hidden; }
+    .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; padding: 40px 30px; text-align: center; }
+    .content { padding: 40px 30px; }
+    .benefits { background: #f8f9fa; border-radius: 8px; padding: 25px; margin: 25px 0; }
+    .benefit-item { padding: 12px 0; display: flex; align-items: start; }
+    .benefit-icon { font-size: 24px; margin-right: 12px; }
+    .button { display: inline-block; background: #667eea; color: #fff; padding: 14px 35px; text-decoration: none; border-radius: 6px; margin: 20px 0; font-weight: bold; }
+    .footer { background: #f8f9fa; padding: 20px; text-align: center; font-size: 12px; color: #666; }
+    .unsubscribe { color: #999; font-size: 11px; margin-top: 15px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1 style="margin: 0; font-size: 32px;">🎉</h1>
+      <h2 style="margin: 10px 0;">${isBulgarian ? 'Добре дошли!' : 'Welcome!'}</h2>
+      <p style="margin: 5px 0; opacity: 0.95;">${isBulgarian ? 'Благодарим, че се абонирахте' : 'Thank you for subscribing'}</p>
+    </div>
+    
+    <div class="content">
+      <p style="font-size: 16px;">
+        ${isBulgarian 
+          ? 'Вече сте част от AURACASE семейството! 🎊' 
+          : 'You\'re now part of the AURACASE family! 🎊'}
+      </p>
+      
+      <p>
+        ${isBulgarian 
+          ? 'Като абонат на нашия бюлетин, ще получавате:' 
+          : 'As a subscriber, you\'ll receive:'}
+      </p>
+      
+      <div class="benefits">
+        <div class="benefit-item">
+          <span class="benefit-icon">✨</span>
+          <div>
+            <strong>${isBulgarian ? 'Ексклузивни отстъпки' : 'Exclusive Discounts'}</strong><br>
+            <span style="color: #666; font-size: 14px;">
+              ${isBulgarian ? 'Специални оферти само за абонати' : 'Special offers only for subscribers'}
+            </span>
+          </div>
+        </div>
+        
+        <div class="benefit-item">
+          <span class="benefit-icon">🚀</span>
+          <div>
+            <strong>${isBulgarian ? 'Нови продукти първи' : 'New Products First'}</strong><br>
+            <span style="color: #666; font-size: 14px;">
+              ${isBulgarian ? 'Бъдете първите, които виждат новите стоки' : 'Be the first to see new arrivals'}
+            </span>
+          </div>
+        </div>
+        
+        <div class="benefit-item">
+          <span class="benefit-icon">🎁</span>
+          <div>
+            <strong>${isBulgarian ? 'Специални промоции' : 'Special Promotions'}</strong><br>
+            <span style="color: #666; font-size: 14px;">
+              ${isBulgarian ? 'Сезонни разпродажби и подаръци' : 'Seasonal sales and gifts'}
+            </span>
+          </div>
+        </div>
+        
+        <div class="benefit-item">
+          <span class="benefit-icon">📱</span>
+          <div>
+            <strong>${isBulgarian ? 'Съвети и новини' : 'Tips & News'}</strong><br>
+            <span style="color: #666; font-size: 14px;">
+              ${isBulgarian ? 'Полезна информация за мобилни аксесоари' : 'Useful info about mobile accessories'}
+            </span>
+          </div>
+        </div>
+      </div>
+      
+      <p style="margin-top: 30px;">
+        ${isBulgarian 
+          ? 'Започнете да разглеждате нашите премиум продукти!' 
+          : 'Start exploring our premium products!'}
+      </p>
+      
+      <center>
+        <a href="${SITE_URL}/shop" class="button">
+          ${isBulgarian ? '🛍️ Разгледай магазина' : '🛍️ Browse Shop'}
+        </a>
+      </center>
+      
+      <p style="margin-top: 35px; padding-top: 25px; border-top: 1px solid #e9ecef; color: #666; font-size: 14px;">
+        ${isBulgarian 
+          ? 'Очаквайте скоро първия ни бюлетин с ексклузивни оферти!' 
+          : 'Expect our first newsletter soon with exclusive offers!'}
+      </p>
+    </div>
+    
+    <div class="footer">
+      <p><strong>AURACASE</strong> - ${isBulgarian ? 'Премиум мобилни аксесоари' : 'Premium Mobile Accessories'}</p>
+      <p><a href="${SITE_URL}" style="color: #667eea; text-decoration: none;">www.auracase.bg</a></p>
+      
+      <p class="unsubscribe">
+        ${isBulgarian 
+          ? 'Ако желаете да се отпишете:' 
+          : 'To unsubscribe:'}
+        <a href="${SITE_URL}/newsletter/unsubscribe?email=${encodeURIComponent(data.email)}" style="color: #999;">
+          ${isBulgarian ? 'отписване' : 'click here'}
+        </a>
+      </p>
+    </div>
+  </div>
+</body>
+</html>
+    `;
+
+    const text = `
+${isBulgarian ? 'Добре дошли в AURACASE!' : 'Welcome to AURACASE!'}
+
+${isBulgarian ? 'Благодарим, че се абонирахте за нашия бюлетин!' : 'Thank you for subscribing to our newsletter!'}
+
+${isBulgarian ? 'Като абонат, ще получавате:' : 'As a subscriber, you\'ll receive:'}
+
+✨ ${isBulgarian ? 'Ексклузивни отстъпки' : 'Exclusive Discounts'}
+🚀 ${isBulgarian ? 'Нови продукти първи' : 'New Products First'}
+🎁 ${isBulgarian ? 'Специални промоции' : 'Special Promotions'}
+📱 ${isBulgarian ? 'Съвети и новини' : 'Tips & News'}
+
+${isBulgarian ? 'Разгледайте магазина:' : 'Browse our shop:'} ${SITE_URL}/shop
+
+${isBulgarian ? 'За отписване:' : 'To unsubscribe:'} ${SITE_URL}/newsletter/unsubscribe?email=${encodeURIComponent(data.email)}
+
+AURACASE - ${isBulgarian ? 'Премиум мобилни аксесоари' : 'Premium Mobile Accessories'}
+    `.trim();
+
+    return { subject, html, text };
+  },
 };
 
 // Send email function
@@ -495,5 +647,13 @@ export async function sendDiscountCodeEmail(
   discountData: Parameters<typeof emailTemplates.discountCode>[0]
 ) {
   const template = emailTemplates.discountCode(discountData);
+  return sendEmail(email, template);
+}
+
+export async function sendNewsletterWelcomeEmail(
+  email: string,
+  data: Parameters<typeof emailTemplates.newsletterWelcome>[0]
+) {
+  const template = emailTemplates.newsletterWelcome(data);
   return sendEmail(email, template);
 }

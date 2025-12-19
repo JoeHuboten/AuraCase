@@ -1,0 +1,30 @@
+[
+  {
+    "email": "test@example.com",
+    "success": true,
+    "messageId": "<e33f96f2-0910-fe5b-4378-54dfeac712d7@gmail.com>",
+    "code": "HALKI-91E00970",
+    "discountId": "cmjb3seid0000ygzg7iydfwq3"
+  },
+  {
+    "email": "nstoyanov639@gmail.com",
+    "success": true,
+    "messageId": "<eb5680de-532b-c8df-b724-a340c177e595@gmail.com>",
+    "code": "HALKI-F02B9022",
+    "discountId": "cmjb3sfnc0001ygzg94nxq6pf"
+  },
+  {
+    "email": "simeonnelchinov@gmail.com",
+    "success": true,
+    "messageId": "<d3a6b771-803e-53d5-ea69-14c64e23073e@gmail.com>",
+    "code": "HALKI-3FF92827",
+    "discountId": "cmjb3sgte0002ygzgnpy042bv"
+  },
+  {
+    "email": "marti.kolev14@gmail.com",
+    "success": true,
+    "messageId": "<a610a8a6-6ab6-6a14-8f47-1554412f6f12@gmail.com>",
+    "code": "HALKI-FABD000B",
+    "discountId": "cmjb3shw90003ygzgeso2zjvu"
+  }
+]

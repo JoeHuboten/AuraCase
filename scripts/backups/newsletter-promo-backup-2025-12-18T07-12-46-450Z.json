@@ -1,0 +1,34 @@
+[
+  {
+    "id": "cmjb34a2u0000yg6l7bilaxiw",
+    "email": "test@example.com",
+    "active": false,
+    "subscribedAt": "2025-12-18T06:54:00.966Z",
+    "createdAt": "2025-12-18T06:54:00.966Z",
+    "updatedAt": "2025-12-18T07:01:43.695Z"
+  },
+  {
+    "id": "cmjb35cip0001yg6l8hn6du83",
+    "email": "nstoyanov639@gmail.com",
+    "active": true,
+    "subscribedAt": "2025-12-18T07:05:04.886Z",
+    "createdAt": "2025-12-18T06:54:50.786Z",
+    "updatedAt": "2025-12-18T07:05:04.887Z"
+  },
+  {
+    "id": "cmjb3jecn0000ygkbfmak6qpn",
+    "email": "simeonnelchinov@gmail.com",
+    "active": true,
+    "subscribedAt": "2025-12-18T07:05:46.343Z",
+    "createdAt": "2025-12-18T07:05:46.343Z",
+    "updatedAt": "2025-12-18T07:05:46.343Z"
+  },
+  {
+    "id": "cmjb3k7bd0001ygkb964g5qut",
+    "email": "marti.kolev14@gmail.com",
+    "active": true,
+    "subscribedAt": "2025-12-18T07:06:23.882Z",
+    "createdAt": "2025-12-18T07:06:23.882Z",
+    "updatedAt": "2025-12-18T07:06:23.882Z"
+  }
+]

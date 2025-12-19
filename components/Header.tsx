@@ -10,35 +10,7 @@ import { useLanguage } from '@/contexts/LanguageContext';
 import { useRouter } from 'next/navigation';
 import AdvancedSearch from './AdvancedSearch';
 import LanguageSwitcher from './LanguageSwitcher';
-
-interface Product {
-  id: string;
-  name: string;
-  slug: string;
-  description: string | null;
-  price: number;
-  oldPrice: number | null;
-  discount: number | null;
-  image: string;
-  images: string;
-  categoryId: string;
-  colors: string;
-  sizes: string;
-  rating: number;
-  reviews: number;
-  inStock: boolean;
-  featured: boolean;
-  specifications: any;
-  createdAt: Date;
-  updatedAt: Date;
-  category: {
-    id: string;
-    name: string;
-    slug: string;
-    description: string | null;
-    image: string | null;
-  };
-}
+import type { Product } from '@/types';
 
 const Header = () => {
   const cartItems = useCartStore((state) => state.items);
@@ -230,14 +202,14 @@ const Header = () => {
               <button 
                 onClick={() => setIsAdvancedSearchOpen(true)}
                 className="p-2.5 text-text-secondary hover:text-accent hover:bg-white/5 rounded-xl transition-all duration-300"
-                title="Търсене"
+                aria-label="Отвори разширено търсене"
               >
                 <FiSearch size={20} />
               </button>
-              <Link href="/account" className="p-2.5 text-text-secondary hover:text-accent hover:bg-white/5 rounded-xl transition-all duration-300" title="Account">
+              <Link href="/account" className="p-2.5 text-text-secondary hover:text-accent hover:bg-white/5 rounded-xl transition-all duration-300" aria-label="Моят акаунт">
                 <FiUser size={20} />
               </Link>
-              <Link href="/cart" className="relative p-2.5 text-text-secondary hover:text-accent hover:bg-white/5 rounded-xl transition-all duration-300">
+              <Link href="/cart" className="relative p-2.5 text-text-secondary hover:text-accent hover:bg-white/5 rounded-xl transition-all duration-300" aria-label={`Количка${cartItemsCount > 0 ? ` (${cartItemsCount} продукта)` : ''}`}>
                 <FiShoppingCart size={20} />
                 {cartItemsCount > 0 && (
                   <span className="absolute -top-0.5 -right-0.5 bg-gradient-to-br from-accent to-accent-dark text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center shadow-lg shadow-accent/30 ring-2 ring-primary">
@@ -245,7 +217,7 @@ const Header = () => {
                   </span>
                 )}
               </Link>
-              <Link href="/wishlist" className="relative p-2.5 text-text-secondary hover:text-red-400 hover:bg-white/5 rounded-xl transition-all duration-300">
+              <Link href="/wishlist" className="relative p-2.5 text-text-secondary hover:text-red-400 hover:bg-white/5 rounded-xl transition-all duration-300" aria-label={`Любими${wishlistItemsCount > 0 ? ` (${wishlistItemsCount} продукта)` : ''}`}>
                 <FiHeart size={20} />
                 {wishlistItemsCount > 0 && (
                   <span className="absolute -top-0.5 -right-0.5 bg-gradient-to-br from-red-500 to-red-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center shadow-lg shadow-red-500/30 ring-2 ring-primary">
@@ -256,6 +228,8 @@ const Header = () => {
               <button
                 className="p-2.5 md:hidden text-text-secondary hover:text-white hover:bg-white/5 rounded-xl transition-all duration-300"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                aria-label={mobileMenuOpen ? 'Затвори менюто' : 'Отвори менюто'}
+                aria-expanded={mobileMenuOpen}
               >
                 {mobileMenuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
               </button>

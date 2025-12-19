@@ -8,16 +8,17 @@ import ScrollAnimation, { StaggerAnimation } from '@/components/ScrollAnimation'
 import { useLanguage } from '@/contexts/LanguageContext';
 import { CountUp } from '@/components/InteractiveElements';
 import QuickViewModal from '@/components/QuickViewModal';
+import type { Product, Category } from '@/types';
 
 interface HomePageProps {
-  categories: any[];
-  featuredProducts: any[];
-  topSelling: any[];
+  categories: Category[];
+  featuredProducts: Product[];
+  topSelling: Product[];
 }
 
 export default function HomePage({ categories, featuredProducts, topSelling }: HomePageProps) {
   const { t } = useLanguage();
-  const [quickViewProduct, setQuickViewProduct] = useState<any>(null);
+  const [quickViewProduct, setQuickViewProduct] = useState<Product | null>(null);
   const [isQuickViewOpen, setIsQuickViewOpen] = useState(false);
 
   // Add safety checks for undefined data
@@ -25,7 +26,7 @@ export default function HomePage({ categories, featuredProducts, topSelling }: H
   const safeFeaturedProducts = featuredProducts || [];
   const safeTopSelling = topSelling || [];
 
-  const handleQuickView = (product: any) => {
+  const handleQuickView = (product: Product) => {
     setQuickViewProduct(product);
     setIsQuickViewOpen(true);
   };

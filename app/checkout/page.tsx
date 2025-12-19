@@ -103,13 +103,18 @@ export default function CheckoutPage() {
       }),
     });
     const data = await res.json();
-    if (!res.ok) throw new Error(data.message);
+    if (!res.ok) {
+      // Handle stock errors
+      if (data.stockErrors && Array.isArray(data.stockErrors)) {
+        throw new Error(data.stockErrors.join('. '));
+      }
+      throw new Error(data.message || data.error || 'Грешка при създаване на поръчка');
+    }
     return data.orderId;
   };
 
   const onApprove = async (data: any) => {
     try {
-      console.log('PayPal approved, capturing order:', data.orderID);
       const res = await fetch('/api/payment/paypal/capture-order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -121,13 +126,17 @@ export default function CheckoutPage() {
         }),
       });
       const result = await res.json();
-      console.log('Capture response:', result);
-      if (!res.ok) throw new Error(result.message);
+      if (!res.ok) {
+        // Handle stock errors
+        if (result.stockErrors && Array.isArray(result.stockErrors)) {
+          throw new Error(result.stockErrors.join('. '));
+        }
+        throw new Error(result.message || result.error || 'Плащането не е успешно');
+      }
       setPaymentComplete(true);
       clearCart();
       router.push(`/payment/success?orderId=${result.orderId}`);
     } catch (err: any) {
-      console.error('Capture failed:', err);
       setError('Плащането не е успешно: ' + (err.message || 'Неизвестна грешка'));
     }
   };

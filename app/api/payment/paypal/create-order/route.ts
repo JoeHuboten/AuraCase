@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getUserFromRequest } from '@/lib/auth-utils';
+import { prisma } from '@/lib/prisma';
 
 export async function POST(request: NextRequest) {
   try {
@@ -12,6 +13,36 @@ export async function POST(request: NextRequest) {
 
     if (!items || items.length === 0) {
       return NextResponse.json({ error: 'Cart is empty' }, { status: 400 });
+    }
+
+    // Validate stock availability before creating PayPal order
+    const productIds = items.map((item: any) => item.id);
+    const products = await prisma.product.findMany({
+      where: { id: { in: productIds } },
+      select: { id: true, name: true, stock: true, inStock: true },
+    });
+
+    const stockErrors: string[] = [];
+    for (const item of items) {
+      const product = products.find((p) => p.id === item.id);
+      if (!product) {
+        stockErrors.push(`Продуктът "${item.name}" не е наличен`);
+      } else if (!product.inStock) {
+        stockErrors.push(`"${product.name}" е изчерпан`);
+      } else if (product.stock !== null && product.stock < item.quantity) {
+        if (product.stock === 0) {
+          stockErrors.push(`"${product.name}" е изчерпан`);
+        } else {
+          stockErrors.push(`Само ${product.stock} бр. от "${product.name}" са налични`);
+        }
+      }
+    }
+
+    if (stockErrors.length > 0) {
+      return NextResponse.json({
+        error: 'Недостатъчна наличност',
+        stockErrors,
+      }, { status: 400 });
     }
 
     // Calculate total

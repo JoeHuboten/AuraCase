@@ -30,13 +30,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const checkAuth = async () => {
     try {
-      const response = await fetch('/api/auth/me');
+      const response = await fetch('/api/auth/me', {
+        credentials: 'include',
+      });
       if (response.ok) {
         const data = await response.json();
         setUser(data.user);
+      } else {
+        setUser(null);
       }
     } catch (error) {
       console.error('Error checking auth:', error);
+      setUser(null);
     } finally {
       setLoading(false);
     }
@@ -44,34 +49,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const signIn = async (email: string, password: string, rememberMe: boolean = false) => {
     try {
-      console.log('=== CLIENT: Attempting to sign in ===');
-      console.log('Email:', email);
-      console.log('Password length:', password?.length);
-      console.log('Remember me:', rememberMe);
-      
       const response = await fetch('/api/auth/signin', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password, rememberMe }),
+        credentials: 'include',
       });
 
-      console.log('Response status:', response.status);
-      console.log('Response ok:', response.ok);
-      
       const data = await response.json();
-      console.log('Response data:', data);
 
       if (response.ok) {
-        console.log('Sign in successful, setting user:', data.user);
         setUser(data.user);
+        // Recheck auth to ensure cookie is working
+        await checkAuth();
         return { success: true };
       }
 
-      console.log('Sign in failed:', data.error);
       return { success: false, error: data.error || 'Sign in failed' };
     } catch (error) {
-      console.error('=== CLIENT: Sign in error ===');
-      console.error(error);
+      console.error('Sign in error:', error);
       return { success: false, error: 'Something went wrong. Please try again.' };
     }
   };
@@ -82,12 +78,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password, name }),
+        credentials: 'include',
       });
 
       const data = await response.json();
 
       if (response.ok) {
         setUser(data.user);
+        // Recheck auth to ensure cookie is working
+        await checkAuth();
         return { success: true };
       }
 

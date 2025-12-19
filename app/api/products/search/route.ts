@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { prisma, productSelectFields } from '@/lib/prisma';
 import { apiRateLimit } from '@/lib/rate-limit';
 import { sanitizeInput } from '@/lib/validation';
+import { apiCache, cacheKeys } from '@/lib/cache';
 
 /**
  * Server-side product search endpoint
@@ -52,10 +53,18 @@ export async function GET(request: NextRequest) {
     // Get total count for pagination
     const total = await prisma.product.count({ where });
 
+    // Build cache key for search
+    const cacheKey = cacheKeys.search(`${sanitizedQuery}-${categoryId || ''}-${limit}-${offset}`);
+    const cached = apiCache.get<{ products: unknown[]; total: number; limit: number; offset: number; hasMore: boolean }>(cacheKey);
+    if (cached && cached.total === total) {
+      return NextResponse.json(cached);
+    }
+
     // Fetch products with pagination
     const products = await prisma.product.findMany({
       where,
-      include: {
+      select: {
+        ...productSelectFields,
         category: {
           select: {
             id: true,
@@ -72,13 +81,18 @@ export async function GET(request: NextRequest) {
       skip: offset,
     });
 
-    return NextResponse.json({
+    const result = {
       products,
       total,
       limit,
       offset,
       hasMore: offset + products.length < total,
-    });
+    };
+
+    // Cache search results for 1 minute
+    apiCache.set(cacheKey, result, 60 * 1000);
+
+    return NextResponse.json(result);
   } catch (error) {
     console.error('Error searching products:', error);
     return NextResponse.json(

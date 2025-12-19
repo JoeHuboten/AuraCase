@@ -3,6 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   experimental: {
     optimizeCss: true,
+    optimizePackageImports: ['react-icons', 'zustand', 'gsap'],
     turbo: {
       rules: {
         '*.svg': {
@@ -12,11 +13,23 @@ const nextConfig: NextConfig = {
       },
     },
   },
+  // Enable static generation where possible
+  output: 'standalone',
   webpack: (config, { dev, isServer }) => {
     // Faster source maps in development
     if (dev && !isServer) {
       config.devtool = 'eval-cheap-module-source-map';
     }
+    
+    // Tree shake unused code
+    if (!dev) {
+      config.optimization = {
+        ...config.optimization,
+        usedExports: true,
+        sideEffects: true,
+      };
+    }
+    
     return config;
   },
   images: {
@@ -24,6 +37,10 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'images.unsplash.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.pexels.com',
       },
       {
         protocol: 'https',
@@ -81,6 +98,45 @@ const nextConfig: NextConfig = {
           {
             key: 'Cache-Control',
             value: 'public, max-age=86400, s-maxage=86400',
+          },
+        ],
+      },
+      // Cache static assets aggressively
+      {
+        source: '/_next/static/(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      // Cache images
+      {
+        source: '/_next/image(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      // Cache API responses briefly
+      {
+        source: '/api/products(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, s-maxage=60, stale-while-revalidate=300',
+          },
+        ],
+      },
+      {
+        source: '/api/categories(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, s-maxage=300, stale-while-revalidate=600',
           },
         ],
       },

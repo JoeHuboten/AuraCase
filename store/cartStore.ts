@@ -55,11 +55,9 @@ export const useCartStore = create<CartStore>()(
                 : i
             );
             set({ items: updatedItems });
-            console.log('Updated cart item:', updatedItems);
           } else {
             const newItems = [...items, item];
             set({ items: newItems });
-            console.log('Added new item to cart:', newItems);
           }
         } catch (error) {
           console.error('Error adding item to cart:', error);
@@ -76,7 +74,6 @@ export const useCartStore = create<CartStore>()(
             !(item.id === productId && item.color === color && item.size === size)
           );
           set({ items });
-          console.log('Removed item from cart, remaining items:', items);
         } catch (error) {
           console.error('Error removing item from cart:', error);
           throw error;
@@ -98,7 +95,6 @@ export const useCartStore = create<CartStore>()(
               : item
           );
           set({ items });
-          console.log('Updated quantity, cart:', items);
         } catch (error) {
           console.error('Error updating quantity:', error);
           throw error;

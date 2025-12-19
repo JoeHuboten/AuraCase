@@ -1,0 +1,18 @@
+[
+  {
+    "id": "cmjb34a2u0000yg6l7bilaxiw",
+    "email": "test@example.com",
+    "active": true,
+    "subscribedAt": "2025-12-18T06:54:00.966Z",
+    "createdAt": "2025-12-18T06:54:00.966Z",
+    "updatedAt": "2025-12-18T06:54:00.966Z"
+  },
+  {
+    "id": "cmjb35cip0001yg6l8hn6du83",
+    "email": "nstoyanov639@gmail.com",
+    "active": true,
+    "subscribedAt": "2025-12-18T06:54:50.786Z",
+    "createdAt": "2025-12-18T06:54:50.786Z",
+    "updatedAt": "2025-12-18T06:54:50.786Z"
+  }
+]

@@ -1,16 +1,21 @@
+'use client';
+
 import { FiUsers, FiTarget, FiAward, FiHeart } from 'react-icons/fi';
 import ScrollAnimation, { StaggerAnimation } from '@/components/ScrollAnimation';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export default function AboutPage() {
+  const { t } = useLanguage();
+  
   return (
     <div className="min-h-screen bg-gray-900">
       {/* Hero Section */}
       <section className="bg-gradient-to-r from-gray-800 to-gray-700 py-20">
         <div className="container-custom">
           <ScrollAnimation animation="fadeIn" className="text-center">
-            <h1 className="text-5xl font-bold text-white mb-6">За AURACASE</h1>
+            <h1 className="text-5xl font-bold text-white mb-6">{t('about.title')}</h1>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Страстни сме да предоставяме премиум мобилни аксесоари, които подобряват изживяването с вашето устройство, като същевременно отразяват вашия личен стил.
+              {t('about.subtitle')}
             </p>
           </ScrollAnimation>
         </div>
@@ -22,12 +27,12 @@ export default function AboutPage() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <ScrollAnimation animation="slideRight">
               <div>
-                <h2 className="text-4xl font-bold text-white mb-6">Нашата мисия</h2>
+                <h2 className="text-4xl font-bold text-white mb-6">{t('about.mission')}</h2>
                 <p className="text-gray-300 text-lg mb-6">
-                  В AURACASE вярваме, че вашето мобилно устройство е продължение на вашата личност. Нашата мисия е да предоставяме висококачествени, стилни аксесоари, които не само защитават вашите устройства, но и изразяват вашия уникален стил.
+                  {t('about.mission.text1')}
                 </p>
                 <p className="text-gray-300 text-lg">
-                  Внимателно подбираме нашата колекция, за да гарантираме, че всеки продукт отговаря на нашите стандарти за качество, издръжливост и дизайнерско съвършенство.
+                  {t('about.mission.text2')}
                 </p>
               </div>
             </ScrollAnimation>
@@ -35,9 +40,9 @@ export default function AboutPage() {
               <div className="bg-primary rounded-2xl p-8">
                 <div className="text-center">
                   <div className="text-6xl mb-4">📱</div>
-                  <h3 className="text-2xl font-bold text-white mb-4">Премиум качество</h3>
+                  <h3 className="text-2xl font-bold text-white mb-4">{t('about.premiumQuality')}</h3>
                   <p className="text-gray-300">
-                    Всеки продукт в нашата колекция е избран заради своето високо качество и иновативен дизайн.
+                    {t('about.premiumQuality.text')}
                   </p>
                 </div>
               </div>
@@ -50,34 +55,34 @@ export default function AboutPage() {
       <section className="bg-background-secondary py-16">
         <div className="container-custom">
           <ScrollAnimation animation="fadeIn">
-            <h2 className="text-4xl font-bold text-white text-center mb-12">Нашите ценности</h2>
+            <h2 className="text-4xl font-bold text-white text-center mb-12">{t('about.values')}</h2>
           </ScrollAnimation>
           <StaggerAnimation animation="scaleUp" stagger={0.2} className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="text-center">
               <div className="bg-accent rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                 <FiUsers className="text-white text-2xl" />
               </div>
-              <h3 className="text-xl font-bold text-white mb-3">Клиентът на първо място</h3>
+              <h3 className="text-xl font-bold text-white mb-3">{t('about.value.customerFirst')}</h3>
               <p className="text-gray-300">
-                Нашите клиенти са в сърцето на всичко, което правим. Слушаме, учим се и непрекъснато подобряваме въз основа на вашите отзиви.
+                {t('about.value.customerFirst.text')}
               </p>
             </div>
             <div className="text-center">
               <div className="bg-accent rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                 <FiTarget className="text-white text-2xl" />
               </div>
-              <h3 className="text-xl font-bold text-white mb-3">Фокус върху качеството</h3>
+              <h3 className="text-xl font-bold text-white mb-3">{t('about.value.qualityFocus')}</h3>
               <p className="text-gray-300">
-                Никога не правим компромиси с качеството. Всеки продукт е тестван и проверен, за да отговаря на нашите високи стандарти.
+                {t('about.value.qualityFocus.text')}
               </p>
             </div>
             <div className="text-center">
               <div className="bg-accent rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                 <FiAward className="text-white text-2xl" />
               </div>
-              <h3 className="text-xl font-bold text-white mb-3">Иновация</h3>
+              <h3 className="text-xl font-bold text-white mb-3">{t('about.value.innovation')}</h3>
               <p className="text-gray-300">
-                Оставаме в крак с тенденциите и технологиите, за да ви предложим най-новите и най-иновативни аксесоари.
+                {t('about.value.innovation.text')}
               </p>
             </div>
             <div className="text-center">

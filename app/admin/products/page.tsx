@@ -147,6 +147,8 @@ export default function AdminProducts() {
       rating: product.rating.toString(),
       reviews: product.reviews.toString(),
       inStock: product.inStock,
+      stock: product.stock.toString(),
+      lowStockThreshold: product.lowStockThreshold.toString(),
       featured: product.featured,
     });
     setShowModal(true);
@@ -170,6 +172,8 @@ export default function AdminProducts() {
       rating: '0',
       reviews: '0',
       inStock: true,
+      stock: '0',
+      lowStockThreshold: '5',
       featured: false,
     });
   };

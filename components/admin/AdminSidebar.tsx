@@ -12,7 +12,8 @@ import {
   FiTrendingUp,
   FiLogOut,
   FiMail,
-  FiPercent
+  FiPercent,
+  FiSend
 } from 'react-icons/fi';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -23,6 +24,7 @@ const navigation = [
   { name: 'Orders', href: '/admin/orders', icon: FiShoppingBag },
   { name: 'Users', href: '/admin/users', icon: FiUsers },
   { name: 'Messages', href: '/admin/messages', icon: FiMail },
+  { name: 'Newsletter', href: '/admin/newsletter', icon: FiSend },
   { name: 'Discount Codes', href: '/admin/discount-codes', icon: FiPercent },
   { name: 'Analytics', href: '/admin/analytics', icon: FiTrendingUp },
   { name: 'Settings', href: '/admin/settings', icon: FiSettings },

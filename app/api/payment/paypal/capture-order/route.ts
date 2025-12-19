@@ -12,6 +12,37 @@ export async function POST(request: NextRequest) {
 
     const { orderId, items, shippingAddress, discountCode } = await request.json();
 
+    // Double-check stock availability before capturing payment
+    const productIds = items.map((item: any) => item.id);
+    const products = await prisma.product.findMany({
+      where: { id: { in: productIds } },
+      select: { id: true, name: true, stock: true, inStock: true },
+    });
+
+    const stockErrors: string[] = [];
+    for (const item of items) {
+      const product = products.find((p) => p.id === item.id);
+      if (!product) {
+        stockErrors.push(`Продуктът "${item.name}" не е наличен`);
+      } else if (!product.inStock) {
+        stockErrors.push(`"${product.name}" е изчерпан`);
+      } else if (product.stock !== null && product.stock < item.quantity) {
+        if (product.stock === 0) {
+          stockErrors.push(`"${product.name}" е изчерпан`);
+        } else {
+          stockErrors.push(`Само ${product.stock} бр. от "${product.name}" са налични`);
+        }
+      }
+    }
+
+    if (stockErrors.length > 0) {
+      return NextResponse.json({
+        error: 'Недостатъчна наличност',
+        message: 'Някои продукти вече не са налични. Моля, обновете количката си.',
+        stockErrors,
+      }, { status: 400 });
+    }
+
     const PAYPAL_CLIENT_ID = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;
     const PAYPAL_CLIENT_SECRET = process.env.PAYPAL_CLIENT_SECRET;
     const PAYPAL_API = process.env.PAYPAL_MODE === 'live' 

@@ -6,7 +6,7 @@ import { discountCodeSchema } from '@/lib/validation';
 // PUT - Update discount code
 export const PUT = requireAdmin(async (request: NextRequest, { params }: { params: Promise<{ id: string }> }) => {
   try {
-    // TODO: Add authentication check for admin users
+    const { id } = await params;
     
     const body = await request.json();
     const { code, percentage, expiresAt, maxUses, active } = body;
@@ -25,7 +25,7 @@ export const PUT = requireAdmin(async (request: NextRequest, { params }: { param
         where: { code: code.toUpperCase() },
       });
 
-      if (existing && existing.id !== params.id) {
+      if (existing && existing.id !== id) {
         return NextResponse.json(
           { error: 'Discount code already exists' },
           { status: 400 }
@@ -35,7 +35,7 @@ export const PUT = requireAdmin(async (request: NextRequest, { params }: { param
 
     // Update discount code
     const discountCode = await prisma.discountCode.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         code: code ? code.toUpperCase() : undefined,
         percentage,
@@ -53,12 +53,18 @@ export const PUT = requireAdmin(async (request: NextRequest, { params }: { param
       { status: 500 }
     );
   }
-});\n\n// DELETE - Delete discount code\nexport const DELETE = requireAdmin(async (\n  request: NextRequest,\n  { params }: { params: { id: string } }\n) => {
+});
+
+// DELETE - Delete discount code
+export const DELETE = requireAdmin(async (
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) => {
   try {
-    // TODO: Add authentication check for admin users
+    const { id } = await params;
     
     await prisma.discountCode.delete({
-      where: { id: params.id },
+      where: { id },
     });
 
     return NextResponse.json({ success: true });

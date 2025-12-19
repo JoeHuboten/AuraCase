@@ -3,9 +3,25 @@ import { SignJWT, jwtVerify } from 'jose';
 import { prisma } from './database';
 import bcrypt from 'bcryptjs';
 
-const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || 'your-secret-key-change-in-production'
-);
+// Enforce JWT_SECRET in production environment
+const getJwtSecret = (): Uint8Array => {
+  const secret = process.env.JWT_SECRET;
+  
+  // In production, JWT_SECRET must be set
+  if (process.env.NODE_ENV === 'production' && !secret) {
+    throw new Error('JWT_SECRET environment variable is required in production');
+  }
+  
+  // In development, allow fallback with warning
+  if (!secret) {
+    console.warn('⚠️ JWT_SECRET not set. Using development fallback. Set JWT_SECRET in production!');
+    return new TextEncoder().encode('dev-only-secret-key-do-not-use-in-production');
+  }
+  
+  return new TextEncoder().encode(secret);
+};
+
+const JWT_SECRET = getJwtSecret();
 
 export async function hashPassword(password: string): Promise<string> {
   return bcrypt.hash(password, 10);

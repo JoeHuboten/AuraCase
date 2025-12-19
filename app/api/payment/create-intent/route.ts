@@ -9,7 +9,7 @@ const STRIPE_CONFIGURED = process.env.STRIPE_SECRET_KEY &&
 
 const stripe = STRIPE_CONFIGURED 
   ? new Stripe(process.env.STRIPE_SECRET_KEY!, {
-      apiVersion: '2025-09-30.clover',
+      apiVersion: '2024-11-20.acacia',
     })
   : null;
 

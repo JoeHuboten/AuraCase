@@ -6,7 +6,7 @@ import { FiStar, FiShoppingCart, FiHeart, FiEye } from 'react-icons/fi';
 import { useCartStore } from '@/store/cartStore';
 import { useWishlistStore } from '@/store/wishlistStore';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { useState } from 'react';
+import { useState, memo, useCallback } from 'react';
 import { useToast } from '@/components/Toast';
 
 interface Product {
@@ -48,8 +48,9 @@ const ProductCard = ({
   const { showToast } = useToast();
   const [isWishlistLoading, setIsWishlistLoading] = useState(false);
   const [isAddingToCart, setIsAddingToCart] = useState(false);
+  const inWishlist = isInWishlist(id);
 
-  const handleAddToCart = async (e: React.MouseEvent) => {
+  const handleAddToCart = useCallback(async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     
@@ -71,15 +72,15 @@ const ProductCard = ({
     } finally {
       setIsAddingToCart(false);
     }
-  };
+  }, [id, name, price, oldPrice, discount, image, addToCart, showToast]);
 
-  const handleWishlistToggle = async (e: React.MouseEvent) => {
+  const handleWishlistToggle = useCallback(async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     
     setIsWishlistLoading(true);
     try {
-      if (isInWishlist(id)) {
+      if (inWishlist) {
         await removeFromWishlist(id);
         showToast('Премахнат от любими', 'wishlist');
       } else {
@@ -100,7 +101,13 @@ const ProductCard = ({
     } finally {
       setIsWishlistLoading(false);
     }
-  };
+  }, [id, name, slug, price, oldPrice, discount, image, category, inWishlist, addToWishlist, removeFromWishlist, showToast]);
+
+  const handleQuickView = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onQuickView?.({ id, name, slug, price, oldPrice, discount, image, rating, reviews, category });
+  }, [id, name, slug, price, oldPrice, discount, image, rating, reviews, category, onQuickView]);
 
   return (
     <Link href={`/product/${slug}`} className="group block">
@@ -136,23 +143,21 @@ const ProductCard = ({
           <button
             onClick={handleWishlistToggle}
             disabled={isWishlistLoading}
+            aria-label={inWishlist ? `Премахни ${name} от любими` : `Добави ${name} в любими`}
             className={`absolute top-4 right-4 w-10 h-10 rounded-xl flex items-center justify-center opacity-0 group-hover:opacity-100 disabled:opacity-50 z-20 cursor-pointer transition-all duration-500 ease-out hover:scale-110 backdrop-blur-md transform hover:-translate-y-1 ${
-              isInWishlist(id)
+              inWishlist
                 ? 'bg-red-500/90 text-white shadow-lg shadow-red-500/30'
                 : 'bg-white/10 text-white hover:bg-white/20'
             }`}
           >
-            <FiHeart size={16} className={isInWishlist(id) ? 'fill-current' : ''} />
+            <FiHeart size={16} className={inWishlist ? 'fill-current' : ''} />
           </button>
 
           {/* Quick View Button */}
           {onQuickView && (
             <button
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                onQuickView({ id, name, slug, price, oldPrice, discount, image, rating, reviews, category });
-              }}
+              onClick={handleQuickView}
+              aria-label={`Бърз преглед на ${name}`}
               className="absolute bottom-4 left-4 w-10 h-10 rounded-xl flex items-center justify-center bg-white/10 text-white opacity-0 group-hover:opacity-100 z-20 cursor-pointer transition-all duration-500 ease-out hover:scale-110 backdrop-blur-md hover:bg-white/20 transform hover:-translate-y-1"
             >
               <FiEye size={16} />
@@ -163,6 +168,7 @@ const ProductCard = ({
           <button
             onClick={handleAddToCart}
             disabled={isAddingToCart}
+            aria-label={`Добави ${name} в количката`}
             className="absolute bottom-4 right-4 w-10 h-10 rounded-xl flex items-center justify-center bg-gradient-to-br from-accent to-accent-dark text-white opacity-0 group-hover:opacity-100 disabled:opacity-50 z-20 cursor-pointer transition-all duration-500 ease-out hover:scale-110 shadow-lg shadow-accent/30 backdrop-blur-md transform hover:-translate-y-1"
           >
             <FiShoppingCart size={16} />
@@ -221,5 +227,19 @@ const ProductCard = ({
   );
 };
 
-export default ProductCard;
+// Memoize component to prevent unnecessary re-renders
+export default memo(ProductCard, (prevProps, nextProps) => {
+  // Only re-render if these props change
+  return (
+    prevProps.id === nextProps.id &&
+    prevProps.name === nextProps.name &&
+    prevProps.price === nextProps.price &&
+    prevProps.oldPrice === nextProps.oldPrice &&
+    prevProps.discount === nextProps.discount &&
+    prevProps.image === nextProps.image &&
+    prevProps.rating === nextProps.rating &&
+    prevProps.reviews === nextProps.reviews &&
+    prevProps.category?.slug === nextProps.category?.slug
+  );
+});
 

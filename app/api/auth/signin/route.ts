@@ -75,8 +75,10 @@ export async function POST(request: NextRequest) {
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       maxAge,
+      path: '/',
     });
 
+    console.log('✅ Sign-in successful - Cookie set for user:', user.email);
     return response;
   } catch (error) {
     console.error('Sign in error:', error);

@@ -1,0 +1,22 @@
+[
+  {
+    "email": "test@example.com",
+    "success": true,
+    "id": "<f8d44ea5-6c48-8905-7ae1-b78e83a36a62@gmail.com>"
+  },
+  {
+    "email": "nstoyanov639@gmail.com",
+    "success": true,
+    "id": "<904454c8-e3c3-dbde-c44f-2a94a0d9cfe4@gmail.com>"
+  },
+  {
+    "email": "simeonnelchinov@gmail.com",
+    "success": true,
+    "id": "<6e7af25e-43b9-619c-1084-c5af74e3afa1@gmail.com>"
+  },
+  {
+    "email": "marti.kolev14@gmail.com",
+    "success": true,
+    "id": "<a0b42bc1-e086-624f-28ca-93bd5df0bceb@gmail.com>"
+  }
+]
