@@ -104,7 +104,7 @@ const MagicBentoCategory = ({ categories }: MagicBentoCategoryProps) => {
             <Link
               key={category.id}
               href={`/shop/${category.slug}`}
-              className={`bento-card group relative ${getGridSpan()} ${getHeight()} bg-slate-800 rounded-2xl overflow-hidden border border-slate-700 hover:border-blue-500/50 transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/10 hover:-translate-y-1 cursor-pointer`}
+              className={`bento-card group relative ${getGridSpan()} ${getHeight()} bg-slate-800 rounded-2xl overflow-hidden border border-slate-700 hover:border-blue-500/50 transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/10 cursor-pointer hover-tilt`}
               style={{
                 '--glow-x': '50%',
                 '--glow-y': '50%',

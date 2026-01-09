@@ -1,16 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/database';
-import { hashPassword, createToken } from '@/lib/auth-utils';
+import { hashPassword } from '@/lib/auth-utils';
 import { authRateLimit } from '@/lib/rate-limit';
 import { emailSchema, passwordSchema } from '@/lib/validation';
+import { sendEmailVerification } from '@/lib/email';
+import { createLogger, getRequestId } from '@/lib/logger';
+import crypto from 'crypto';
 
 export async function POST(request: NextRequest) {
+  const requestId = getRequestId(request.headers);
+  const logger = createLogger('api:auth:signup').withRequestId(requestId);
+  
   // Rate limiting - 5 attempts per 15 minutes
   const rateLimitResult = await authRateLimit(request);
   if (!rateLimitResult.success) {
+    logger.warn('Rate limit exceeded');
     return NextResponse.json(
-      { error: 'Too many signup attempts. Please try again later.' },
-      { status: 429 }
+      { error: 'Too many signup attempts. Please try again later.', requestId },
+      { status: 429, headers: { 'x-request-id': requestId } }
     );
   }
 
@@ -19,8 +26,8 @@ export async function POST(request: NextRequest) {
 
     if (!email || !password) {
       return NextResponse.json(
-        { error: 'Email and password are required' },
-        { status: 400 }
+        { error: 'Email and password are required', requestId },
+        { status: 400, headers: { 'x-request-id': requestId } }
       );
     }
 
@@ -28,8 +35,8 @@ export async function POST(request: NextRequest) {
     const emailValidation = emailSchema.safeParse(email);
     if (!emailValidation.success) {
       return NextResponse.json(
-        { error: 'Invalid email format' },
-        { status: 400 }
+        { error: 'Invalid email format', requestId },
+        { status: 400, headers: { 'x-request-id': requestId } }
       );
     }
 
@@ -37,8 +44,8 @@ export async function POST(request: NextRequest) {
     const passwordValidation = passwordSchema.safeParse(password);
     if (!passwordValidation.success) {
       return NextResponse.json(
-        { error: 'Password must be at least 8 characters with uppercase, lowercase, and number' },
-        { status: 400 }
+        { error: 'Password must be at least 8 characters with uppercase, lowercase, and number', requestId },
+        { status: 400, headers: { 'x-request-id': requestId } }
       );
     }
 
@@ -48,47 +55,62 @@ export async function POST(request: NextRequest) {
 
     if (existingUser) {
       return NextResponse.json(
-        { error: 'User already exists' },
-        { status: 400 }
+        { error: 'User already exists', requestId },
+        { status: 400, headers: { 'x-request-id': requestId } }
       );
     }
 
     const hashedPassword = await hashPassword(password);
 
+    // Create user with emailVerified = null (unverified)
     const user = await prisma.user.create({
       data: {
         email,
         password: hashedPassword,
         name: name || null,
         role: 'USER',
+        emailVerified: null, // User needs to verify email
       },
     });
 
-    const token = await createToken(user.id, user.email!, user.role);
+    // Generate verification token
+    const verificationToken = crypto.randomBytes(32).toString('hex');
+    const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
 
-    const response = NextResponse.json({
+    // Store verification token
+    await prisma.verificationToken.create({
+      data: {
+        identifier: email,
+        token: verificationToken,
+        expires: expiresAt,
+        type: 'EMAIL_VERIFICATION',
+      },
+    });
+
+    // Generate verification URL
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+    const verificationUrl = `${appUrl}/auth/verify-email?token=${verificationToken}`;
+
+    // Send verification email
+    logger.info('Sending verification email', { email });
+    await sendEmailVerification(email, {
+      name: name || 'there',
+      verificationUrl,
+    });
+
+    logger.info('User registered successfully', { userId: user.id, email });
+
+    return NextResponse.json({
       success: true,
-      user: {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        role: user.role,
-      },
-    });
-
-    response.cookies.set('auth-token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 60 * 60 * 24 * 7,
-    });
-
-    return response;
+      message: 'Registration successful! Please check your email to verify your account.',
+      requiresVerification: true,
+      requestId,
+    }, { headers: { 'x-request-id': requestId } });
   } catch (error) {
-    console.error('Sign up error:', error);
+    logger.error('Sign up error', { error });
     return NextResponse.json(
-      { error: 'Registration failed. Please try again.' },
-      { status: 500 }
+      { error: 'Registration failed. Please try again.', requestId },
+      { status: 500, headers: { 'x-request-id': requestId } }
     );
   }
 }

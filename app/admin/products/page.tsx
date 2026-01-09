@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { FiPlus, FiEdit2, FiTrash2, FiSearch, FiX } from 'react-icons/fi';
 import Image from 'next/image';
+import AdminPagination from '@/components/admin/AdminPagination';
 
 interface Product {
   id: string;
@@ -35,11 +36,21 @@ interface Category {
   slug: string;
 }
 
+interface PaginatedResponse {
+  products: Product[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+}
+
 export default function AdminProducts() {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [data, setData] = useState<PaginatedResponse | null>(null);
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
   const [showModal, setShowModal] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [formData, setFormData] = useState({
@@ -62,31 +73,54 @@ export default function AdminProducts() {
     featured: false,
   });
 
+  // Debounce search
   useEffect(() => {
-    fetchProducts();
-    fetchCategories();
-  }, []);
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchQuery);
+      setCurrentPage(1); // Reset to first page on search
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
 
-  const fetchProducts = async () => {
+  const fetchProducts = useCallback(async () => {
+    setLoading(true);
     try {
-      const response = await fetch('/api/admin/products');
-      const data = await response.json();
-      setProducts(data.products || []);
+      const params = new URLSearchParams();
+      params.set('page', currentPage.toString());
+      params.set('limit', '20');
+      if (debouncedSearch) params.set('search', debouncedSearch);
+      
+      const response = await fetch(`/api/admin/products?${params.toString()}`);
+      const result = await response.json();
+      setData(result);
     } catch (error) {
       console.error('Error fetching products:', error);
     } finally {
       setLoading(false);
     }
-  };
+  }, [currentPage, debouncedSearch]);
+
+  useEffect(() => {
+    fetchProducts();
+  }, [fetchProducts]);
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
 
   const fetchCategories = async () => {
     try {
       const response = await fetch('/api/categories');
-      const data = await response.json();
-      setCategories(data);
+      const result = await response.json();
+      setCategories(result);
     } catch (error) {
       console.error('Error fetching categories:', error);
     }
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -178,10 +212,10 @@ export default function AdminProducts() {
     });
   };
 
-  const filteredProducts = products.filter(product =>
-    product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    product.category.name.toLowerCase().includes(searchQuery.toLowerCase())
-  );
+  const products = data?.products || [];
+  const totalPages = data?.totalPages || 1;
+  const total = data?.total || 0;
+  const limit = data?.limit || 20;
 
   if (loading) {
     return (
@@ -247,7 +281,7 @@ export default function AdminProducts() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-800">
-              {filteredProducts.map((product) => (
+              {products.map((product) => (
                 <tr key={product.id} className="hover:bg-gray-800/30">
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
@@ -326,6 +360,17 @@ export default function AdminProducts() {
               ))}
             </tbody>
           </table>
+        </div>
+        
+        {/* Pagination */}
+        <div className="px-6 pb-4">
+          <AdminPagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            total={total}
+            limit={limit}
+            onPageChange={handlePageChange}
+          />
         </div>
       </div>
 

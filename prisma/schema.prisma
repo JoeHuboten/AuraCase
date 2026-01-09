@@ -59,6 +59,7 @@ model VerificationToken {
   identifier String
   token      String   @unique
   expires    DateTime
+  type       String   @default("EMAIL_VERIFICATION") // EMAIL_VERIFICATION, PASSWORD_RESET, etc.
 
   @@unique([identifier, token])
 }
@@ -101,6 +102,12 @@ model Product {
   category       Category       @relation(fields: [categoryId], references: [id])
   productReviews Review[]
   wishlistItems  WishlistItem[]
+  
+  @@index([categoryId])
+  @@index([featured])
+  @@index([inStock])
+  @@index([price])
+  @@index([createdAt])
 }
 
 model Order {

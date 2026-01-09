@@ -23,12 +23,23 @@ const Header = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [isAdvancedSearchOpen, setIsAdvancedSearchOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const { addToHistory } = useSearchStore();
   const { t } = useLanguage();
 
   // Fix hydration issues
   useEffect(() => {
     setMounted(true);
+  }, []);
+
+  // Scroll detection for header effects
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const cartItemsCount = mounted ? cartItems.reduce((sum, item) => sum + item.quantity, 0) : 0;
@@ -92,7 +103,11 @@ const Header = () => {
   return (
     <>
       {/* Main Header */}
-      <header className="bg-primary/95 backdrop-blur-xl border-b border-white/5 sticky top-0 z-50 shadow-lg shadow-black/20">
+      <header className={`sticky top-0 z-50 transition-all duration-300 ${
+        isScrolled 
+          ? 'bg-primary/98 backdrop-blur-2xl border-b border-white/10 shadow-xl shadow-black/30' 
+          : 'bg-primary/95 backdrop-blur-xl border-b border-white/5 shadow-lg shadow-black/20'
+      }`}>
         <div className="container-custom py-4">
           <div className="flex items-center justify-between">
             {/* Logo */}

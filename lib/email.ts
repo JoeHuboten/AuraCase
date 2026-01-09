@@ -568,6 +568,204 @@ AURACASE - ${isBulgarian ? 'Премиум мобилни аксесоари' : 
 
     return { subject, html, text };
   },
+
+  // Email Verification
+  emailVerification: (data: {
+    name: string;
+    verificationUrl: string;
+    language?: 'bg' | 'en';
+  }): EmailTemplate => {
+    const isBulgarian = data.language === 'bg';
+    
+    const subject = isBulgarian 
+      ? 'Потвърдете имейл адреса си - AuraCase' 
+      : 'Verify Your Email Address - AuraCase';
+
+    const html = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; background: #f4f4f4; margin: 0; padding: 0; }
+    .container { max-width: 600px; margin: 20px auto; background: #fff; border-radius: 8px; overflow: hidden; }
+    .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; padding: 30px; text-align: center; }
+    .content { padding: 30px; }
+    .button { display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff !important; padding: 14px 30px; text-decoration: none; border-radius: 8px; margin: 20px 0; font-weight: 600; }
+    .link-text { color: #667eea; word-break: break-all; font-size: 14px; }
+    .footer { background: #f8f9fa; padding: 20px; text-align: center; font-size: 12px; color: #666; }
+    .warning { background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>${isBulgarian ? '🎉 Добре дошли в AuraCase!' : '🎉 Welcome to AuraCase!'}</h1>
+    </div>
+    
+    <div class="content">
+      <p>${isBulgarian ? 'Здравейте' : 'Hi'} ${data.name || (isBulgarian ? 'там' : 'there')},</p>
+      
+      <p>${isBulgarian 
+        ? 'Благодарим Ви, че се регистрирахте в AuraCase! Радваме се, че се присъединихте към нашата общност.' 
+        : 'Thank you for registering with AuraCase! We\'re excited to have you join our community.'}</p>
+      
+      <p>${isBulgarian 
+        ? 'За да завършите регистрацията и да получите пълен достъп за покупка на премиум калъфи за телефон, моля потвърдете имейл адреса си, като кликнете на бутона по-долу:' 
+        : 'To complete your registration and unlock full access to purchase premium phone cases, please verify your email address by clicking the button below:'}</p>
+      
+      <div style="text-align: center; margin: 30px 0;">
+        <a href="${data.verificationUrl}" class="button">
+          ${isBulgarian ? 'Потвърди имейл адреса' : 'Verify Email Address'}
+        </a>
+      </div>
+      
+      <p style="font-size: 14px; color: #666;">
+        ${isBulgarian ? 'Или копирайте и поставете този линк във вашия браузър:' : 'Or copy and paste this link into your browser:'}<br>
+        <a href="${data.verificationUrl}" class="link-text">${data.verificationUrl}</a>
+      </p>
+      
+      <div class="warning">
+        <p style="margin: 0; font-size: 14px;">
+          ⏰ ${isBulgarian 
+            ? 'Този линк ще изтече след 24 часа.' 
+            : 'This link will expire in 24 hours.'}
+        </p>
+      </div>
+      
+      <p style="font-size: 14px; color: #666; margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd;">
+        ${isBulgarian 
+          ? 'Ако не сте създали акаунт в AuraCase, можете спокойно да игнорирате този имейл.' 
+          : 'If you didn\'t create an account with AuraCase, you can safely ignore this email.'}
+      </p>
+      
+      <p style="margin-top: 30px;">
+        ${isBulgarian ? 'Поздрави' : 'Best regards'},<br>
+        <strong>${isBulgarian ? 'Екипът на AuraCase' : 'The AuraCase Team'}</strong>
+      </p>
+    </div>
+    
+    <div class="footer">
+      <p>© ${new Date().getFullYear()} AuraCase. ${isBulgarian ? 'Всички права запазени.' : 'All rights reserved.'}</p>
+    </div>
+  </div>
+</body>
+</html>
+    `.trim();
+
+    const text = `
+${isBulgarian ? 'Добре дошли в AuraCase!' : 'Welcome to AuraCase!'}
+
+${isBulgarian ? 'Здравейте' : 'Hi'} ${data.name || (isBulgarian ? 'там' : 'there')},
+
+${isBulgarian 
+  ? 'Благодарим Ви, че се регистрирахте в AuraCase! За да завършите регистрацията, моля потвърдете имейл адреса си.' 
+  : 'Thank you for registering with AuraCase! To complete your registration, please verify your email address.'}
+
+${isBulgarian ? 'Линк за потвърждение:' : 'Verification link:'}
+${data.verificationUrl}
+
+${isBulgarian 
+  ? 'Този линк ще изтече след 24 часа. Ако не сте създали акаунт в AuraCase, можете спокойно да игнорирате този имейл.' 
+  : 'This link will expire in 24 hours. If you didn\'t create an account with AuraCase, you can safely ignore this email.'}
+
+${isBulgarian ? 'Поздрави,' : 'Best regards,'}
+${isBulgarian ? 'Екипът на AuraCase' : 'The AuraCase Team'}
+    `.trim();
+
+    return { subject, html, text };
+  },
+
+  // Email Verification Success
+  emailVerificationSuccess: (data: {
+    name: string;
+    language?: 'bg' | 'en';
+  }): EmailTemplate => {
+    const isBulgarian = data.language === 'bg';
+    
+    const subject = isBulgarian 
+      ? '✓ Имейлът е потвърден - AuraCase' 
+      : '✓ Email Verified - AuraCase';
+
+    const html = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; background: #f4f4f4; margin: 0; padding: 0; }
+    .container { max-width: 600px; margin: 20px auto; background: #fff; border-radius: 8px; overflow: hidden; }
+    .header { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: #fff; padding: 30px; text-align: center; }
+    .content { padding: 30px; }
+    .features { background: #f8f9fa; border-radius: 8px; padding: 20px; margin: 20px 0; }
+    .features ul { margin: 10px 0; padding-left: 20px; }
+    .features li { margin: 8px 0; }
+    .button { display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff !important; padding: 14px 30px; text-decoration: none; border-radius: 8px; margin: 20px 0; font-weight: 600; }
+    .footer { background: #f8f9fa; padding: 20px; text-align: center; font-size: 12px; color: #666; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>${isBulgarian ? '✓ Имейлът е потвърден!' : '✓ Email Verified!'}</h1>
+    </div>
+    
+    <div class="content">
+      <p>${isBulgarian ? 'Здравейте' : 'Hi'} ${data.name || (isBulgarian ? 'там' : 'there')},</p>
+      
+      <p>${isBulgarian 
+        ? 'Отлични новини! Вашият имейл адрес беше успешно потвърден. Сега имате пълен достъп до всички функции на AuraCase, включително:' 
+        : 'Great news! Your email has been successfully verified. You now have full access to all features on AuraCase, including:'}</p>
+      
+      <div class="features">
+        <ul>
+          <li>${isBulgarian ? 'Разглеждане на нашата колекция от премиум калъфи' : 'Browse our premium phone case collection'}</li>
+          <li>${isBulgarian ? 'Добавяне на артикули в количката и извършване на покупки' : 'Add items to cart and make purchases'}</li>
+          <li>${isBulgarian ? 'Проследяване на вашите поръчки' : 'Track your orders'}</li>
+          <li>${isBulgarian ? 'Оставяне на отзиви и оценки' : 'Leave reviews and ratings'}</li>
+          <li>${isBulgarian ? 'Запазване на артикули в списъка с желания' : 'Save items to your wishlist'}</li>
+        </ul>
+      </div>
+      
+      <div style="text-align: center; margin: 30px 0;">
+        <a href="${SITE_URL}/shop" class="button">
+          ${isBulgarian ? 'Започнете пазаруването' : 'Start Shopping'}
+        </a>
+      </div>
+      
+      <p style="margin-top: 30px;">
+        ${isBulgarian ? 'Поздрави' : 'Best regards'},<br>
+        <strong>${isBulgarian ? 'Екипът на AuraCase' : 'The AuraCase Team'}</strong>
+      </p>
+    </div>
+    
+    <div class="footer">
+      <p>© ${new Date().getFullYear()} AuraCase. ${isBulgarian ? 'Всички права запазени.' : 'All rights reserved.'}</p>
+    </div>
+  </div>
+</body>
+</html>
+    `.trim();
+
+    const text = `
+${isBulgarian ? 'Имейлът е потвърден!' : 'Email Verified!'}
+
+${isBulgarian ? 'Здравейте' : 'Hi'} ${data.name || (isBulgarian ? 'там' : 'there')},
+
+${isBulgarian 
+  ? 'Отлични новини! Вашият имейл адрес беше успешно потвърден. Сега имате пълен достъп до всички функции на AuraCase.' 
+  : 'Great news! Your email has been successfully verified. You now have full access to all features on AuraCase.'}
+
+${isBulgarian ? 'Започнете пазаруването:' : 'Start shopping:'} ${SITE_URL}/shop
+
+${isBulgarian ? 'Поздрави,' : 'Best regards,'}
+${isBulgarian ? 'Екипът на AuraCase' : 'The AuraCase Team'}
+    `.trim();
+
+    return { subject, html, text };
+  },
 };
 
 // Send email function
@@ -655,5 +853,21 @@ export async function sendNewsletterWelcomeEmail(
   data: Parameters<typeof emailTemplates.newsletterWelcome>[0]
 ) {
   const template = emailTemplates.newsletterWelcome(data);
+  return sendEmail(email, template);
+}
+
+export async function sendEmailVerification(
+  email: string,
+  data: Parameters<typeof emailTemplates.emailVerification>[0]
+) {
+  const template = emailTemplates.emailVerification(data);
+  return sendEmail(email, template);
+}
+
+export async function sendEmailVerificationSuccess(
+  email: string,
+  data: Parameters<typeof emailTemplates.emailVerificationSuccess>[0]
+) {
+  const template = emailTemplates.emailVerificationSuccess(data);
   return sendEmail(email, template);
 }

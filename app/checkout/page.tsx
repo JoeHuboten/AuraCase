@@ -209,6 +209,21 @@ export default function CheckoutPage() {
     <PayPalScriptProvider options={{ clientId: PAYPAL_CLIENT_ID, currency: 'EUR' }}>
       <div className="min-h-screen bg-background py-8 md:py-12">
         <div className="container mx-auto px-4 max-w-6xl">
+          {/* Email Verification Warning */}
+          {user && !user.emailVerified && (
+            <div className="mb-6 bg-yellow-500/10 border border-yellow-500/50 rounded-lg p-4">
+              <div className="flex items-start gap-3">
+                <FiMail className="text-yellow-500 mt-0.5 flex-shrink-0" size={20} />
+                <div>
+                  <p className="text-yellow-500 font-medium mb-1">Email Not Verified</p>
+                  <p className="text-yellow-400 text-sm">
+                    Please verify your email address to complete your purchase. Check your inbox for the verification link.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* Header with Steps */}
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-white mb-6">Плащане</h1>

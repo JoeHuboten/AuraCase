@@ -1,16 +1,21 @@
 'use client';
 
+import { useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FiStar } from 'react-icons/fi';
 import ProductDetails from '@/components/ProductDetails';
 import ProductReviews from '@/components/ProductReviews';
 import ProductImageGallery from '@/components/ProductImageGallery';
+import RecentlyViewed from '@/components/RecentlyViewed';
+import Breadcrumbs from '@/components/Breadcrumbs';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useRecentlyViewedStore } from '@/store/recentlyViewedStore';
 
 interface Product {
   id: string;
   name: string;
+  slug: string;
   price: number;
   oldPrice?: number | null;
   discount?: number | null;
@@ -47,6 +52,18 @@ interface ProductPageClientProps {
 
 export default function ProductPageClient({ product, relatedProducts }: ProductPageClientProps) {
   const { t, formatPrice } = useLanguage();
+  const addToRecentlyViewed = useRecentlyViewedStore((state) => state.addProduct);
+
+  // Track product view
+  useEffect(() => {
+    addToRecentlyViewed({
+      id: product.id,
+      name: product.name,
+      slug: product.slug,
+      price: product.price,
+      image: product.image,
+    });
+  }, [product.id, product.name, product.slug, product.price, product.image, addToRecentlyViewed]);
 
   // Parse images from JSON string or create array with single image
   const productImages = (() => {
@@ -60,22 +77,14 @@ export default function ProductPageClient({ product, relatedProducts }: ProductP
   return (
     <div className="min-h-screen bg-background text-white">
       {/* Breadcrumb */}
-      <div className="container-custom py-6">
-        <div className="flex items-center gap-2 text-sm">
-          <Link href="/" className="text-text-secondary hover:text-white">
-            {t('product.breadcrumb.home', 'Home')}
-          </Link>
-          <span className="text-text-secondary">/</span>
-          <Link href="/shop" className="text-text-secondary hover:text-white">
-            {t('product.breadcrumb.shop', 'Shop')}
-          </Link>
-          <span className="text-text-secondary">/</span>
-          <Link href={`/shop/${product.category.slug}`} className="text-text-secondary hover:text-white">
-            {product.category.name}
-          </Link>
-          <span className="text-text-secondary">/</span>
-          <span className="text-white">{product.name}</span>
-        </div>
+      <div className="container-custom">
+        <Breadcrumbs
+          items={[
+            { label: t('product.breadcrumb.shop', 'Shop'), href: '/shop' },
+            { label: product.category.name, href: `/shop/${product.category.slug}` },
+            { label: product.name },
+          ]}
+        />
       </div>
 
       <div className="container-custom pb-16">
@@ -196,6 +205,9 @@ export default function ProductPageClient({ product, relatedProducts }: ProductP
             </div>
           </div>
         )}
+
+        {/* Recently Viewed */}
+        <RecentlyViewed excludeProductId={product.id} maxItems={4} />
       </div>
     </div>
   );

@@ -4,16 +4,19 @@ import { useState } from 'react';
 import { FiHeart, FiShoppingCart } from 'react-icons/fi';
 import { useCartStore } from '@/store/cartStore';
 import { useLanguage } from '@/contexts/LanguageContext';
+import SocialShare from '@/components/SocialShare';
 
 interface Product {
   id: string;
   name: string;
+  slug: string;
   price: number;
   oldPrice?: number | null;
   discount?: number | null;
   colors?: string | null;
   sizes?: string | null;
   image: string;
+  description?: string | null;
   inStock: boolean;
   stock: number;
   lowStockThreshold: number;
@@ -161,6 +164,16 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
         >
           <FiHeart size={20} className={isWishlisted ? 'fill-current' : ''} />
         </button>
+      </div>
+
+      {/* Social Share */}
+      <div className="pt-4 border-t border-slate-700/50">
+        <SocialShare
+          url={`https://auracase.bg/product/${product.slug}`}
+          title={product.name}
+          description={product.description || undefined}
+          image={product.image}
+        />
       </div>
     </div>
   );

@@ -7,13 +7,14 @@ export interface User {
   email: string;
   name: string | null;
   role: 'USER' | 'ADMIN';
+  emailVerified: Date | null;
 }
 
 interface AuthContextType {
   user: User | null;
   loading: boolean;
   signIn: (email: string, password: string, rememberMe?: boolean) => Promise<{ success: boolean; error?: string }>;
-  signUp: (email: string, password: string, name: string) => Promise<{ success: boolean; error?: string }>;
+  signUp: (email: string, password: string, name: string) => Promise<{ success: boolean; error?: string; requiresVerification?: boolean }>;
   signOut: () => Promise<void>;
   isAdmin: () => boolean;
 }
@@ -84,10 +85,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const data = await response.json();
 
       if (response.ok) {
+        // If email verification is required, don't set user
+        if (data.requiresVerification) {
+          return { success: true, requiresVerification: true };
+        }
+        
+        // Otherwise, set user and check auth
         setUser(data.user);
-        // Recheck auth to ensure cookie is working
         await checkAuth();
-        return { success: true };
+        return { success: true, requiresVerification: false };
       }
 
       return { success: false, error: data.error || 'Sign up failed' };

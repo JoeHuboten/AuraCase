@@ -3,19 +3,26 @@ import { SignJWT, jwtVerify } from 'jose';
 import { prisma } from './database';
 import bcrypt from 'bcryptjs';
 
-// Enforce JWT_SECRET in production environment
+// Enforce JWT_SECRET - CRITICAL: App will not start without this in production
 const getJwtSecret = (): Uint8Array => {
   const secret = process.env.JWT_SECRET;
   
-  // In production, JWT_SECRET must be set
-  if (process.env.NODE_ENV === 'production' && !secret) {
-    throw new Error('JWT_SECRET environment variable is required in production');
+  // In production, JWT_SECRET must be set - fail fast
+  if (process.env.NODE_ENV === 'production') {
+    if (!secret) {
+      throw new Error('CRITICAL: JWT_SECRET environment variable is required in production. Application startup aborted.');
+    }
+    if (secret.length < 32) {
+      throw new Error('CRITICAL: JWT_SECRET must be at least 32 characters for security. Application startup aborted.');
+    }
   }
   
   // In development, allow fallback with warning
   if (!secret) {
-    console.warn('⚠️ JWT_SECRET not set. Using development fallback. Set JWT_SECRET in production!');
-    return new TextEncoder().encode('dev-only-secret-key-do-not-use-in-production');
+    if (typeof window === 'undefined') {
+      console.warn('\x1b[33m⚠️  JWT_SECRET not set. Using development fallback. DO NOT deploy without setting JWT_SECRET!\x1b[0m');
+    }
+    return new TextEncoder().encode('dev-only-secret-key-do-not-use-in-production-minimum-32-chars');
   }
   
   return new TextEncoder().encode(secret);

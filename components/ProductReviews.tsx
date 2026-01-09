@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { FiStar, FiThumbsUp, FiEdit3, FiTrash2, FiUser } from 'react-icons/fi';
+import { FiStar, FiThumbsUp, FiEdit3, FiTrash2, FiUser, FiSend, FiCheckCircle } from 'react-icons/fi';
 import { useLanguage } from '@/contexts/LanguageContext';
 import ScrollAnimation from './ScrollAnimation';
 
@@ -34,6 +34,18 @@ export default function ProductReviews({ productId, productName }: ProductReview
   const [totalPages, setTotalPages] = useState(1);
   const [averageRating, setAverageRating] = useState(0);
   const [totalReviews, setTotalReviews] = useState(0);
+  
+  // Review form state
+  const [showForm, setShowForm] = useState(false);
+  const [submitLoading, setSubmitLoading] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState('');
+  const [formData, setFormData] = useState({
+    rating: 5,
+    title: '',
+    comment: ''
+  });
+  const [hoverRating, setHoverRating] = useState(0);
 
   useEffect(() => {
     fetchReviews();
@@ -78,6 +90,71 @@ export default function ProductReviews({ productId, productName }: ProductReview
     }
   };
 
+  const handleSubmitReview = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitLoading(true);
+    setSubmitError('');
+    
+    try {
+      const response = await fetch('/api/reviews', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify({
+          productId,
+          rating: formData.rating,
+          title: formData.title.trim() || undefined,
+          comment: formData.comment.trim() || undefined,
+        }),
+      });
+      
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to submit review');
+      }
+      
+      setSubmitSuccess(true);
+      setFormData({ rating: 5, title: '', comment: '' });
+      setShowForm(false);
+      
+      // Reset success message after 5 seconds
+      setTimeout(() => setSubmitSuccess(false), 5000);
+    } catch (error) {
+      setSubmitError(error instanceof Error ? error.message : 'Failed to submit review');
+    } finally {
+      setSubmitLoading(false);
+    }
+  };
+
+  const renderInteractiveStars = () => {
+    return (
+      <div className="flex items-center gap-1">
+        {[1, 2, 3, 4, 5].map((star) => (
+          <button
+            key={star}
+            type="button"
+            onClick={() => setFormData({ ...formData, rating: star })}
+            onMouseEnter={() => setHoverRating(star)}
+            onMouseLeave={() => setHoverRating(0)}
+            className="p-1 transition-transform hover:scale-110"
+          >
+            <FiStar
+              size={28}
+              className={`transition-colors ${
+                star <= (hoverRating || formData.rating)
+                  ? 'text-yellow-400 fill-yellow-400'
+                  : 'text-gray-500'
+              }`}
+            />
+          </button>
+        ))}
+      </div>
+    );
+  };
+
 
 
   const renderStars = (rating: number) => {
@@ -115,7 +192,127 @@ export default function ProductReviews({ productId, productName }: ProductReview
             </div>
           </div>
         </div>
+        
+        {/* Write Review Button */}
+        {!showForm && !submitSuccess && (
+          <button
+            onClick={() => setShowForm(true)}
+            className="btn-primary flex items-center gap-2"
+          >
+            <FiEdit3 size={18} />
+            {t('product.reviews.writeReview', 'Write a Review')}
+          </button>
+        )}
       </div>
+
+      {/* Success Message */}
+      {submitSuccess && (
+        <div className="bg-green-500/20 border border-green-500/50 rounded-xl p-4 flex items-center gap-3">
+          <FiCheckCircle className="text-green-400 flex-shrink-0" size={24} />
+          <div>
+            <p className="text-green-400 font-medium">
+              {t('product.reviews.thankYou', 'Thank you for your review!')}
+            </p>
+            <p className="text-green-400/70 text-sm">
+              {t('product.reviews.pending', 'Your review is pending moderation and will appear shortly.')}
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Review Form */}
+      {showForm && (
+        <ScrollAnimation animation="fadeIn">
+          <form 
+            onSubmit={handleSubmitReview}
+            className="bg-primary/40 border border-gray-700/50 rounded-2xl p-6 space-y-4"
+          >
+            <h4 className="text-lg font-semibold text-white mb-4">
+              {t('product.reviews.shareExperience', 'Share your experience')}
+            </h4>
+            
+            {/* Rating */}
+            <div>
+              <label className="block text-sm font-medium text-text-secondary mb-2">
+                {t('product.reviews.yourRating', 'Your Rating')} *
+              </label>
+              {renderInteractiveStars()}
+            </div>
+            
+            {/* Title */}
+            <div>
+              <label className="block text-sm font-medium text-text-secondary mb-2">
+                {t('product.reviews.reviewTitle', 'Review Title')}
+              </label>
+              <input
+                type="text"
+                value={formData.title}
+                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                placeholder={t('product.reviews.titlePlaceholder', 'Summarize your experience')}
+                className="w-full px-4 py-3 bg-primary/50 border border-gray-700/50 rounded-xl text-white placeholder-text-secondary focus:outline-none focus:border-accent/50 transition-all"
+                maxLength={100}
+              />
+            </div>
+            
+            {/* Comment */}
+            <div>
+              <label className="block text-sm font-medium text-text-secondary mb-2">
+                {t('product.reviews.yourReview', 'Your Review')}
+              </label>
+              <textarea
+                value={formData.comment}
+                onChange={(e) => setFormData({ ...formData, comment: e.target.value })}
+                placeholder={t('product.reviews.commentPlaceholder', 'Tell others about your experience with this product...')}
+                rows={4}
+                className="w-full px-4 py-3 bg-primary/50 border border-gray-700/50 rounded-xl text-white placeholder-text-secondary focus:outline-none focus:border-accent/50 transition-all resize-none"
+                maxLength={1000}
+              />
+              <p className="text-text-secondary text-xs mt-1">
+                {formData.comment.length}/1000
+              </p>
+            </div>
+            
+            {/* Error Message */}
+            {submitError && (
+              <div className="bg-red-500/20 border border-red-500/50 rounded-lg p-3">
+                <p className="text-red-400 text-sm">{submitError}</p>
+              </div>
+            )}
+            
+            {/* Actions */}
+            <div className="flex items-center gap-3 pt-2">
+              <button
+                type="submit"
+                disabled={submitLoading}
+                className="btn-primary flex items-center gap-2 disabled:opacity-50"
+              >
+                {submitLoading ? (
+                  <>
+                    <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    {t('product.reviews.submitting', 'Submitting...')}
+                  </>
+                ) : (
+                  <>
+                    <FiSend size={18} />
+                    {t('product.reviews.submitReview', 'Submit Review')}
+                  </>
+                )}
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setShowForm(false);
+                  setSubmitError('');
+                  setFormData({ rating: 5, title: '', comment: '' });
+                }}
+                className="btn-ghost"
+              >
+                {t('common.cancel', 'Cancel')}
+              </button>
+            </div>
+          </form>
+        </ScrollAnimation>
+      )}
 
       {/* Sort Options */}
       <div className="flex items-center gap-4">

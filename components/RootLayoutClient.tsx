@@ -10,6 +10,7 @@ import AccessibilityPanel from "@/components/AccessibilityPanel";
 import KeyboardShortcuts from "@/components/KeyboardShortcuts";
 import PWAInstallPrompt from "@/components/PWAInstallPrompt";
 import ServiceWorkerRegistration from "@/components/ServiceWorkerRegistration";
+import CartSync from "@/components/CartSync";
 import { ToastProvider } from "@/components/Toast";
 import BackToTop from "@/components/BackToTop";
 
@@ -41,6 +42,7 @@ export default function RootLayoutClient({ children }: { children: React.ReactNo
             )}
             <PWAInstallPrompt />
             <ServiceWorkerRegistration />
+            <CartSync />
           </ToastProvider>
         </AuthProvider>
       </LanguageProvider>

@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import ProductCard from '@/components/ProductCard';
 import MagicBentoCategory from '@/components/MagicBentoCategory';
-import ScrollAnimation, { StaggerAnimation } from '@/components/ScrollAnimation';
+import { ScrollAnimationLazy as ScrollAnimation, StaggerAnimationLazy as StaggerAnimation } from '@/components/ScrollAnimationLazy';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { CountUp } from '@/components/InteractiveElements';
 import QuickViewModal from '@/components/QuickViewModal';
@@ -54,12 +54,12 @@ export default function HomePage({ categories, featuredProducts, topSelling }: H
                 <span className="text-accent text-sm font-medium">Нови продукти всяка седмица</span>
               </div>
               
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-[1.1] tracking-tight">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-[1.1] tracking-tight heading-display heading-glow">
                 {t('home.hero.find', 'НАМЕРЕТЕ')} <span className="liquid-glass-text font-bold">{t('home.hero.perfect', 'ПЕРФЕКТНИТЕ АКСЕСОАРИ')}</span>
                 <br />
                 {t('home.hero.forDevice', 'ЗА ВАШЕТО УСТРОЙСТВО')}
               </h1>
-              <p className="text-text-secondary text-lg mb-10 leading-relaxed max-w-xl">
+              <p className="text-lead mb-10 max-w-xl">
                 {t('home.hero.description', 'Разгледайте нашия разнообразен асортимент от внимателно изработени аксесоари, предназначени да подчертаят личността на вашето устройство.')}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 mb-12">
@@ -129,16 +129,16 @@ export default function HomePage({ categories, featuredProducts, topSelling }: H
       </section>
 
       {/* Featured Categories */}
-      <section className="relative py-20">
+      <section className="relative py-20 section-fade-top">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-accent/5 to-transparent pointer-events-none" />
         <div className="container-custom relative">
           <ScrollAnimation animation="fadeIn">
             <div className="text-center mb-14">
-              <span className="inline-block text-accent text-sm font-medium tracking-wider uppercase mb-3">Категории</span>
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              <span className="text-eyebrow">Категории</span>
+              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 heading-display">
                 {t('home.categories.title', 'Разгледайте нашите категории')}
               </h2>
-              <p className="text-text-secondary max-w-2xl mx-auto">
+              <p className="text-lead max-w-2xl mx-auto">
                 {t('home.categories.description', 'Открийте широка гама от премиум аксесоари за всички ваши устройства')}
               </p>
             </div>
@@ -148,6 +148,11 @@ export default function HomePage({ categories, featuredProducts, topSelling }: H
         </div>
       </section>
 
+      {/* Section Divider */}
+      <div className="container-custom">
+        <div className="divider-glow" />
+      </div>
+
       {/* Featured Products */}
       <section className="relative py-20">
         <div className="absolute inset-0 bg-gradient-to-b from-primary-light/30 via-primary-light/50 to-primary-light/30 pointer-events-none" />
@@ -155,11 +160,11 @@ export default function HomePage({ categories, featuredProducts, topSelling }: H
           <ScrollAnimation animation="fadeIn">
             <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-14 gap-6">
               <div>
-                <span className="inline-block text-accent text-sm font-medium tracking-wider uppercase mb-3">Избрани</span>
-                <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                <span className="text-eyebrow">Избрани</span>
+                <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 heading-display">
                   {t('home.featured.title', 'Препоръчани продукти')}
                 </h2>
-                <p className="text-text-secondary max-w-xl">
+                <p className="text-lead max-w-xl">
                   {t('home.featured.description', 'Открийте нашите най-популярни продукти, които клиентите обичат')}
                 </p>
               </div>
@@ -180,17 +185,22 @@ export default function HomePage({ categories, featuredProducts, topSelling }: H
         </div>
       </section>
 
+      {/* Section Divider */}
+      <div className="container-custom">
+        <div className="divider-gradient" />
+      </div>
+
       {/* Top Selling Products */}
       <section className="relative py-20">
         <div className="container-custom">
           <ScrollAnimation animation="fadeIn">
             <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-14 gap-6">
               <div>
-                <span className="inline-block text-accent text-sm font-medium tracking-wider uppercase mb-3">Топ продажби</span>
-                <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                <span className="text-eyebrow">Топ продажби</span>
+                <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 heading-display">
                   {t('home.topSelling.title', 'Най-продавани')}
                 </h2>
-                <p className="text-text-secondary max-w-xl">
+                <p className="text-lead max-w-xl">
                   {t('home.topSelling.description', 'Най-търсените продукти от нашите клиенти')}
                 </p>
               </div>

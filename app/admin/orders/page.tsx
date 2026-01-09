@@ -1,8 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { FiSearch, FiEye, FiX, FiPackage, FiTruck, FiCheck, FiClock, FiXCircle } from 'react-icons/fi';
 import Image from 'next/image';
+import AdminPagination from '@/components/admin/AdminPagination';
 
 interface Order {
   id: string;
@@ -13,6 +14,10 @@ interface Order {
   deliveryFee: number;
   status: string;
   trackingNumber: string | null;
+  courierService: string | null;
+  estimatedDelivery: string | null;
+  actualDelivery: string | null;
+  adminNotes: string | null;
   notes: string | null;
   createdAt: string;
   user: {
@@ -33,6 +38,21 @@ interface Order {
       slug: string;
     };
   }[];
+  statusHistory?: {
+    id: string;
+    status: string;
+    notes: string | null;
+    createdAt: string;
+    createdBy: string | null;
+  }[];
+}
+
+interface PaginatedResponse {
+  orders: Order[];
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
 }
 
 const statusColors = {
@@ -52,27 +72,55 @@ const statusIcons = {
 };
 
 export default function AdminOrders() {
-  const [orders, setOrders] = useState<Order[]>([]);
+  const [data, setData] = useState<PaginatedResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const [debouncedSearch, setDebouncedSearch] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
   const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const [showModal, setShowModal] = useState(false);
   const [statusFilter, setStatusFilter] = useState('ALL');
 
+  // Debounce search
   useEffect(() => {
-    fetchOrders();
-  }, []);
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchQuery);
+      setCurrentPage(1); // Reset to first page on search
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [searchQuery]);
 
-  const fetchOrders = async () => {
+  const fetchOrders = useCallback(async () => {
+    setLoading(true);
     try {
-      const response = await fetch('/api/admin/orders');
-      const data = await response.json();
-      setOrders(data.orders || []);
+      const params = new URLSearchParams();
+      params.set('page', currentPage.toString());
+      params.set('limit', '20');
+      if (debouncedSearch) params.set('search', debouncedSearch);
+      if (statusFilter !== 'ALL') params.set('status', statusFilter);
+      
+      const response = await fetch(`/api/admin/orders?${params.toString()}`);
+      const result = await response.json();
+      setData(result);
     } catch (error) {
       console.error('Error fetching orders:', error);
     } finally {
       setLoading(false);
     }
+  }, [currentPage, debouncedSearch, statusFilter]);
+
+  useEffect(() => {
+    fetchOrders();
+  }, [fetchOrders]);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleStatusChange = (status: string) => {
+    setStatusFilter(status);
+    setCurrentPage(1); // Reset to first page on filter change
   };
 
   const handleUpdateStatus = async (orderId: string, newStatus: string, notes?: string) => {
@@ -90,8 +138,9 @@ export default function AdminOrders() {
       if (response.ok) {
         await fetchOrders();
         if (selectedOrder?.id === orderId) {
-          const updatedOrder = orders.find(o => o.id === orderId);
-          if (updatedOrder) setSelectedOrder(updatedOrder);
+          // Refresh the order data
+          const updatedData = data?.orders.find(o => o.id === orderId);
+          if (updatedData) setSelectedOrder(updatedData);
         }
       }
     } catch (error) {
@@ -99,7 +148,7 @@ export default function AdminOrders() {
     }
   };
 
-  const handleUpdateOrder = async (orderId: string, updates: any) => {
+  const handleUpdateOrder = async (orderId: string, updates: Record<string, unknown>) => {
     try {
       const response = await fetch(`/api/admin/orders/${orderId}`, {
         method: 'PUT',
@@ -115,16 +164,10 @@ export default function AdminOrders() {
     }
   };
 
-  const filteredOrders = orders.filter(order => {
-    const matchesSearch = 
-      order.id.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      order.user.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      order.user.email?.toLowerCase().includes(searchQuery.toLowerCase());
-    
-    const matchesStatus = statusFilter === 'ALL' || order.status === statusFilter;
-    
-    return matchesSearch && matchesStatus;
-  });
+  const orders = data?.orders || [];
+  const totalPages = data?.totalPages || 1;
+  const total = data?.total || 0;
+  const limit = data?.limit || 20;
 
   if (loading) {
     return (
@@ -156,7 +199,7 @@ export default function AdminOrders() {
         </div>
         <select
           value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value)}
+          onChange={(e) => handleStatusChange(e.target.value)}
           className="px-4 py-3 bg-background-secondary border border-gray-800 rounded-lg text-white focus:outline-none focus:border-accent"
         >
           <option value="ALL">All Status</option>
@@ -198,7 +241,7 @@ export default function AdminOrders() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-800">
-              {filteredOrders.map((order) => {
+              {orders.map((order) => {
                 const StatusIcon = statusIcons[order.status as keyof typeof statusIcons];
                 return (
                   <tr key={order.id} className="hover:bg-gray-800/30">
@@ -258,6 +301,17 @@ export default function AdminOrders() {
               })}
             </tbody>
           </table>
+        </div>
+        
+        {/* Pagination */}
+        <div className="px-6 pb-4">
+          <AdminPagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            total={total}
+            limit={limit}
+            onPageChange={handlePageChange}
+          />
         </div>
       </div>
 
@@ -380,7 +434,7 @@ export default function AdminOrders() {
               <div>
                 <h3 className="text-lg font-semibold text-white mb-3">Courier Service</h3>
                 <select
-                  defaultValue={(selectedOrder as any).courierService || ''}
+                  defaultValue={selectedOrder.courierService || ''}
                   onChange={(e) => handleUpdateOrder(selectedOrder.id, { courierService: e.target.value })}
                   className="w-full px-4 py-2 bg-background border border-gray-800 rounded-lg text-white focus:outline-none focus:border-accent"
                 >
@@ -398,11 +452,55 @@ export default function AdminOrders() {
                 <h3 className="text-lg font-semibold text-white mb-3">Estimated Delivery Date</h3>
                 <input
                   type="datetime-local"
-                  defaultValue={(selectedOrder as any).estimatedDelivery ? new Date((selectedOrder as any).estimatedDelivery).toISOString().slice(0, 16) : ''}
+                  defaultValue={selectedOrder.estimatedDelivery ? new Date(selectedOrder.estimatedDelivery).toISOString().slice(0, 16) : ''}
                   onBlur={(e) => handleUpdateOrder(selectedOrder.id, { estimatedDelivery: e.target.value ? new Date(e.target.value).toISOString() : null })}
                   className="w-full px-4 py-2 bg-background border border-gray-800 rounded-lg text-white focus:outline-none focus:border-accent"
                 />
               </div>
+
+              {/* Admin Notes */}
+              <div>
+                <h3 className="text-lg font-semibold text-white mb-3">Admin Notes</h3>
+                <textarea
+                  defaultValue={selectedOrder.adminNotes || ''}
+                  onBlur={(e) => handleUpdateOrder(selectedOrder.id, { adminNotes: e.target.value })}
+                  placeholder="Internal notes about this order..."
+                  rows={3}
+                  className="w-full px-4 py-2 bg-background border border-gray-800 rounded-lg text-white focus:outline-none focus:border-accent resize-none"
+                />
+              </div>
+
+              {/* Status History */}
+              {selectedOrder.statusHistory && selectedOrder.statusHistory.length > 0 && (
+                <div>
+                  <h3 className="text-lg font-semibold text-white mb-3">Status History</h3>
+                  <div className="bg-background rounded-lg p-4 max-h-48 overflow-y-auto">
+                    <div className="space-y-3">
+                      {selectedOrder.statusHistory.map((history, index) => {
+                        const HistoryIcon = statusIcons[history.status as keyof typeof statusIcons] || FiClock;
+                        return (
+                          <div key={history.id} className="flex items-start gap-3">
+                            <div className={`p-2 rounded-full ${statusColors[history.status as keyof typeof statusColors] || 'bg-gray-500/20 text-gray-500'}`}>
+                              <HistoryIcon size={14} />
+                            </div>
+                            <div className="flex-1">
+                              <div className="flex items-center gap-2">
+                                <span className="text-white font-medium text-sm">{history.status}</span>
+                                <span className="text-text-secondary text-xs">
+                                  {new Date(history.createdAt).toLocaleString()}
+                                </span>
+                              </div>
+                              {history.notes && (
+                                <p className="text-text-secondary text-sm mt-1">{history.notes}</p>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

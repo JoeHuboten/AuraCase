@@ -9,6 +9,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:ui": "vitest --ui",
     "prisma:generate": "prisma generate",
     "prisma:push": "prisma db push",
     "prisma:studio": "prisma studio",
@@ -28,12 +32,10 @@
     "@stripe/react-stripe-js": "^5.2.0",
     "@tailwindcss/postcss": "^4.1.14",
     "@types/bcryptjs": "^2.4.6",
-    "@types/jsonwebtoken": "^9.0.10",
     "@types/nodemailer": "^7.0.4",
     "bcryptjs": "^3.0.2",
     "gsap": "^3.13.0",
     "jose": "^6.1.0",
-    "jsonwebtoken": "^9.0.2",
     "next": "^16.0.7",
     "nodemailer": "^7.0.10",
     "react": "19.2.0",
@@ -46,12 +48,17 @@
     "zustand": "^5.0.8"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.0.1",
     "@types/node": "^24.7.1",
     "@types/react": "19.2.4",
     "@types/react-dom": "19.2.3",
+    "@vitejs/plugin-react": "^4.3.4",
+    "jsdom": "^25.0.1",
     "prisma": "^6.17.1",
     "tsx": "^4.20.6",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.16"
   },
   "overrides": {
     "@types/react": "19.2.4",

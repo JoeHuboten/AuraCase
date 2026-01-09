@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { FiDownload, FiX, FiSmartphone, FiMonitor } from 'react-icons/fi';
-import ScrollAnimation from './ScrollAnimation';
+import { ScrollAnimationLazy as ScrollAnimation } from './ScrollAnimationLazy';
 
 interface BeforeInstallPromptEvent extends Event {
   prompt(): Promise<void>;

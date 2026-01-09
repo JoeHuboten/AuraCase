@@ -13,12 +13,14 @@ export default function SignUpPage() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
   const { signUp } = useAuth();
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setSuccess(false);
 
     if (password !== confirmPassword) {
       setError('Passwords do not match');
@@ -34,7 +36,12 @@ export default function SignUpPage() {
     const result = await signUp(email, password, name);
 
     if (result.success) {
-      router.push('/');
+      // Check if verification is required
+      if (result.requiresVerification) {
+        setSuccess(true);
+      } else {
+        router.push('/');
+      }
     } else {
       setError(result.error || 'Sign up failed');
     }
@@ -52,12 +59,25 @@ export default function SignUpPage() {
         <div className="bg-gradient-to-br from-primary/80 to-primary backdrop-blur-xl border border-gray-800/50 rounded-2xl p-8 shadow-2xl">
           <h1 className="text-3xl font-bold text-white mb-2">Create Account</h1>
           <p className="text-text-secondary mb-8">Sign up to get started</p>
+          
+          {success && (
+            <div className="bg-green-500/10 border border-green-500/50 rounded-lg p-4 mb-6">
+              <p className="text-green-500 text-sm font-medium mb-2">✓ Registration Successful!</p>
+              <p className="text-green-400 text-sm">
+                Please check your email (<strong>{email}</strong>) to verify your account. 
+                You need to verify your email before you can make purchases.
+              </p>
+            </div>
+          )}
+          
           {error && (
             <div className="bg-red-500/10 border border-red-500/50 rounded-lg p-4 mb-6">
               <p className="text-red-500 text-sm">{error}</p>
             </div>
           )}
-          <form onSubmit={handleSubmit} className="space-y-6">
+          
+          {!success && (
+            <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label htmlFor="name" className="block text-white mb-2 font-medium">Name</label>
               <div className="relative">
@@ -90,11 +110,25 @@ export default function SignUpPage() {
               {loading ? 'Creating account...' : 'Sign Up'}
             </button>
           </form>
+          )}
+          
           <div className="mt-6 text-center">
-            <p className="text-text-secondary">
-              Already have an account?{' '}
-              <Link href="/auth/signin" className="text-accent hover:text-accent-light transition-colors">Sign in</Link>
-            </p>
+            {success ? (
+              <p className="text-text-secondary">
+                Didn't receive the email?{' '}
+                <button 
+                  onClick={() => setSuccess(false)} 
+                  className="text-accent hover:text-accent-light transition-colors"
+                >
+                  Try again
+                </button>
+              </p>
+            ) : (
+              <p className="text-text-secondary">
+                Already have an account?{' '}
+                <Link href="/auth/signin" className="text-accent hover:text-accent-light transition-colors">Sign in</Link>
+              </p>
+            )}
           </div>
         </div>
       </div>
