@@ -569,6 +569,350 @@ AURACASE - ${isBulgarian ? 'Премиум мобилни аксесоари' : 
     return { subject, html, text };
   },
 
+  // Newsletter Promo Email
+  newsletterPromo: (data: {
+    subject: string;
+    message: string;
+    email: string;
+    promoCode: string;
+    discountPercent: number;
+    expiresAt: Date;
+    language?: 'bg' | 'en';
+  }): EmailTemplate => {
+    const isBulgarian = data.language === 'bg';
+    
+    const subject = data.subject;
+
+    const html = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; background: #f4f4f4; margin: 0; padding: 0; }
+    .container { max-width: 680px; margin: 24px auto; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 6px 30px rgba(20,30,60,0.08); }
+    .header { background: linear-gradient(90deg, #667eea, #764ba2); color: #fff; padding: 32px; text-align: center; }
+    .content { padding: 28px; color: #1f2937; line-height: 1.6; }
+    .message { font-size: 18px; margin: 16px 0; white-space: pre-wrap; }
+    .promo-section { text-align: center; margin: 32px 0; padding: 24px; background: linear-gradient(135deg, #667eea10, #764ba220); border-radius: 12px; }
+    .code-box { display: inline-block; background: #f3f4f6; border: 2px dashed #667eea; padding: 16px 24px; border-radius: 8px; font-weight: 700; letter-spacing: 2px; margin: 16px 0; font-size: 24px; color: #667eea; }
+    .cta { display: inline-block; margin-top: 18px; background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-weight: 600; transition: transform 0.2s; }
+    .cta:hover { transform: scale(1.05); }
+    .footer { background: #f8fafc; padding: 20px; font-size: 13px; color: #6b7280; text-align: center; }
+    .small { font-size: 12px; color: #9ca3af; margin-top: 20px; }
+    .highlight { color: #667eea; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1 style="margin: 0; font-size: 28px;">🎉 AURACASE</h1>
+      <div style="opacity: 0.95; margin-top: 8px; font-size: 18px;">${data.subject}</div>
+    </div>
+    
+    <div class="content">
+      <p>${isBulgarian ? 'Здравейте' : 'Hello'},</p>
+      
+      <div class="message">${data.message}</div>
+      
+      <div class="promo-section">
+        <p style="font-size: 16px; margin-bottom: 12px;">
+          ${isBulgarian ? 'Вашият персонален промо код за' : 'Your personal promo code for'}
+          <span class="highlight">${data.discountPercent}% ${isBulgarian ? 'отстъпка' : 'discount'}</span>:
+        </p>
+        <div class="code-box">${data.promoCode}</div>
+        <p style="font-size: 14px; color: #6b7280; margin-top: 12px;">
+          ${isBulgarian ? 'Валиден еднократно до' : 'Valid once until'} 
+          <strong>${new Date(data.expiresAt).toLocaleDateString(isBulgarian ? 'bg-BG' : 'en-US')}</strong>
+        </p>
+      </div>
+      
+      <div style="text-align: center;">
+        <a class="cta" href="${SITE_URL}/shop">
+          ${isBulgarian ? '🛒 Разгледай магазина' : '🛒 Shop Now'}
+        </a>
+      </div>
+      
+      <p class="small">
+        ${isBulgarian ? 'Ако искате да се отпишете, посетете' : 'To unsubscribe, visit'}
+        <a href="${SITE_URL}/newsletter/unsubscribe?email=${encodeURIComponent(data.email)}" style="color: #667eea;">
+          ${isBulgarian ? 'страницата за отписване' : 'unsubscribe page'}
+        </a>.
+      </p>
+    </div>
+    
+    <div class="footer">
+      <p style="margin: 0;">© ${new Date().getFullYear()} AURACASE</p>
+      <p style="margin: 4px 0 0;">${isBulgarian ? 'Премиум мобилни аксесоари' : 'Premium Mobile Accessories'}</p>
+    </div>
+  </div>
+</body>
+</html>
+    `.trim();
+
+    const text = `
+${data.subject}
+
+${isBulgarian ? 'Здравейте' : 'Hello'},
+
+${data.message}
+
+${isBulgarian ? 'Вашият код:' : 'Your code:'} ${data.promoCode}
+${data.discountPercent}% ${isBulgarian ? 'отстъпка — валиден до' : 'discount — valid until'} ${new Date(data.expiresAt).toLocaleDateString(isBulgarian ? 'bg-BG' : 'en-US')}
+
+${isBulgarian ? 'Пазарувай сега:' : 'Shop now:'} ${SITE_URL}/shop
+
+${isBulgarian ? 'За отписване:' : 'To unsubscribe:'} ${SITE_URL}/newsletter/unsubscribe?email=${encodeURIComponent(data.email)}
+
+AURACASE - ${isBulgarian ? 'Премиум мобилни аксесоари' : 'Premium Mobile Accessories'}
+    `.trim();
+
+    return { subject, html, text };
+  },
+
+  // Newsletter Update Email
+  newsletterUpdate: (data: {
+    subject: string;
+    message: string;
+    email: string;
+    imageUrl?: string;
+    ctaText?: string;
+    ctaUrl?: string;
+    language?: 'bg' | 'en';
+  }): EmailTemplate => {
+    const isBulgarian = data.language === 'bg';
+    
+    const subject = data.subject;
+
+    const html = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; background: #f4f4f4; margin: 0; padding: 0; }
+    .container { max-width: 680px; margin: 24px auto; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 6px 30px rgba(20,30,60,0.08); }
+    .header { background: linear-gradient(90deg, #667eea, #764ba2); color: #fff; padding: 32px; text-align: center; }
+    .content { padding: 28px; color: #1f2937; line-height: 1.6; }
+    .message { font-size: 16px; margin: 16px 0; white-space: pre-wrap; }
+    .image-section { margin: 24px 0; text-align: center; }
+    .image-section img { max-width: 100%; height: auto; border-radius: 8px; }
+    .cta { display: inline-block; margin-top: 24px; background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-weight: 600; transition: transform 0.2s; }
+    .cta:hover { transform: scale(1.05); }
+    .footer { background: #f8fafc; padding: 20px; font-size: 13px; color: #6b7280; text-align: center; }
+    .small { font-size: 12px; color: #9ca3af; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1 style="margin: 0; font-size: 28px;">📰 AURACASE</h1>
+      <div style="opacity: 0.95; margin-top: 8px; font-size: 18px;">${isBulgarian ? 'Новини и актуализации' : 'News & Updates'}</div>
+    </div>
+    
+    <div class="content">
+      <h2 style="color: #667eea; margin-top: 0;">${data.subject}</h2>
+      
+      <p>${isBulgarian ? 'Здравейте' : 'Hello'},</p>
+      
+      <div class="message">${data.message}</div>
+      
+      ${data.imageUrl ? `
+        <div class="image-section">
+          <img src="${data.imageUrl}" alt="${data.subject}" />
+        </div>
+      ` : ''}
+      
+      ${data.ctaText && data.ctaUrl ? `
+        <div style="text-align: center; margin: 32px 0;">
+          <a class="cta" href="${data.ctaUrl}">
+            ${data.ctaText}
+          </a>
+        </div>
+      ` : ''}
+      
+      <p style="margin-top: 32px; padding-top: 24px; border-top: 1px solid #e5e7eb;">
+        ${isBulgarian ? 'Благодарим, че сте част от общността на AuraCase!' : 'Thank you for being part of the AuraCase community!'}
+      </p>
+      
+      <p class="small">
+        ${isBulgarian ? 'Ако искате да се отпишете, посетете' : 'To unsubscribe, visit'}
+        <a href="${SITE_URL}/newsletter/unsubscribe?email=${encodeURIComponent(data.email)}" style="color: #667eea;">
+          ${isBulgarian ? 'страницата за отписване' : 'unsubscribe page'}
+        </a>.
+      </p>
+    </div>
+    
+    <div class="footer">
+      <p style="margin: 0;">© ${new Date().getFullYear()} AURACASE</p>
+      <p style="margin: 4px 0 0;">${isBulgarian ? 'Премиум мобилни аксесоари' : 'Premium Mobile Accessories'}</p>
+    </div>
+  </div>
+</body>
+</html>
+    `.trim();
+
+    const text = `
+${data.subject}
+
+${isBulgarian ? 'Здравейте' : 'Hello'},
+
+${data.message}
+
+${data.ctaText && data.ctaUrl ? `${data.ctaText}: ${data.ctaUrl}` : ''}
+
+${isBulgarian ? 'Благодарим, че сте част от общността на AuraCase!' : 'Thank you for being part of the AuraCase community!'}
+
+${isBulgarian ? 'За отписване:' : 'To unsubscribe:'} ${SITE_URL}/newsletter/unsubscribe?email=${encodeURIComponent(data.email)}
+
+AURACASE - ${isBulgarian ? 'Премиум мобилни аксесоари' : 'Premium Mobile Accessories'}
+    `.trim();
+
+    return { subject, html, text };
+  },
+
+  // Newsletter Product Launch Email
+  newsletterProductLaunch: (data: {
+    productName: string;
+    productDescription: string;
+    productPrice: number;
+    productImage: string;
+    productUrl: string;
+    email: string;
+    launchDiscount?: number;
+    language?: 'bg' | 'en';
+  }): EmailTemplate => {
+    const isBulgarian = data.language === 'bg';
+    const currency = isBulgarian ? 'лв' : 'BGN';
+    
+    const subject = isBulgarian 
+      ? `🚀 Нов продукт: ${data.productName}!`
+      : `🚀 New Product Launch: ${data.productName}!`;
+
+    const html = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; background: #f4f4f4; margin: 0; padding: 0; }
+    .container { max-width: 680px; margin: 24px auto; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 6px 30px rgba(20,30,60,0.08); }
+    .header { background: linear-gradient(90deg, #667eea, #764ba2); color: #fff; padding: 32px; text-align: center; }
+    .content { padding: 28px; color: #1f2937; line-height: 1.6; }
+    .product-section { background: #f9fafb; border-radius: 12px; padding: 24px; margin: 24px 0; }
+    .product-image { width: 100%; max-width: 400px; height: auto; border-radius: 8px; margin: 0 auto 20px; display: block; }
+    .product-title { font-size: 24px; font-weight: 700; color: #111827; margin: 0 0 12px; }
+    .product-description { font-size: 16px; color: #4b5563; margin: 12px 0; }
+    .price-section { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 20px 0; }
+    .original-price { font-size: 18px; color: #9ca3af; text-decoration: line-through; }
+    .current-price { font-size: 28px; font-weight: 700; color: #667eea; }
+    .discount-badge { display: inline-block; background: #ef4444; color: white; padding: 6px 12px; border-radius: 6px; font-size: 14px; font-weight: 600; }
+    .cta { display: inline-block; margin-top: 20px; background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; padding: 14px 32px; border-radius: 8px; text-decoration: none; font-weight: 600; transition: transform 0.2s; }
+    .cta:hover { transform: scale(1.05); }
+    .features { list-style: none; padding: 0; margin: 20px 0; }
+    .features li { padding: 8px 0; padding-left: 28px; position: relative; }
+    .features li:before { content: "✓"; position: absolute; left: 0; color: #10b981; font-weight: bold; font-size: 18px; }
+    .footer { background: #f8fafc; padding: 20px; font-size: 13px; color: #6b7280; text-align: center; }
+    .small { font-size: 12px; color: #9ca3af; margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1 style="margin: 0; font-size: 28px;">🚀 ${isBulgarian ? 'Ново в AURACASE' : 'New at AURACASE'}</h1>
+      <div style="opacity: 0.95; margin-top: 8px; font-size: 18px;">
+        ${isBulgarian ? 'Ексклузивен продукт за вас!' : 'Exclusive Product for You!'}
+      </div>
+    </div>
+    
+    <div class="content">
+      <p>${isBulgarian ? 'Здравейте' : 'Hello'},</p>
+      
+      <p style="font-size: 18px; font-weight: 500;">
+        ${isBulgarian 
+          ? 'Развълнувани сме да представим нашия най-нов продукт!' 
+          : 'We\'re excited to introduce our latest product!'}
+      </p>
+      
+      <div class="product-section">
+        <img src="${data.productImage}" alt="${data.productName}" class="product-image" />
+        
+        <h2 class="product-title">${data.productName}</h2>
+        
+        <p class="product-description">${data.productDescription}</p>
+        
+        <div class="price-section">
+          ${data.launchDiscount ? `
+            <span class="original-price">${(data.productPrice / (1 - data.launchDiscount / 100)).toFixed(2)} ${currency}</span>
+            <span class="current-price">${data.productPrice.toFixed(2)} ${currency}</span>
+            <span class="discount-badge">-${data.launchDiscount}%</span>
+          ` : `
+            <span class="current-price">${data.productPrice.toFixed(2)} ${currency}</span>
+          `}
+        </div>
+        
+        ${data.launchDiscount ? `
+          <p style="text-align: center; color: #ef4444; font-weight: 600; margin: 16px 0;">
+            ⚡ ${isBulgarian ? 'Специална цена при лансиране!' : 'Special Launch Price!'}
+          </p>
+        ` : ''}
+        
+        <div style="text-align: center;">
+          <a class="cta" href="${data.productUrl}">
+            ${isBulgarian ? '🛒 Разгледай продукта' : '🛒 View Product'}
+          </a>
+        </div>
+      </div>
+      
+      <p style="margin-top: 24px;">
+        ${isBulgarian 
+          ? 'Бъдете сред първите, които ще притежават този невероятен продукт!' 
+          : 'Be among the first to own this amazing product!'}
+      </p>
+      
+      <p class="small" style="margin-top: 32px; padding-top: 24px; border-top: 1px solid #e5e7eb;">
+        ${isBulgarian ? 'Ако искате да се отпишете, посетете' : 'To unsubscribe, visit'}
+        <a href="${SITE_URL}/newsletter/unsubscribe?email=${encodeURIComponent(data.email)}" style="color: #667eea;">
+          ${isBulgarian ? 'страницата за отписване' : 'unsubscribe page'}
+        </a>.
+      </p>
+    </div>
+    
+    <div class="footer">
+      <p style="margin: 0;">© ${new Date().getFullYear()} AURACASE</p>
+      <p style="margin: 4px 0 0;">${isBulgarian ? 'Премиум мобилни аксесоари' : 'Premium Mobile Accessories'}</p>
+    </div>
+  </div>
+</body>
+</html>
+    `.trim();
+
+    const text = `
+${isBulgarian ? 'Ново в AURACASE!' : 'New at AURACASE!'}
+
+${isBulgarian ? 'Здравейте' : 'Hello'},
+
+${isBulgarian ? 'Представяме ви:' : 'Introducing:'} ${data.productName}
+
+${data.productDescription}
+
+${isBulgarian ? 'Цена:' : 'Price:'} ${data.productPrice.toFixed(2)} ${currency}${data.launchDiscount ? ` (-${data.launchDiscount}% ${isBulgarian ? 'при лансиране' : 'launch discount'})` : ''}
+
+${isBulgarian ? 'Разгледайте продукта:' : 'View product:'} ${data.productUrl}
+
+${isBulgarian ? 'Бъдете сред първите, които ще притежават този невероятен продукт!' : 'Be among the first to own this amazing product!'}
+
+${isBulgarian ? 'За отписване:' : 'To unsubscribe:'} ${SITE_URL}/newsletter/unsubscribe?email=${encodeURIComponent(data.email)}
+
+AURACASE - ${isBulgarian ? 'Премиум мобилни аксесоари' : 'Premium Mobile Accessories'}
+    `.trim();
+
+    return { subject, html, text };
+  },
+
   // Email Verification
   emailVerification: (data: {
     name: string;
@@ -869,5 +1213,29 @@ export async function sendEmailVerificationSuccess(
   data: Parameters<typeof emailTemplates.emailVerificationSuccess>[0]
 ) {
   const template = emailTemplates.emailVerificationSuccess(data);
+  return sendEmail(email, template);
+}
+
+export async function sendNewsletterPromo(
+  email: string,
+  data: Parameters<typeof emailTemplates.newsletterPromo>[0]
+) {
+  const template = emailTemplates.newsletterPromo(data);
+  return sendEmail(email, template);
+}
+
+export async function sendNewsletterUpdate(
+  email: string,
+  data: Parameters<typeof emailTemplates.newsletterUpdate>[0]
+) {
+  const template = emailTemplates.newsletterUpdate(data);
+  return sendEmail(email, template);
+}
+
+export async function sendNewsletterProductLaunch(
+  email: string,
+  data: Parameters<typeof emailTemplates.newsletterProductLaunch>[0]
+) {
+  const template = emailTemplates.newsletterProductLaunch(data);
   return sendEmail(email, template);
 }

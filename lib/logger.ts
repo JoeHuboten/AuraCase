@@ -47,7 +47,7 @@ const formatLog = (entry: LogEntry): string => {
       message,
       context,
       requestId,
-      ...(data && { data }),
+      ...(data && typeof data === 'object' ? { data } : {}),
     });
   }
   

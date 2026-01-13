@@ -50,10 +50,6 @@ describe('Auth Utils', () => {
           throw new Error('CRITICAL: JWT_SECRET environment variable is required in production');
         }
       }).toThrow('CRITICAL: JWT_SECRET environment variable is required in production');
-      
-      // Restore
-      process.env.NODE_ENV = originalEnv;
-      process.env.JWT_SECRET = originalSecret;
     });
 
     it('should require minimum 32 character secret in production', () => {

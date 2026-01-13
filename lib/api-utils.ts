@@ -80,14 +80,14 @@ export function withRequestTracing(
       // Handle Zod validation errors
       if (error instanceof ZodError) {
         logger.warn('Validation error', { 
-          errors: error.errors,
+          errors: error.issues,
           duration: `${duration}ms` 
         });
         return errorResponse(
           'Validation error',
           requestId,
           400,
-          error.errors
+          error.issues
         );
       }
       
