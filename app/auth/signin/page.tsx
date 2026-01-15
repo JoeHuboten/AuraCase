@@ -29,6 +29,8 @@ export default function SignInPage() {
       const result = await signIn(email, password, rememberMe);
 
       if (result.success) {
+        // Force refresh to sync server and client state after login
+        router.refresh();
         router.push('/');
       } else {
         setError(result.error || 'Sign in failed');
