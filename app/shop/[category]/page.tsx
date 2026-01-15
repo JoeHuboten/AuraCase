@@ -1,8 +1,11 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { getCategoryBySlug, getProductsByCategory, getCategories } from '@/lib/database';
+import { getCategoryBySlug, getProductsByCategory } from '@/lib/database';
 import ProductCard from '@/components/ProductCard';
+
+// Force dynamic rendering (no static generation at build time)
+export const dynamic = 'force-dynamic';
 
 interface CategoryPageProps {
   params: Promise<{
@@ -100,11 +103,4 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
       </div>
     </div>
   );
-}
-
-export async function generateStaticParams() {
-  const categories = await getCategories();
-  return categories.map((category) => ({
-    category: category.slug,
-  }));
 }
