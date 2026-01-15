@@ -1,6 +1,7 @@
 import { getCategories, getFeaturedProducts, getTopSelling } from '@/lib/database';
 import HomePage from '@/components/HomePage';
 import type { Metadata } from 'next';
+import type { Product, Category } from '@/types';
 
 export const metadata: Metadata = {
   title: "AURACASE - Премиум мобилни аксесоари | Защитни калъфи, безжично зареждане, слушалки",
@@ -77,11 +78,15 @@ export const metadata: Metadata = {
 
 export default async function Home() {
   try {
-    const [categories, featuredProducts, topSelling] = await Promise.all([
+    const [categories, featuredProductsRaw, topSellingRaw] = await Promise.all([
       getCategories(),
       getFeaturedProducts(4),
       getTopSelling(4)
     ]);
+
+    // Cast Prisma results to our Product type (specifications JsonValue → ProductSpecifications)
+    const featuredProducts = featuredProductsRaw as unknown as Product[];
+    const topSelling = topSellingRaw as unknown as Product[];
 
     console.log('Home page data:', { categories: categories?.length, featuredProducts: featuredProducts?.length, topSelling: topSelling?.length });
 

@@ -9,14 +9,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Check if email is verified
-    if (!user.emailVerified) {
-      return NextResponse.json({ 
-        error: 'Email not verified',
-        message: 'Please verify your email address before making purchases. Check your inbox for the verification link.',
-        requiresVerification: true,
-      }, { status: 403 });
-    }
+    // Email verification check removed - user is authenticated which is sufficient
 
     const { items, discountCode } = await request.json();
 

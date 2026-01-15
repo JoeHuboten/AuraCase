@@ -36,7 +36,7 @@ export const GET = requireAdmin(async (request: NextRequest) => {
     }
     
     if (status && status !== 'ALL') {
-      where.status = status;
+      where.status = status as import('@prisma/client').OrderStatus;
     }
     
     const [orders, total] = await Promise.all([

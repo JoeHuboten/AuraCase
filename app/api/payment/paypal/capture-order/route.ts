@@ -126,12 +126,12 @@ export async function POST(request: NextRequest) {
       const addressRecord = await prisma.address.create({
         data: {
           userId: user.id,
-          type: 'SHIPPING',
           firstName: shippingAddress.firstName,
           lastName: shippingAddress.lastName,
           phone: shippingAddress.phone || '',
-          street: shippingAddress.address,
+          address1: shippingAddress.address,
           city: shippingAddress.city,
+          state: shippingAddress.state || '',
           postalCode: shippingAddress.postalCode,
           country: shippingAddress.country || 'България',
           isDefault: true,

@@ -27,6 +27,7 @@ vi.mock('next/image', () => ({
 vi.stubEnv('NODE_ENV', 'test');
 
 // Clean up after each test
+import { afterEach } from 'vitest';
 afterEach(() => {
   vi.clearAllMocks();
 });

@@ -4,14 +4,6 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizeCss: true,
     optimizePackageImports: ['react-icons', 'zustand', 'gsap'],
-    turbo: {
-      rules: {
-        '*.svg': {
-          loaders: ['@svgr/webpack'],
-          as: '*.js',
-        },
-      },
-    },
   },
   // Enable static generation where possible
   output: 'standalone',
@@ -54,8 +46,6 @@ const nextConfig: NextConfig = {
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     unoptimized: false,
-    quality: 85,
-    qualities: [50, 75, 85, 90, 100],
   },
   compress: true,
   poweredByHeader: false,

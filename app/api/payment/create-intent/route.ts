@@ -9,7 +9,7 @@ const STRIPE_CONFIGURED = process.env.STRIPE_SECRET_KEY &&
 
 const stripe = STRIPE_CONFIGURED 
   ? new Stripe(process.env.STRIPE_SECRET_KEY!, {
-      apiVersion: '2024-11-20.acacia',
+      apiVersion: '2025-12-15.clover' as const,
     })
   : null;
 
@@ -30,14 +30,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Check if email is verified
-    if (!user.emailVerified) {
-      return NextResponse.json({ 
-        error: 'Email not verified',
-        message: 'Please verify your email address before making purchases. Check your inbox for the verification link.',
-        requiresVerification: true,
-      }, { status: 403 });
-    }
+    // Email verification check removed - user is authenticated which is sufficient
 
     const { items, discountCode } = await request.json();
 

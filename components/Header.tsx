@@ -192,7 +192,7 @@ const Header = () => {
                             <div className="text-text-secondary text-xs mt-0.5 flex items-center gap-2">
                               <span className="text-accent font-semibold">${product.price.toFixed(2)}</span>
                               <span className="text-text-secondary/50">•</span>
-                              <span>{product.category.name}</span>
+                              <span>{product.category?.name}</span>
                             </div>
                           </div>
                         </button>

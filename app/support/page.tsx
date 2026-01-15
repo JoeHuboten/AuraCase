@@ -4,9 +4,11 @@ import { FiMail, FiPhone, FiMessageCircle, FiClock, FiHelpCircle, FiSearch } fro
 import ScrollAnimation, { StaggerAnimation } from '@/components/ScrollAnimation';
 import Head from 'next/head';
 import { useState } from 'react';
+import { useChatWidget } from '@/components/ChatWidget';
 
 export default function SupportPage() {
   const [selectedCategory, setSelectedCategory] = useState('general');
+  const { openChat } = useChatWidget();
 
   const structuredData = {
     "@context": "https://schema.org",
@@ -188,7 +190,10 @@ export default function SupportPage() {
               <p className="text-gray-300 mb-4 group-hover:text-gray-200 transition-colors duration-300">
                 Безплатен онлайн чат с нашия екип
               </p>
-              <button className="bg-accent text-white px-6 py-2 rounded-lg hover:bg-accent-light hover:scale-105 hover:shadow-lg hover:shadow-accent/30 transition-all duration-300 font-medium transform active:scale-95">
+              <button 
+                onClick={openChat}
+                className="bg-accent text-white px-6 py-2 rounded-lg hover:bg-accent-light hover:scale-105 hover:shadow-lg hover:shadow-accent/30 transition-all duration-300 font-medium transform active:scale-95"
+              >
                 Започнете чат
               </button>
             </div>

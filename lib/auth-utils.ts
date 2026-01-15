@@ -3,11 +3,16 @@ import { SignJWT, jwtVerify } from 'jose';
 import { prisma } from './database';
 import bcrypt from 'bcryptjs';
 
-// Enforce JWT_SECRET - CRITICAL: App will not start without this in production
+// Lazy-evaluated JWT secret - only checked at runtime, not build time
+let _jwtSecret: Uint8Array | null = null;
+
 const getJwtSecret = (): Uint8Array => {
+  // Return cached value if already computed
+  if (_jwtSecret) return _jwtSecret;
+  
   const secret = process.env.JWT_SECRET;
   
-  // In production, JWT_SECRET must be set - fail fast
+  // In production, JWT_SECRET must be set - fail fast at runtime (not build time)
   if (process.env.NODE_ENV === 'production') {
     if (!secret) {
       throw new Error('CRITICAL: JWT_SECRET environment variable is required in production. Application startup aborted.');
@@ -22,13 +27,13 @@ const getJwtSecret = (): Uint8Array => {
     if (typeof window === 'undefined') {
       console.warn('\x1b[33m⚠️  JWT_SECRET not set. Using development fallback. DO NOT deploy without setting JWT_SECRET!\x1b[0m');
     }
-    return new TextEncoder().encode('dev-only-secret-key-do-not-use-in-production-minimum-32-chars');
+    _jwtSecret = new TextEncoder().encode('dev-only-secret-key-do-not-use-in-production-minimum-32-chars');
+    return _jwtSecret;
   }
   
-  return new TextEncoder().encode(secret);
+  _jwtSecret = new TextEncoder().encode(secret);
+  return _jwtSecret;
 };
-
-const JWT_SECRET = getJwtSecret();
 
 export async function hashPassword(password: string): Promise<string> {
   return bcrypt.hash(password, 10);
@@ -42,12 +47,12 @@ export async function createToken(userId: string, email: string, role: string): 
   return new SignJWT({ userId, email, role })
     .setProtectedHeader({ alg: 'HS256' })
     .setExpirationTime('7d')
-    .sign(JWT_SECRET);
+    .sign(getJwtSecret());
 }
 
 export async function verifyToken(token: string) {
   try {
-    const verified = await jwtVerify(token, JWT_SECRET);
+    const verified = await jwtVerify(token, getJwtSecret());
     return verified.payload;
   } catch (error) {
     return null;
