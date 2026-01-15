@@ -109,7 +109,7 @@ const QuickViewModal = ({ product, isOpen, onClose }: QuickViewModalProps) => {
 
   return (
     <div 
-      className={`fixed inset-0 z-[100] flex items-center justify-center p-4 transition-all duration-300 ${
+      className={`fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 transition-all duration-300 ${
         isAnimating ? 'opacity-100' : 'opacity-0'
       }`}
     >
@@ -122,25 +122,26 @@ const QuickViewModal = ({ product, isOpen, onClose }: QuickViewModalProps) => {
       {/* Modal */}
       <div 
         className={`
-          relative w-full max-w-4xl max-h-[90vh] overflow-hidden
+          relative w-full sm:max-w-4xl h-[90vh] sm:h-auto sm:max-h-[90vh] overflow-hidden
           bg-gradient-to-br from-primary-light via-primary to-primary-light/80
-          backdrop-blur-xl rounded-3xl border border-white/10
+          backdrop-blur-xl rounded-t-2xl sm:rounded-3xl border border-white/10
           shadow-2xl shadow-black/50
           transition-all duration-300
-          ${isAnimating ? 'scale-100 translate-y-0' : 'scale-95 translate-y-4'}
+          ${isAnimating ? 'translate-y-0 sm:scale-100' : 'translate-y-full sm:translate-y-4 sm:scale-95'}
         `}
       >
         {/* Close button */}
         <button
           onClick={handleClose}
-          className="absolute top-4 right-4 z-10 p-2 rounded-xl bg-white/10 hover:bg-white/20 transition-colors"
+          className="absolute top-3 right-3 sm:top-4 sm:right-4 z-20 p-2.5 rounded-xl bg-white/10 hover:bg-white/20 transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
+          aria-label="Close modal"
         >
           <FiX className="w-5 h-5 text-white" />
         </button>
 
-        <div className="grid md:grid-cols-2 gap-0">
+        <div className="grid md:grid-cols-2 gap-0 h-full overflow-y-auto sm:overflow-visible">
           {/* Image Section */}
-          <div className="relative aspect-square bg-gradient-to-br from-gray-800/50 to-gray-900/50 overflow-hidden">
+          <div className="relative aspect-square sm:aspect-auto min-h-[250px] sm:min-h-0 bg-gradient-to-br from-gray-800/50 to-gray-900/50 overflow-hidden">
             <Image
               src={allImages[selectedImage] || '/placeholder.svg'}
               alt={product.name}
@@ -165,12 +166,12 @@ const QuickViewModal = ({ product, isOpen, onClose }: QuickViewModalProps) => {
                 </button>
 
                 {/* Thumbnails */}
-                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+                <div className="absolute bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 flex gap-1.5 sm:gap-2">
                   {allImages.slice(0, 5).map((img: string, idx: number) => (
                     <button
                       key={idx}
                       onClick={() => setSelectedImage(idx)}
-                      className={`w-12 h-12 rounded-lg overflow-hidden border-2 transition-all ${
+                      className={`w-10 h-10 sm:w-12 sm:h-12 rounded-lg overflow-hidden border-2 transition-all ${
                         selectedImage === idx 
                           ? 'border-accent scale-110' 
                           : 'border-white/20 hover:border-white/40'
@@ -192,7 +193,7 @@ const QuickViewModal = ({ product, isOpen, onClose }: QuickViewModalProps) => {
           </div>
 
           {/* Content Section */}
-          <div className="p-6 md:p-8 flex flex-col overflow-y-auto max-h-[90vh] md:max-h-none">
+          <div className="p-4 sm:p-6 md:p-8 flex flex-col overflow-y-auto max-h-[50vh] sm:max-h-[90vh] md:max-h-none">
             {/* Category */}
             {product.category && (
               <span className="text-accent text-sm font-medium tracking-wide uppercase mb-2">
@@ -201,18 +202,18 @@ const QuickViewModal = ({ product, isOpen, onClose }: QuickViewModalProps) => {
             )}
 
             {/* Title */}
-            <h2 className="text-2xl md:text-3xl font-bold text-white mb-4 leading-tight">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-3 sm:mb-4 leading-tight">
               {product.name}
             </h2>
 
             {/* Rating */}
             {product.rating && product.reviews && (
-              <div className="flex items-center gap-2 mb-4">
+              <div className="flex items-center gap-2 mb-3 sm:mb-4">
                 <div className="flex items-center gap-0.5">
                   {[...Array(5)].map((_, i) => (
                     <FiStar
                       key={i}
-                      className={`w-4 h-4 ${
+                      className={`w-3.5 h-3.5 sm:w-4 sm:h-4 ${
                         i < Math.floor(product.rating!) 
                           ? 'text-amber-400 fill-amber-400' 
                           : 'text-gray-600'
@@ -220,15 +221,15 @@ const QuickViewModal = ({ product, isOpen, onClose }: QuickViewModalProps) => {
                     />
                   ))}
                 </div>
-                <span className="text-text-secondary text-sm">
+                <span className="text-text-secondary text-xs sm:text-sm">
                   {product.rating.toFixed(1)} ({product.reviews} отзива)
                 </span>
               </div>
             )}
 
             {/* Price */}
-            <div className="flex items-center gap-4 mb-6">
-              <span className="text-3xl font-bold text-white">
+            <div className="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
+              <span className="text-2xl sm:text-3xl font-bold text-white">
                 {formatPrice(product.price)}
               </span>
               {product.oldPrice && (
@@ -246,19 +247,19 @@ const QuickViewModal = ({ product, isOpen, onClose }: QuickViewModalProps) => {
             )}
 
             {/* Quantity */}
-            <div className="flex items-center gap-4 mb-6">
+            <div className="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
               <span className="text-text-secondary text-sm">Количество:</span>
-              <div className="flex items-center gap-3 bg-white/5 rounded-xl p-1">
+              <div className="flex items-center gap-2 sm:gap-3 bg-white/5 rounded-xl p-1">
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="p-2 rounded-lg hover:bg-white/10 transition-colors"
+                  className="p-2.5 sm:p-2 rounded-lg hover:bg-white/10 transition-colors min-w-[44px] min-h-[44px] sm:min-w-0 sm:min-h-0 flex items-center justify-center"
                 >
                   <FiMinus className="w-4 h-4 text-white" />
                 </button>
                 <span className="w-8 text-center text-white font-medium">{quantity}</span>
                 <button
                   onClick={() => setQuantity(quantity + 1)}
-                  className="p-2 rounded-lg hover:bg-white/10 transition-colors"
+                  className="p-2.5 sm:p-2 rounded-lg hover:bg-white/10 transition-colors min-w-[44px] min-h-[44px] sm:min-w-0 sm:min-h-0 flex items-center justify-center"
                 >
                   <FiPlus className="w-4 h-4 text-white" />
                 </button>
@@ -266,17 +267,18 @@ const QuickViewModal = ({ product, isOpen, onClose }: QuickViewModalProps) => {
             </div>
 
             {/* Actions */}
-            <div className="flex gap-3 mt-auto pt-4">
+            <div className="flex gap-2 sm:gap-3 mt-auto pt-4">
               <button
                 onClick={handleAddToCart}
-                className="flex-1 btn-primary flex items-center justify-center gap-2"
+                className="flex-1 btn-primary flex items-center justify-center gap-2 py-3.5 sm:py-4 text-sm sm:text-base"
               >
-                <FiShoppingCart className="w-5 h-5" />
-                Добави в количката
+                <FiShoppingCart className="w-4 h-4 sm:w-5 sm:h-5" />
+                <span className="hidden xs:inline">Добави в количката</span>
+                <span className="xs:hidden">Добави</span>
               </button>
               <button
                 onClick={handleWishlistToggle}
-                className={`p-4 rounded-2xl border transition-all ${
+                className={`p-3.5 sm:p-4 rounded-xl sm:rounded-2xl border transition-all min-w-[48px] min-h-[48px] flex items-center justify-center ${
                   isInWishlist(product.id)
                     ? 'bg-red-500/20 border-red-500/30 text-red-400'
                     : 'bg-white/5 border-white/10 text-white hover:bg-white/10'

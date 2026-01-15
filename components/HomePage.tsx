@@ -80,32 +80,32 @@ export default function HomePage({ categories, featuredProducts, topSelling }: H
                 </Link>
               </div>
 
-              <StaggerAnimation animation="fadeIn" stagger={0.2} className="grid grid-cols-3 gap-8">
+              <StaggerAnimation animation="fadeIn" stagger={0.2} className="grid grid-cols-3 gap-3 sm:gap-6 md:gap-8">
                 <div className="relative">
                   <div className="absolute -inset-1 bg-gradient-to-r from-accent/20 to-transparent rounded-xl blur-sm"></div>
-                  <div className="relative bg-primary-light/30 backdrop-blur-sm rounded-xl p-4 border border-white/5">
-                    <h3 className="text-3xl font-bold text-white mb-1">
+                  <div className="relative bg-primary-light/30 backdrop-blur-sm rounded-lg sm:rounded-xl p-2.5 sm:p-4 border border-white/5">
+                    <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-0.5 sm:mb-1">
                       <CountUp end={200} duration={2000} suffix="+" />
                     </h3>
-                    <p className="text-text-secondary text-sm">{t('home.stats.brands', 'Марки')}</p>
+                    <p className="text-text-secondary text-xs sm:text-sm">{t('home.stats.brands', 'Марки')}</p>
                   </div>
                 </div>
                 <div className="relative">
                   <div className="absolute -inset-1 bg-gradient-to-r from-accent/20 to-transparent rounded-xl blur-sm"></div>
-                  <div className="relative bg-primary-light/30 backdrop-blur-sm rounded-xl p-4 border border-white/5">
-                    <h3 className="text-3xl font-bold text-white mb-1">
+                  <div className="relative bg-primary-light/30 backdrop-blur-sm rounded-lg sm:rounded-xl p-2.5 sm:p-4 border border-white/5">
+                    <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-0.5 sm:mb-1">
                       <CountUp end={2000} duration={2000} suffix="+" />
                     </h3>
-                    <p className="text-text-secondary text-sm">{t('home.stats.products', 'Продукти')}</p>
+                    <p className="text-text-secondary text-xs sm:text-sm">{t('home.stats.products', 'Продукти')}</p>
                   </div>
                 </div>
                 <div className="relative">
                   <div className="absolute -inset-1 bg-gradient-to-r from-accent/20 to-transparent rounded-xl blur-sm"></div>
-                  <div className="relative bg-primary-light/30 backdrop-blur-sm rounded-xl p-4 border border-white/5">
-                    <h3 className="text-3xl font-bold text-white mb-1">
+                  <div className="relative bg-primary-light/30 backdrop-blur-sm rounded-lg sm:rounded-xl p-2.5 sm:p-4 border border-white/5">
+                    <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-0.5 sm:mb-1">
                       <CountUp end={30000} duration={2500} suffix="+" />
                     </h3>
-                    <p className="text-text-secondary text-sm">{t('home.stats.customers', 'Клиенти')}</p>
+                    <p className="text-text-secondary text-xs sm:text-sm">{t('home.stats.customers', 'Клиенти')}</p>
                   </div>
                 </div>
               </StaggerAnimation>
@@ -113,14 +113,14 @@ export default function HomePage({ categories, featuredProducts, topSelling }: H
 
             {/* Hero Image */}
             <ScrollAnimation animation="slideLeft" className="relative order-1 lg:order-2">
-              <div className="absolute top-8 right-8 w-20 h-20 bg-gradient-to-br from-accent to-accent-dark rounded-2xl rotate-12 opacity-60 blur-sm"></div>
-              <div className="absolute bottom-8 left-8 w-14 h-14 bg-gradient-to-br from-accent-light to-accent rounded-xl -rotate-12 opacity-40"></div>
+              <div className="absolute top-4 sm:top-8 right-4 sm:right-8 w-12 sm:w-20 h-12 sm:h-20 bg-gradient-to-br from-accent to-accent-dark rounded-xl sm:rounded-2xl rotate-12 opacity-60 blur-sm"></div>
+              <div className="absolute bottom-4 sm:bottom-8 left-4 sm:left-8 w-10 sm:w-14 h-10 sm:h-14 bg-gradient-to-br from-accent-light to-accent rounded-lg sm:rounded-xl -rotate-12 opacity-40"></div>
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-accent/20 rounded-full blur-3xl opacity-30"></div>
-              <div className="relative bg-gradient-to-br from-primary-light/80 via-primary to-primary-light/50 rounded-3xl p-10 aspect-square flex items-center justify-center shadow-2xl shadow-accent/10 border border-white/5 backdrop-blur-xl">
+              <div className="relative bg-gradient-to-br from-primary-light/80 via-primary to-primary-light/50 rounded-2xl sm:rounded-3xl p-6 sm:p-10 aspect-square flex items-center justify-center shadow-2xl shadow-accent/10 border border-white/5 backdrop-blur-xl max-w-[280px] sm:max-w-none mx-auto">
                 <div className="text-center">
-                  <div className="text-9xl mb-6 filter drop-shadow-2xl">📱</div>
-                  <p className="text-white text-xl font-semibold">{t('home.hero.premium', 'Премиум аксесоари')}</p>
-                  <p className="text-text-secondary text-sm mt-2">За всички устройства</p>
+                  <div className="text-6xl sm:text-8xl lg:text-9xl mb-4 sm:mb-6 filter drop-shadow-2xl">📱</div>
+                  <p className="text-white text-base sm:text-lg lg:text-xl font-semibold">{t('home.hero.premium', 'Премиум аксесоари')}</p>
+                  <p className="text-text-secondary text-xs sm:text-sm mt-1 sm:mt-2">За всички устройства</p>
                 </div>
               </div>
             </ScrollAnimation>

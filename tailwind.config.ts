@@ -6,6 +6,14 @@ const config: Config = {
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  theme: {
+    extend: {
+      screens: {
+        // Extra small breakpoint for iPhone SE (375px) and smaller devices
+        'xs': '400px',
+      },
+    },
+  },
 };
 
 export default config;

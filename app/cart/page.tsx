@@ -98,35 +98,36 @@ export default function CartPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-primary/10 to-background py-12">
+    <div className="min-h-screen bg-gradient-to-br from-background via-primary/10 to-background py-6 sm:py-12">
       <div className="container-custom">
         {/* Header */}
-        <div className="mb-12">
-          <div className="flex items-center gap-4 mb-4">
-            <div className="w-12 h-12 bg-gradient-to-br from-accent to-accent-light rounded-xl flex items-center justify-center">
-              <FiShoppingCart size={24} className="text-white" />
+        <div className="mb-8 sm:mb-12">
+          <div className="flex items-center gap-3 sm:gap-4 mb-4">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-accent to-accent-light rounded-lg sm:rounded-xl flex items-center justify-center">
+              <FiShoppingCart size={20} className="text-white sm:hidden" />
+              <FiShoppingCart size={24} className="text-white hidden sm:block" />
             </div>
             <div>
-              <h1 className="text-4xl font-bold text-white">{t('cart.shoppingCart')}</h1>
-              <p className="text-text-secondary">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white">{t('cart.shoppingCart')}</h1>
+              <p className="text-text-secondary text-sm sm:text-base">
                 {t('cart.youHave')} {items.length} {t('cart.items')} {t('cart.inYourCart')}
               </p>
             </div>
           </div>
         </div>
 
-        <div className="grid lg:grid-cols-5 gap-8">
+        <div className="grid lg:grid-cols-5 gap-6 lg:gap-8">
           {/* Cart Items */}
           <div className="lg:col-span-3 space-y-4">
             {items.map((item, index) => (
               <div
                 key={`${item.id}-${item.color || "default"}-${item.size || "default"}`}
-                className="group bg-gradient-to-br from-primary/80 to-primary backdrop-blur-xl border border-gray-800/50 rounded-2xl p-6 hover:border-accent/50 transition-all duration-300 hover:shadow-xl hover:shadow-accent/10"
+                className="group bg-gradient-to-br from-primary/80 to-primary backdrop-blur-xl border border-gray-800/50 rounded-xl sm:rounded-2xl p-4 sm:p-6 hover:border-accent/50 transition-all duration-300 hover:shadow-xl hover:shadow-accent/10"
                 style={{ animationDelay: `${index * 100}ms` }}
               >
-                <div className="flex gap-6">
+                <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
                   {/* Product Image */}
-                  <div className="relative w-28 h-28 rounded-xl overflow-hidden flex-shrink-0 border border-gray-700/50">
+                  <div className="relative w-full sm:w-28 h-32 sm:h-28 rounded-lg sm:rounded-xl overflow-hidden flex-shrink-0 border border-gray-700/50">
                     <Image
                       src={item.image}
                       alt={item.name}
@@ -140,11 +141,12 @@ export default function CartPage() {
                     )}
                   </div>
 
-                  {/* Product Details */}
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-white font-semibold text-lg mb-2 group-hover:text-accent transition-colors truncate">
-                      {item.name}
-                    </h3>
+                  {/* Product Details and Controls - Responsive Layout */}
+                  <div className="flex-1 flex flex-col sm:flex-row gap-4 sm:gap-0">
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-white font-semibold text-base sm:text-lg mb-2 group-hover:text-accent transition-colors line-clamp-2">
+                        {item.name}
+                      </h3>
 
                     {/* Variants */}
                     {(item.color || item.size) && (
@@ -169,19 +171,19 @@ export default function CartPage() {
                     )}
 
                     {/* Price */}
-                    <div className="flex items-baseline gap-2">
-                      <p className="text-accent font-bold text-2xl">
+                    <div className="flex items-baseline gap-2 flex-wrap">
+                      <p className="text-accent font-bold text-xl sm:text-2xl">
                         {formatPrice(item.price * item.quantity)}
                       </p>
-                      <span className="text-text-secondary text-sm">
+                      <span className="text-text-secondary text-xs sm:text-sm">
                         {formatPrice(item.price)} each
                       </span>
                     </div>
                   </div>
 
                   {/* Quantity Controls */}
-                  <div className="flex flex-col items-end gap-4">
-                    <div className="flex items-center gap-1 bg-background/50 rounded-xl p-1 border border-gray-700/50">
+                  <div className="flex flex-row sm:flex-col items-center sm:items-end justify-between sm:justify-start gap-3 sm:gap-4">
+                    <div className="flex items-center gap-1 bg-background/50 rounded-lg sm:rounded-xl p-0.5 sm:p-1 border border-gray-700/50">
                       <button
                         onClick={() =>
                           updateQuantity(
@@ -191,12 +193,13 @@ export default function CartPage() {
                             item.size,
                           )
                         }
-                        className="w-10 h-10 flex items-center justify-center text-white hover:bg-accent hover:text-white rounded-lg transition-all"
+                        className="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center text-white hover:bg-accent hover:text-white rounded-md sm:rounded-lg transition-all min-w-[36px]"
                         disabled={item.quantity <= 1}
                       >
-                        <FiMinus size={18} />
+                        <FiMinus size={16} className="sm:hidden" />
+                        <FiMinus size={18} className="hidden sm:block" />
                       </button>
-                      <span className="text-white font-medium w-12 text-center text-lg">
+                      <span className="text-white font-medium w-8 sm:w-12 text-center text-base sm:text-lg">
                         {item.quantity}
                       </span>
                       <button
@@ -208,21 +211,23 @@ export default function CartPage() {
                             item.size,
                           )
                         }
-                        className="w-10 h-10 flex items-center justify-center text-white hover:bg-accent hover:text-white rounded-lg transition-all"
+                        className="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center text-white hover:bg-accent hover:text-white rounded-md sm:rounded-lg transition-all min-w-[36px]"
                       >
-                        <FiPlus size={18} />
+                        <FiPlus size={16} className="sm:hidden" />
+                        <FiPlus size={18} className="hidden sm:block" />
                       </button>
                     </div>
                     <button
                       onClick={() => removeItem(item.id, item.color, item.size)}
-                      className="flex items-center gap-2 text-red-400 hover:text-red-300 transition-colors group/btn"
+                      className="flex items-center gap-1.5 sm:gap-2 text-red-400 hover:text-red-300 transition-colors group/btn p-2 -m-2"
                     >
                       <FiTrash2
                         size={18}
                         className="group-hover/btn:scale-110 transition-transform"
                       />
-                      <span className="text-sm">{t('cart.remove')}</span>
+                      <span className="text-sm hidden xs:inline">{t('cart.remove')}</span>
                     </button>
+                  </div>
                   </div>
                 </div>
               </div>
@@ -243,13 +248,14 @@ export default function CartPage() {
           </div>
           {/* Order Summary */}
           <div className="lg:col-span-2">
-            <div className="bg-gradient-to-br from-primary/80 to-primary backdrop-blur-xl border border-gray-800/50 rounded-2xl p-6 sticky top-8 shadow-2xl">
+            <div className="bg-gradient-to-br from-primary/80 to-primary backdrop-blur-xl border border-gray-800/50 rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:sticky lg:top-8 shadow-2xl">
               {/* Header */}
-              <div className="flex items-center gap-3 mb-6 pb-6 border-b border-gray-700/50">
-                <div className="w-10 h-10 bg-gradient-to-br from-accent/20 to-accent-light/20 rounded-lg flex items-center justify-center">
-                  <FiPackage size={20} className="text-accent" />
+              <div className="flex items-center gap-3 mb-4 sm:mb-6 pb-4 sm:pb-6 border-b border-gray-700/50">
+                <div className="w-8 h-8 sm:w-10 sm:h-10 bg-gradient-to-br from-accent/20 to-accent-light/20 rounded-lg flex items-center justify-center">
+                  <FiPackage size={18} className="text-accent sm:hidden" />
+                  <FiPackage size={20} className="text-accent hidden sm:block" />
                 </div>
-                <h2 className="text-2xl font-bold text-white">{t('cart.orderSummary')}</h2>
+                <h2 className="text-xl sm:text-2xl font-bold text-white">{t('cart.orderSummary')}</h2>
               </div>
 
               {/* Price Breakdown */}

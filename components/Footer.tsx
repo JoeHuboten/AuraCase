@@ -17,12 +17,12 @@ const Footer = memo(function Footer() {
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
       
       {/* Newsletter Section */}
-      <div className="relative container-custom py-12">
-        <div className="bg-gradient-to-br from-accent/10 via-primary-light/50 to-primary/80 backdrop-blur-xl rounded-3xl p-8 md:p-12 border border-white/5 shadow-2xl shadow-accent/5">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+      <div className="relative container-custom py-8 sm:py-12">
+        <div className="bg-gradient-to-br from-accent/10 via-primary-light/50 to-primary/80 backdrop-blur-xl rounded-2xl sm:rounded-3xl p-6 sm:p-8 md:p-12 border border-white/5 shadow-2xl shadow-accent/5">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-8">
             <div className="text-center md:text-left">
-              <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">{t('footer.newsletter.title')}</h3>
-              <p className="text-text-secondary">{t('footer.newsletter.description')}</p>
+              <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-2">{t('footer.newsletter.title')}</h3>
+              <p className="text-text-secondary text-sm sm:text-base">{t('footer.newsletter.description')}</p>
             </div>
             <NewsletterForm />
           </div>
@@ -30,28 +30,28 @@ const Footer = memo(function Footer() {
       </div>
 
       {/* Main Footer */}
-      <div className="relative container-custom py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+      <div className="relative container-custom py-10 sm:py-16">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-8 sm:gap-12">
           {/* Brand */}
-          <div className="lg:col-span-1">
-            <Link href="/" className="inline-block text-2xl font-bold mb-6 group">
+          <div className="col-span-2 sm:col-span-2 md:col-span-2 lg:col-span-1">
+            <Link href="/" className="inline-block text-xl sm:text-2xl font-bold mb-4 sm:mb-6 group">
               <span className="bg-gradient-to-r from-white via-white to-accent-light bg-clip-text text-transparent group-hover:from-accent-light group-hover:to-accent transition-all duration-300">AURA</span>
               <span className="text-accent group-hover:text-accent-light transition-colors duration-300">CASE</span>
             </Link>
-            <p className="text-text-secondary text-sm mb-8 leading-relaxed">
+            <p className="text-text-secondary text-sm mb-6 sm:mb-8 leading-relaxed">
               {t('footer.brand.description')}
             </p>
-            <div className="flex space-x-3">
-              <a href="#" aria-label={t('footer.followTwitter')} className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-text-secondary hover:text-accent hover:bg-accent/10 hover:border-accent/30 transition-all duration-300">
+            <div className="flex space-x-2 sm:space-x-3">
+              <a href="#" aria-label={t('footer.followTwitter')} className="w-11 h-11 sm:w-10 sm:h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-text-secondary hover:text-accent hover:bg-accent/10 hover:border-accent/30 transition-all duration-300">
                 <FiTwitter size={18} />
               </a>
-              <a href="#" aria-label={t('footer.followFacebook')} className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-text-secondary hover:text-accent hover:bg-accent/10 hover:border-accent/30 transition-all duration-300">
+              <a href="#" aria-label={t('footer.followFacebook')} className="w-11 h-11 sm:w-10 sm:h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-text-secondary hover:text-accent hover:bg-accent/10 hover:border-accent/30 transition-all duration-300">
                 <FiFacebook size={18} />
               </a>
-              <a href="#" aria-label={t('footer.followInstagram')} className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-text-secondary hover:text-accent hover:bg-accent/10 hover:border-accent/30 transition-all duration-300">
+              <a href="#" aria-label={t('footer.followInstagram')} className="w-11 h-11 sm:w-10 sm:h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-text-secondary hover:text-accent hover:bg-accent/10 hover:border-accent/30 transition-all duration-300">
                 <FiInstagram size={18} />
               </a>
-              <a href="#" aria-label={t('footer.viewGithub')} className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-text-secondary hover:text-accent hover:bg-accent/10 hover:border-accent/30 transition-all duration-300">
+              <a href="#" aria-label={t('footer.viewGithub')} className="w-11 h-11 sm:w-10 sm:h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-text-secondary hover:text-accent hover:bg-accent/10 hover:border-accent/30 transition-all duration-300">
                 <FiGithub size={18} />
               </a>
             </div>
@@ -93,16 +93,16 @@ const Footer = memo(function Footer() {
         </div>
 
         {/* Bottom */}
-        <div className="border-t border-white/5 mt-16 pt-8 flex flex-col md:flex-row items-center justify-between gap-6">
-          <p className="text-text-secondary/70 text-sm">
+        <div className="border-t border-white/5 mt-10 sm:mt-16 pt-6 sm:pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-6">
+          <p className="text-text-secondary/70 text-xs sm:text-sm text-center sm:text-left">
             {t('footer.copyright')}
           </p>
-          <div className="flex items-center gap-4">
-            <SiVisa className="text-text-secondary/50 hover:text-white/80 transition-colors duration-300 text-2xl" />
-            <SiMastercard className="text-text-secondary/50 hover:text-white/80 transition-colors duration-300 text-2xl" />
-            <SiPaypal className="text-text-secondary/50 hover:text-white/80 transition-colors duration-300 text-2xl" />
-            <SiApplepay className="text-text-secondary/50 hover:text-white/80 transition-colors duration-300 text-2xl" />
-            <SiGooglepay className="text-text-secondary/50 hover:text-white/80 transition-colors duration-300 text-2xl" />
+          <div className="flex items-center gap-3 sm:gap-4">
+            <SiVisa className="text-text-secondary/50 hover:text-white/80 transition-colors duration-300 text-xl sm:text-2xl" />
+            <SiMastercard className="text-text-secondary/50 hover:text-white/80 transition-colors duration-300 text-xl sm:text-2xl" />
+            <SiPaypal className="text-text-secondary/50 hover:text-white/80 transition-colors duration-300 text-xl sm:text-2xl" />
+            <SiApplepay className="text-text-secondary/50 hover:text-white/80 transition-colors duration-300 text-xl sm:text-2xl" />
+            <SiGooglepay className="text-text-secondary/50 hover:text-white/80 transition-colors duration-300 text-xl sm:text-2xl" />
           </div>
         </div>
       </div>

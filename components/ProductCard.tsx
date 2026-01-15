@@ -139,15 +139,15 @@ const ProductCard = ({
             </div>
           )}
           
-          {/* Wishlist Button */}
+          {/* Wishlist Button - Always visible on mobile, hover on desktop */}
           <button
             onClick={handleWishlistToggle}
             disabled={isWishlistLoading}
             aria-label={inWishlist ? `Премахни ${name} от любими` : `Добави ${name} в любими`}
-            className={`absolute top-4 right-4 w-10 h-10 rounded-xl flex items-center justify-center opacity-0 group-hover:opacity-100 disabled:opacity-50 z-20 cursor-pointer transition-all duration-500 ease-out hover:scale-110 backdrop-blur-md transform hover:-translate-y-1 ${
+            className={`absolute top-3 sm:top-4 right-3 sm:right-4 w-10 h-10 sm:w-10 sm:h-10 min-w-[40px] min-h-[40px] rounded-xl flex items-center justify-center opacity-100 sm:opacity-0 sm:group-hover:opacity-100 disabled:opacity-50 z-20 cursor-pointer transition-all duration-500 ease-out sm:hover:scale-110 backdrop-blur-md sm:transform sm:hover:-translate-y-1 ${
               inWishlist
                 ? 'bg-red-500/90 text-white shadow-lg shadow-red-500/30'
-                : 'bg-white/10 text-white hover:bg-white/20'
+                : 'bg-black/40 sm:bg-white/10 text-white sm:hover:bg-white/20'
             }`}
           >
             <FiHeart size={16} className={inWishlist ? 'fill-current' : ''} />
@@ -158,7 +158,7 @@ const ProductCard = ({
             <button
               onClick={handleQuickView}
               aria-label={`Бърз преглед на ${name}`}
-              className="absolute bottom-4 left-4 w-10 h-10 rounded-xl flex items-center justify-center bg-white/10 text-white opacity-0 group-hover:opacity-100 z-20 cursor-pointer transition-all duration-500 ease-out hover:scale-110 backdrop-blur-md hover:bg-white/20 transform hover:-translate-y-1"
+              className="absolute bottom-3 sm:bottom-4 left-3 sm:left-4 w-10 h-10 min-w-[40px] min-h-[40px] rounded-xl flex items-center justify-center bg-black/40 sm:bg-white/10 text-white opacity-100 sm:opacity-0 sm:group-hover:opacity-100 z-20 cursor-pointer transition-all duration-500 ease-out sm:hover:scale-110 backdrop-blur-md sm:hover:bg-white/20 sm:transform sm:hover:-translate-y-1"
             >
               <FiEye size={16} />
             </button>
@@ -169,28 +169,28 @@ const ProductCard = ({
             onClick={handleAddToCart}
             disabled={isAddingToCart}
             aria-label={`Добави ${name} в количката`}
-            className="absolute bottom-4 right-4 w-10 h-10 rounded-xl flex items-center justify-center bg-gradient-to-br from-accent to-accent-dark text-white opacity-0 group-hover:opacity-100 disabled:opacity-50 z-20 cursor-pointer transition-all duration-500 ease-out hover:scale-110 shadow-lg shadow-accent/30 backdrop-blur-md transform hover:-translate-y-1"
+            className="absolute bottom-3 sm:bottom-4 right-3 sm:right-4 w-10 h-10 min-w-[40px] min-h-[40px] rounded-xl flex items-center justify-center bg-gradient-to-br from-accent to-accent-dark text-white opacity-100 sm:opacity-0 sm:group-hover:opacity-100 disabled:opacity-50 z-20 cursor-pointer transition-all duration-500 ease-out sm:hover:scale-110 shadow-lg shadow-accent/30 backdrop-blur-md sm:transform sm:hover:-translate-y-1"
           >
             <FiShoppingCart size={16} />
           </button>
         </div>
 
         {/* Content */}
-        <div className="p-5 relative">
+        <div className="p-4 sm:p-5 relative">
           {/* Category badge */}
           {category && (
-            <span className="inline-block text-xs text-accent/80 font-medium mb-2 tracking-wide uppercase">
+            <span className="inline-block text-[10px] sm:text-xs text-accent/80 font-medium mb-1.5 sm:mb-2 tracking-wide uppercase">
               {category.name}
             </span>
           )}
           
-          <h3 className="text-white font-semibold mb-3 group-hover:text-accent transition-colors duration-300 line-clamp-2 leading-snug">
+          <h3 className="text-white font-semibold mb-2 sm:mb-3 group-hover:text-accent transition-colors duration-300 line-clamp-2 leading-snug text-sm sm:text-base">
             {name}
           </h3>
 
           {/* Rating */}
           {reviews > 0 && (
-            <div className="flex items-center gap-2 mb-4">
+            <div className="flex items-center gap-1.5 sm:gap-2 mb-3 sm:mb-4">
               <div className="flex items-center gap-0.5">
                 {[...Array(5)].map((_, i) => (
                   <FiStar
@@ -200,23 +200,23 @@ const ProductCard = ({
                         ? 'text-amber-400 fill-amber-400' 
                         : 'text-gray-600/50'
                     }`}
-                    size={14}
+                    size={12}
                   />
                 ))}
               </div>
-              <span className="text-text-secondary/70 text-xs font-medium">
+              <span className="text-text-secondary/70 text-[10px] sm:text-xs font-medium">
                 {rating.toFixed(1)} <span className="text-text-secondary/40">({reviews})</span>
               </span>
             </div>
           )}
 
           {/* Price */}
-          <div className="flex items-center gap-3">
-            <span className="font-bold text-xl text-white group-hover:text-accent transition-colors duration-300">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <span className="font-bold text-lg sm:text-xl text-white group-hover:text-accent transition-colors duration-300">
               {formatPrice(price)}
             </span>
             {oldPrice && (
-              <span className="text-text-secondary/50 line-through text-sm">
+              <span className="text-text-secondary/50 line-through text-xs sm:text-sm">
                 {formatPrice(oldPrice)}
               </span>
             )}

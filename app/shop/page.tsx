@@ -165,21 +165,22 @@ function ShopContent() {
       </div>
 
       {/* Mobile Search & Filter Bar */}
-      <div className="lg:hidden container-custom mb-6">
-        <div className="flex gap-3">
+      <div className="lg:hidden container-custom mb-4 sm:mb-6">
+        <div className="flex gap-2 sm:gap-3">
           <form onSubmit={handleSearch} className="flex-1 relative">
-            <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-text-secondary" size={20} />
+            <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-text-secondary" size={18} />
             <input
               type="text"
               placeholder="Search products..."
               value={searchInput}
               onChange={(e) => setSearchInput(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 bg-primary/50 border border-gray-700/50 rounded-xl text-white placeholder-text-secondary focus:outline-none focus:border-accent/50 focus:bg-primary/70 transition-all"
+              className="w-full pl-10 pr-4 py-3 bg-primary/50 border border-gray-700/50 rounded-xl text-white placeholder-text-secondary focus:outline-none focus:border-accent/50 focus:bg-primary/70 transition-all text-sm sm:text-base"
             />
           </form>
           <button
             onClick={() => setMobileFiltersOpen(true)}
-            className="btn-icon bg-accent/10 border border-accent/30 text-accent hover:bg-accent/20 relative"
+            className="p-3 bg-accent/10 border border-accent/30 text-accent hover:bg-accent/20 rounded-xl relative min-w-[48px] min-h-[48px] flex items-center justify-center"
+            aria-label="Open filters"
           >
             <FiFilter size={20} />
             {hasActiveFilters && (
@@ -306,9 +307,9 @@ function ShopContent() {
           {/* Main Content */}
           <div className="flex-1">
             {/* Top Bar */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-              <div className="flex items-center gap-4">
-                <p className="text-text-secondary">
+            <div className="flex flex-col xs:flex-row sm:flex-row items-start xs:items-center sm:items-center justify-between gap-3 sm:gap-4 mb-4 sm:mb-6">
+              <div className="flex items-center gap-3 sm:gap-4">
+                <p className="text-text-secondary text-sm sm:text-base">
                   {loading ? 'Loading...' : `${total} products found`}
                 </p>
                 {isPending && (
@@ -316,12 +317,12 @@ function ShopContent() {
                 )}
               </div>
               
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2 sm:gap-4 w-full xs:w-auto sm:w-auto">
                 {/* Sort Dropdown */}
                 <select
                   value={currentSort}
                   onChange={(e) => updateFilters({ sort: e.target.value === 'popular' ? null : e.target.value })}
-                  className="bg-primary/50 border border-gray-700/50 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-accent/50 cursor-pointer"
+                  className="flex-1 xs:flex-none sm:flex-none bg-primary/50 border border-gray-700/50 rounded-xl px-3 sm:px-4 py-2.5 sm:py-3 text-white text-sm sm:text-base focus:outline-none focus:border-accent/50 cursor-pointer min-h-[44px]"
                 >
                   <option value="popular">Most Popular</option>
                   <option value="newest">Newest</option>
@@ -401,36 +402,37 @@ function ShopContent() {
       {mobileFiltersOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
           <div className="fixed inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setMobileFiltersOpen(false)} />
-          <div className="fixed left-0 top-0 h-full w-80 bg-gradient-to-br from-primary/95 to-primary backdrop-blur-xl border-r border-gray-800/50 p-6 overflow-y-auto">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-bold text-white flex items-center gap-2">
-                <FiSliders className="text-accent" />
+          <div className="fixed left-0 top-0 h-full w-[85vw] max-w-[320px] bg-gradient-to-br from-primary/95 to-primary backdrop-blur-xl border-r border-gray-800/50 p-4 sm:p-6 overflow-y-auto">
+            <div className="flex items-center justify-between mb-4 sm:mb-6">
+              <h2 className="text-lg sm:text-xl font-bold text-white flex items-center gap-2">
+                <FiSliders className="text-accent" size={18} />
                 Filters
               </h2>
               <button
                 onClick={() => setMobileFiltersOpen(false)}
-                className="btn-icon text-text-secondary hover:text-white"
+                className="p-2.5 text-text-secondary hover:text-white rounded-lg hover:bg-white/5 min-w-[44px] min-h-[44px] flex items-center justify-center"
+                aria-label="Close filters"
               >
                 <FiX size={20} />
               </button>
             </div>
 
             {/* Mobile Category Filter */}
-            <div className="mb-8">
-              <h3 className="text-lg font-semibold text-white mb-4">Product Type</h3>
+            <div className="mb-6 sm:mb-8">
+              <h3 className="text-base sm:text-lg font-semibold text-white mb-3 sm:mb-4">Product Type</h3>
               <div className="space-y-2">
                 <button
                   onClick={() => {
                     updateFilters({ category: null });
                     setMobileFiltersOpen(false);
                   }}
-                  className={`w-full flex items-center justify-between p-3 rounded-lg border transition-all ${
+                  className={`w-full flex items-center justify-between p-3 sm:p-3 rounded-lg border transition-all min-h-[48px] ${
                     currentCategory === 'all'
                       ? 'border-accent bg-gradient-to-r from-accent/10 to-accent/5 text-accent'
                       : 'border-gray-700 text-text-secondary hover:text-white'
                   }`}
                 >
-                  <span className="font-medium">All Products</span>
+                  <span className="font-medium text-sm sm:text-base">All Products</span>
                 </button>
                 {categories.map((category) => (
                   <button
@@ -439,21 +441,21 @@ function ShopContent() {
                       updateFilters({ category: category.slug });
                       setMobileFiltersOpen(false);
                     }}
-                    className={`w-full flex items-center justify-between p-3 rounded-lg border transition-all ${
+                    className={`w-full flex items-center justify-between p-3 sm:p-3 rounded-lg border transition-all min-h-[48px] ${
                       currentCategory === category.slug
                         ? 'border-accent bg-gradient-to-r from-accent/10 to-accent/5 text-accent'
                         : 'border-gray-700 text-text-secondary hover:text-white'
                     }`}
                   >
-                    <span className="font-medium">{category.name}</span>
+                    <span className="font-medium text-sm sm:text-base">{category.name}</span>
                   </button>
                 ))}
               </div>
             </div>
 
             {/* Mobile Price Filter */}
-            <div className="mb-8">
-              <h3 className="text-lg font-semibold text-white mb-4">Price Range</h3>
+            <div className="mb-6 sm:mb-8">
+              <h3 className="text-base sm:text-lg font-semibold text-white mb-3 sm:mb-4">Price Range</h3>
               <div className="flex items-center justify-between text-sm mb-4">
                 <span className="text-accent font-semibold">${tempPriceRange[0]}</span>
                 <span className="text-accent font-semibold">${tempPriceRange[1]}</span>
@@ -464,14 +466,14 @@ function ShopContent() {
                 max="200"
                 value={tempPriceRange[1]}
                 onChange={(e) => setTempPriceRange([tempPriceRange[0], parseInt(e.target.value)])}
-                className="w-full"
+                className="w-full h-2"
               />
               <button
                 onClick={() => {
                   handlePriceApply();
                   setMobileFiltersOpen(false);
                 }}
-                className="w-full mt-4 py-2 bg-accent/20 text-accent rounded-lg hover:bg-accent/30 transition-all"
+                className="w-full mt-4 py-3 bg-accent/20 text-accent rounded-lg hover:bg-accent/30 transition-all min-h-[48px] font-medium"
               >
                 Apply Price
               </button>
@@ -484,7 +486,7 @@ function ShopContent() {
                   clearAllFilters();
                   setMobileFiltersOpen(false);
                 }}
-                className="btn-secondary w-full"
+                className="btn-secondary w-full min-h-[48px]"
               >
                 Clear All Filters
               </button>

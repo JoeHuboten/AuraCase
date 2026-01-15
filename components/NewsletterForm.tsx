@@ -52,7 +52,7 @@ export default function NewsletterForm() {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col w-full md:w-auto gap-3">
-      <div className="flex w-full md:w-auto gap-3">
+      <div className="flex flex-col sm:flex-row w-full md:w-auto gap-2 sm:gap-3">
         <div className="relative flex-1 md:w-72">
           <FiMail className="absolute left-4 top-1/2 -translate-y-1/2 text-text-secondary" aria-hidden="true" />
           <input 
@@ -62,13 +62,13 @@ export default function NewsletterForm() {
             onChange={(e) => setEmail(e.target.value)}
             disabled={status === 'loading'}
             aria-label="Въведете имейл за абонамент за новини"
-            className="w-full bg-white/5 border border-white/10 rounded-xl py-3.5 pl-12 pr-4 text-white placeholder:text-text-secondary/60 focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent/30 transition-all duration-300 disabled:opacity-50"
+            className="w-full bg-white/5 border border-white/10 rounded-xl py-3.5 pl-12 pr-4 text-white placeholder:text-text-secondary/60 focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent/30 transition-all duration-300 disabled:opacity-50 text-sm sm:text-base"
           />
         </div>
         <button 
           type="submit"
           disabled={status === 'loading'}
-          className="btn-primary flex items-center gap-2 whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed" 
+          className="btn-primary flex items-center justify-center gap-2 whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed py-3.5 px-6 min-h-[48px] text-sm sm:text-base" 
           aria-label="Абонирайте се за новини"
         >
           {status === 'loading' ? (

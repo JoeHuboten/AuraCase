@@ -207,16 +207,16 @@ export default function CheckoutPage() {
 
   return (
     <PayPalScriptProvider options={{ clientId: PAYPAL_CLIENT_ID, currency: 'EUR' }}>
-      <div className="min-h-screen bg-background py-8 md:py-12">
+      <div className="min-h-screen bg-background py-6 sm:py-8 md:py-12">
         <div className="container mx-auto px-4 max-w-6xl">
           {/* Email Verification Warning */}
           {user && !user.emailVerified && (
-            <div className="mb-6 bg-yellow-500/10 border border-yellow-500/50 rounded-lg p-4">
-              <div className="flex items-start gap-3">
-                <FiMail className="text-yellow-500 mt-0.5 flex-shrink-0" size={20} />
+            <div className="mb-4 sm:mb-6 bg-yellow-500/10 border border-yellow-500/50 rounded-lg p-3 sm:p-4">
+              <div className="flex items-start gap-2 sm:gap-3">
+                <FiMail className="text-yellow-500 mt-0.5 flex-shrink-0" size={18} />
                 <div>
-                  <p className="text-yellow-500 font-medium mb-1">Email Not Verified</p>
-                  <p className="text-yellow-400 text-sm">
+                  <p className="text-yellow-500 font-medium mb-1 text-sm sm:text-base">Email Not Verified</p>
+                  <p className="text-yellow-400 text-xs sm:text-sm">
                     Please verify your email address to complete your purchase. Check your inbox for the verification link.
                   </p>
                 </div>
@@ -225,29 +225,29 @@ export default function CheckoutPage() {
           )}
 
           {/* Header with Steps */}
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-white mb-6">Плащане</h1>
+          <div className="mb-6 sm:mb-8">
+            <h1 className="text-2xl sm:text-3xl font-bold text-white mb-4 sm:mb-6">Плащане</h1>
             
             {/* Progress Steps */}
-            <div className="flex items-center gap-4">
-              <div className={`flex items-center gap-2 ${step === 'shipping' ? 'text-accent' : 'text-green-400'}`}>
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+            <div className="flex items-center gap-2 sm:gap-4">
+              <div className={`flex items-center gap-1.5 sm:gap-2 ${step === 'shipping' ? 'text-accent' : 'text-green-400'}`}>
+                <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-sm ${
                   step === 'shipping' ? 'bg-accent' : 'bg-green-500'
                 }`}>
-                  {step === 'payment' ? <FiCheckCircle /> : '1'}
+                  {step === 'payment' ? <FiCheckCircle size={16} /> : '1'}
                 </div>
-                <span className="font-medium hidden sm:inline">Доставка</span>
+                <span className="font-medium text-sm sm:text-base">Доставка</span>
               </div>
               
-              <div className={`flex-1 h-1 ${step === 'payment' ? 'bg-green-500' : 'bg-gray-700'}`} />
+              <div className={`flex-1 h-0.5 sm:h-1 ${step === 'payment' ? 'bg-green-500' : 'bg-gray-700'}`} />
               
-              <div className={`flex items-center gap-2 ${step === 'payment' ? 'text-accent' : 'text-gray-500'}`}>
-                <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+              <div className={`flex items-center gap-1.5 sm:gap-2 ${step === 'payment' ? 'text-accent' : 'text-gray-500'}`}>
+                <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-sm ${
                   step === 'payment' ? 'bg-accent' : 'bg-gray-700'
                 }`}>
                   2
                 </div>
-                <span className="font-medium hidden sm:inline">Плащане</span>
+                <span className="font-medium text-sm sm:text-base">Плащане</span>
               </div>
             </div>
           </div>
@@ -258,18 +258,18 @@ export default function CheckoutPage() {
             </div>
           )}
 
-          <div className="grid lg:grid-cols-3 gap-8">
+          <div className="grid lg:grid-cols-3 gap-6 lg:gap-8">
             {/* Main Content */}
-            <div className="lg:col-span-2 space-y-6">
+            <div className="lg:col-span-2 space-y-4 sm:space-y-6">
               {step === 'shipping' ? (
                 /* Shipping Form */
-                <div className="bg-primary border border-gray-800 rounded-xl p-6">
-                  <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-                    <FiTruck className="text-accent" />
+                <div className="bg-primary border border-gray-800 rounded-xl p-4 sm:p-6">
+                  <h2 className="text-lg sm:text-xl font-bold text-white mb-4 sm:mb-6 flex items-center gap-2">
+                    <FiTruck className="text-accent" size={20} />
                     Адрес за доставка
                   </h2>
                   
-                  <div className="grid md:grid-cols-2 gap-4">
+                  <div className="grid sm:grid-cols-2 gap-3 sm:gap-4">
                     <InputField
                       icon={FiUser}
                       label="Име"
@@ -286,7 +286,7 @@ export default function CheckoutPage() {
                     />
                   </div>
 
-                  <div className="grid md:grid-cols-2 gap-4 mt-4">
+                  <div className="grid sm:grid-cols-2 gap-3 sm:gap-4 mt-3 sm:mt-4">
                     <InputField
                       icon={FiMail}
                       label="Имейл"
@@ -315,7 +315,7 @@ export default function CheckoutPage() {
                     />
                   </div>
 
-                  <div className="grid md:grid-cols-3 gap-4 mt-4">
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4 mt-3 sm:mt-4">
                     <InputField
                       icon={FiMapPin}
                       label="Град"
