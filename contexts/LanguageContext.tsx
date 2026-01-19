@@ -110,6 +110,13 @@ const translations = {
     'cart.couponApplied': 'Купонът е приложен',
     'cart.estimatedDelivery': 'Очаквана доставка',
     'cart.orderSummary': 'Резюме на поръчката',
+    'cart.subtotal': 'Междинна сума',
+    'cart.shipping': 'Доставка',
+    'cart.freeShipping': 'Безплатна доставка',
+    'cart.total': 'Общо',
+    'cart.discountCode': 'Код за отстъпка',
+    'cart.discount': 'Отстъпка',
+    'cart.secureCheckout': 'Сигурно плащане',
     
     // Checkout
     'checkout.title': 'Плащане',
@@ -407,6 +414,13 @@ const translations = {
     'cart.couponApplied': 'Coupon applied',
     'cart.estimatedDelivery': 'Estimated Delivery',
     'cart.orderSummary': 'Order Summary',
+    'cart.subtotal': 'Subtotal',
+    'cart.shipping': 'Shipping',
+    'cart.freeShipping': 'Free Shipping',
+    'cart.total': 'Total',
+    'cart.discountCode': 'Discount Code',
+    'cart.discount': 'Discount',
+    'cart.secureCheckout': 'Secure Checkout',
     
     // Checkout
     'checkout.title': 'Checkout',
