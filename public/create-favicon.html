@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Favicon</title>
+</head>
+<body>
+    <canvas id="canvas" width="512" height="512"></canvas>
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Create gradient background
+        const gradient = ctx.createRadialGradient(256, 256, 0, 256, 256, 300);
+        gradient.addColorStop(0, '#00d4ff');
+        gradient.addColorStop(1, '#0a1929');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, 512, 512);
+        
+        // Draw phone outline (simplified)
+        ctx.strokeStyle = '#00d4ff';
+        ctx.lineWidth = 20;
+        ctx.beginPath();
+        ctx.roundRect(150, 80, 212, 352, 30);
+        ctx.stroke();
+        
+        // Save as image
+        console.log('Favicon created');
+    </script>
+</body>
+</html>

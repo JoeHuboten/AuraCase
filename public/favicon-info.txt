@@ -1,0 +1,15 @@
+The site now uses SVG favicons which are supported by all modern browsers.
+For maximum compatibility, you may want to add a favicon.ico file.
+
+To create favicon.ico from your logo:
+1. Use an online converter: https://cloudconvert.com/png-to-ico
+2. Or install ImageMagick: brew install imagemagick
+3. Then run: convert your-logo.png -resize 32x32 favicon.ico
+
+The current implementation uses SVG files which work great for:
+- Chrome/Edge (2020+)
+- Firefox (2019+)  
+- Safari (2020+)
+- Mobile browsers
+
+Legacy IE support requires favicon.ico in the root.

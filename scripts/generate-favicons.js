@@ -1,0 +1,32 @@
+const fs = require('fs');
+const path = require('path');
+
+// Create a simple script to generate favicons
+// For production, you should use your actual logo image
+
+const svgContent = `<svg width="32" height="32" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="bg-gradient" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" style="stop-color:#00d4ff;stop-opacity:0.3" />
+      <stop offset="100%" style="stop-color:#0a1929;stop-opacity:1" />
+    </radialGradient>
+  </defs>
+  <rect width="512" height="512" fill="url(#bg-gradient)"/>
+  <rect x="160" y="100" width="192" height="312" rx="24" ry="24" 
+        fill="none" stroke="#00d4ff" stroke-width="12"/>
+  <rect x="210" y="100" width="92" height="8" rx="4" ry="4" fill="#00d4ff"/>
+  <path d="M 180 180 Q 200 160, 220 180 T 260 180 T 300 180 T 332 180" 
+        fill="none" stroke="#00d4ff" stroke-width="6" opacity="0.8"/>
+  <path d="M 180 220 Q 200 200, 220 220 T 260 220 T 300 220 T 332 220" 
+        fill="none" stroke="#00d4ff" stroke-width="6" opacity="0.8"/>
+  <path d="M 180 260 Q 200 240, 220 260 T 260 260 T 300 260 T 332 260" 
+        fill="none" stroke="#00d4ff" stroke-width="6" opacity="0.8"/>
+  <path d="M 180 300 Q 200 280, 220 300 T 260 300 T 300 300 T 332 300" 
+        fill="none" stroke="#00d4ff" stroke-width="6" opacity="0.8"/>
+  <path d="M 180 340 Q 200 320, 220 340 T 260 340 T 300 340 T 332 340" 
+        fill="none" stroke="#00d4ff" stroke-width="6" opacity="0.8"/>
+</svg>`;
+
+fs.writeFileSync(path.join(__dirname, '../public/favicon-32x32.svg'), svgContent);
+console.log('Favicon SVG files created!');
+console.log('Note: For production, replace these with converted PNG/ICO versions of your actual logo.');
