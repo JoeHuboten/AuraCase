@@ -385,6 +385,48 @@ body {
     animation: gradient 4s ease infinite;
   }
 
+  /* Marquee Animation */
+  @keyframes marquee {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  .animate-marquee {
+    animation: marquee 20s linear infinite;
+  }
+
+  /* Horizontal Scroll Animation */
+  @keyframes scroll-x {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
+
+  .animate-scroll-x {
+    animation: scroll-x 25s linear infinite;
+  }
+
+  /* Spin Slow Animation */
+  @keyframes spin-slow {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .animate-spin-slow {
+    animation: spin-slow 20s linear infinite;
+  }
+
   /* Scroll Animation Classes */
   .scroll-fade-in {
     opacity: 0;
