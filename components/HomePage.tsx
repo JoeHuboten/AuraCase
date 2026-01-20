@@ -70,71 +70,71 @@ export default function HomePage() {
             <div className="text-center">
               <ScrollAnimation animation="slideUp">
                 {/* Animated word */}
-                <div className="relative h-[1.2em] mb-4 overflow-hidden">
-                  <h1 className="text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black tracking-tight">
-                    {words.map((word, index) => (
-                      <span
-                        key={word}
-                        className={`absolute inset-0 transition-all duration-700 ${
-                          index === currentWord 
-                            ? 'opacity-100 translate-y-0' 
-                            : index < currentWord 
-                              ? 'opacity-0 -translate-y-full' 
-                              : 'opacity-0 translate-y-full'
-                        } bg-gradient-to-r from-white via-accent to-cyan-400 bg-clip-text text-transparent bg-[length:200%_auto] animate-gradient`}
-                      >
-                        {word}.
-                      </span>
-                    ))}
-                  </h1>
+                <div className="relative h-[80px] md:h-[100px] lg:h-[120px] xl:h-[140px] mb-6 overflow-hidden flex items-center justify-center">
+                  {words.map((word, index) => (
+                    <h1
+                      key={word}
+                      className={`absolute text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black tracking-tight transition-all duration-700 ${
+                        index === currentWord 
+                          ? 'opacity-100 translate-y-0' 
+                          : index < currentWord 
+                            ? 'opacity-0 -translate-y-full' 
+                            : 'opacity-0 translate-y-full'
+                      } bg-gradient-to-r from-white via-accent to-cyan-400 bg-clip-text text-transparent bg-[length:200%_auto] animate-gradient`}
+                    >
+                      {word}.
+                    </h1>
+                  ))}
                 </div>
 
                 {/* Subtitle with unique styling */}
-                <p className="text-xl md:text-2xl lg:text-3xl text-white/60 font-light max-w-3xl mx-auto mb-12 leading-relaxed">
+                <p className="text-lg md:text-xl lg:text-2xl text-white/60 font-light max-w-2xl mx-auto mb-10 leading-relaxed px-4">
                   Вашето устройство заслужава 
                   <span className="text-white font-medium"> нещо специално</span>
                 </p>
               </ScrollAnimation>
 
               {/* CTA Group */}
-              <ScrollAnimation animation="fadeIn" className="flex flex-col sm:flex-row items-center justify-center gap-6 mb-20">
-                <Link
-                  href="/shop"
-                  className="group relative px-10 py-5 bg-white text-primary font-bold text-lg rounded-full overflow-hidden transition-all duration-500 hover:scale-105 hover:shadow-[0_0_40px_rgba(255,255,255,0.3)]"
-                >
-                  <span className="relative z-10 flex items-center gap-3">
-                    Разгледай колекцията
-                    <svg className="w-5 h-5 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                    </svg>
-                  </span>
-                </Link>
-                
-                <Link
-                  href="/about"
-                  className="group flex items-center gap-3 text-white/70 hover:text-white transition-colors font-medium"
-                >
-                  <span className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center group-hover:border-white/50 group-hover:bg-white/5 transition-all">
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  </span>
-                  Научи повече
-                </Link>
+              <ScrollAnimation animation="fadeIn">
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 mb-16">
+                  <Link
+                    href="/shop"
+                    className="group relative px-8 py-4 bg-white text-primary font-bold text-base rounded-full overflow-hidden transition-all duration-500 hover:scale-105 hover:shadow-[0_0_40px_rgba(255,255,255,0.3)]"
+                  >
+                    <span className="relative z-10 flex items-center gap-3">
+                      Разгледай колекцията
+                      <svg className="w-5 h-5 group-hover:translate-x-2 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                      </svg>
+                    </span>
+                  </Link>
+                  
+                  <Link
+                    href="/about"
+                    className="group flex items-center gap-3 text-white/70 hover:text-white transition-colors font-medium"
+                  >
+                    <span className="w-11 h-11 rounded-full border border-white/20 flex items-center justify-center group-hover:border-white/50 group-hover:bg-white/5 transition-all">
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                    </span>
+                    Научи повече
+                  </Link>
+                </div>
               </ScrollAnimation>
 
               {/* Stats Row - Minimal */}
               <ScrollAnimation animation="fadeIn">
-                <div className="flex flex-wrap justify-center gap-12 md:gap-20 text-center">
+                <div className="flex justify-center gap-8 sm:gap-12 md:gap-16 text-center px-4">
                   {[
                     { value: '2K+', label: 'Продукти' },
                     { value: '30K+', label: 'Клиенти' },
                     { value: '4.9', label: 'Рейтинг' },
                   ].map((stat, i) => (
                     <div key={i} className="group">
-                      <div className="text-4xl md:text-5xl font-bold text-white mb-1 group-hover:text-accent transition-colors">{stat.value}</div>
-                      <div className="text-white/40 text-sm tracking-wide">{stat.label}</div>
+                      <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-1 group-hover:text-accent transition-colors">{stat.value}</div>
+                      <div className="text-white/40 text-xs sm:text-sm tracking-wide">{stat.label}</div>
                     </div>
                   ))}
                 </div>
@@ -153,14 +153,14 @@ export default function HomePage() {
       </section>
 
       {/* Marquee Section */}
-      <section className="py-8 border-y border-white/5 overflow-hidden">
-        <div className="flex animate-marquee whitespace-nowrap">
-          {[...Array(2)].map((_, i) => (
-            <div key={i} className="flex items-center gap-8 mx-8">
+      <section className="py-6 border-y border-white/5 overflow-hidden bg-primary-light/30">
+        <div className="flex animate-marquee">
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className="flex items-center shrink-0">
               {['ЗАЩИТА', 'СТИЛ', 'КАЧЕСТВО', 'ИНОВАЦИЯ', 'ДИЗАЙН', 'КОМФОРТ'].map((word, j) => (
-                <span key={j} className="flex items-center gap-8">
-                  <span className="text-2xl md:text-3xl font-bold text-white/10 hover:text-white/30 transition-colors cursor-default">{word}</span>
-                  <span className="text-accent/30">◆</span>
+                <span key={j} className="flex items-center">
+                  <span className="text-xl md:text-2xl font-bold text-white/10 px-6 whitespace-nowrap">{word}</span>
+                  <span className="text-accent/20 text-sm">◆</span>
                 </span>
               ))}
             </div>
@@ -169,41 +169,41 @@ export default function HomePage() {
       </section>
 
       {/* Features Bento Grid */}
-      <section className="py-32 relative">
-        <div className="container-custom">
+      <section className="py-20 md:py-28 relative">
+        <div className="container-custom px-4 sm:px-6">
           <ScrollAnimation animation="fadeIn">
-            <div className="max-w-xl mb-20">
-              <span className="text-accent text-sm font-semibold tracking-wider uppercase mb-4 block">Защо ние?</span>
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight">
+            <div className="max-w-xl mb-12 md:mb-16">
+              <span className="text-accent text-sm font-semibold tracking-wider uppercase mb-3 block">Защо ние?</span>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight">
                 Качество в<br />
                 <span className="text-white/30">всеки детайл</span>
               </h2>
             </div>
           </ScrollAnimation>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {/* Large Feature Card */}
-            <ScrollAnimation animation="slideUp" className="md:col-span-2 lg:col-span-2 row-span-2">
-              <div className="group relative h-full min-h-[400px] bg-gradient-to-br from-accent/20 via-primary-light to-primary-light rounded-[2rem] p-10 overflow-hidden border border-white/5 hover:border-accent/30 transition-all duration-500">
+            <ScrollAnimation animation="slideUp" className="md:col-span-2 lg:col-span-2 lg:row-span-2">
+              <div className="group relative h-full min-h-[300px] md:min-h-[400px] bg-gradient-to-br from-accent/20 via-primary-light to-primary-light rounded-2xl md:rounded-[2rem] p-6 md:p-10 overflow-hidden border border-white/5 hover:border-accent/30 transition-all duration-500">
                 <div className="absolute top-0 right-0 w-2/3 h-2/3 bg-gradient-to-bl from-accent/20 to-transparent rounded-bl-full opacity-50" />
-                <div className="absolute bottom-0 left-0 text-[15rem] leading-none font-black text-white/[0.03] select-none">01</div>
+                <div className="absolute bottom-0 left-0 text-[8rem] md:text-[12rem] leading-none font-black text-white/[0.03] select-none">01</div>
                 <div className="relative z-10 h-full flex flex-col justify-between">
                   <div>
-                    <div className="w-16 h-16 rounded-2xl bg-accent/20 flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
-                      <span className="text-3xl">🛡️</span>
+                    <div className="w-12 h-12 md:w-14 md:h-14 rounded-xl md:rounded-2xl bg-accent/20 flex items-center justify-center mb-4 md:mb-6 group-hover:scale-110 transition-transform">
+                      <span className="text-2xl md:text-3xl">🛡️</span>
                     </div>
-                    <h3 className="text-3xl md:text-4xl font-bold text-white mb-4">Военен стандарт защита</h3>
-                    <p className="text-white/50 text-lg max-w-md">
+                    <h3 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-3">Военен стандарт защита</h3>
+                    <p className="text-white/50 text-base md:text-lg max-w-md">
                       Всеки наш продукт е тестван при екстремни условия. Издържат падане от 3 метра без повреда.
                     </p>
                   </div>
-                  <div className="flex items-center gap-4 mt-8">
+                  <div className="flex items-center gap-4 mt-6">
                     <div className="flex -space-x-3">
                       {['🔵', '🟣', '🟢'].map((emoji, i) => (
-                        <div key={i} className="w-10 h-10 rounded-full bg-primary-light border-2 border-primary flex items-center justify-center text-lg">{emoji}</div>
+                        <div key={i} className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-primary-light border-2 border-primary flex items-center justify-center text-sm md:text-lg">{emoji}</div>
                       ))}
                     </div>
-                    <span className="text-white/40 text-sm">10,000+ защитени устройства</span>
+                    <span className="text-white/40 text-xs md:text-sm">10,000+ защитени устройства</span>
                   </div>
                 </div>
               </div>
@@ -217,11 +217,11 @@ export default function HomePage() {
               { icon: '💯', title: '30 дни гаранция', desc: 'Пълно възстановяване', num: '05' },
             ].map((feature, i) => (
               <ScrollAnimation key={i} animation="slideUp" delay={i * 100}>
-                <div className="group relative h-full min-h-[200px] bg-gradient-to-br from-white/[0.05] to-transparent rounded-[2rem] p-8 border border-white/5 hover:border-white/20 hover:bg-white/[0.08] transition-all duration-500">
-                  <div className="absolute top-4 right-4 text-5xl font-black text-white/[0.03]">{feature.num}</div>
-                  <div className="text-4xl mb-4 group-hover:scale-125 transition-transform duration-300">{feature.icon}</div>
-                  <h3 className="text-xl font-bold text-white mb-2">{feature.title}</h3>
-                  <p className="text-white/40">{feature.desc}</p>
+                <div className="group relative h-full min-h-[160px] md:min-h-[180px] bg-gradient-to-br from-white/[0.05] to-transparent rounded-2xl md:rounded-[2rem] p-5 md:p-6 border border-white/5 hover:border-white/20 hover:bg-white/[0.08] transition-all duration-500">
+                  <div className="absolute top-3 right-3 text-4xl font-black text-white/[0.03]">{feature.num}</div>
+                  <div className="text-3xl mb-3 group-hover:scale-110 transition-transform duration-300">{feature.icon}</div>
+                  <h3 className="text-lg md:text-xl font-bold text-white mb-1.5">{feature.title}</h3>
+                  <p className="text-white/40 text-sm">{feature.desc}</p>
                 </div>
               </ScrollAnimation>
             ))}
@@ -230,16 +230,17 @@ export default function HomePage() {
       </section>
 
       {/* Brand Compatibility - Horizontal Scroll Effect */}
-      <section className="py-24 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary via-transparent to-primary z-10 pointer-events-none" />
-        <div className="container-custom relative z-20 mb-12">
-          <p className="text-center text-white/30 text-sm tracking-widest uppercase">Съвместими с всички марки</p>
+      <section className="py-16 md:py-20 relative overflow-hidden">
+        <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-primary to-transparent z-10 pointer-events-none" />
+        <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-primary to-transparent z-10 pointer-events-none" />
+        <div className="container-custom relative z-20 mb-8">
+          <p className="text-center text-white/30 text-xs md:text-sm tracking-widest uppercase">Съвместими с всички марки</p>
         </div>
-        <div className="flex gap-16 animate-scroll-x">
-          {[...Array(3)].map((_, setIndex) => (
-            <div key={setIndex} className="flex gap-16 shrink-0">
+        <div className="flex gap-12 md:gap-16 animate-scroll-x">
+          {[...Array(4)].map((_, setIndex) => (
+            <div key={setIndex} className="flex gap-12 md:gap-16 shrink-0">
               {['Apple', 'Samsung', 'Huawei', 'Xiaomi', 'Google', 'OnePlus', 'Sony', 'LG'].map((brand) => (
-                <span key={brand} className="text-4xl md:text-5xl font-bold text-white/[0.07] hover:text-white/20 transition-colors whitespace-nowrap cursor-default">
+                <span key={brand} className="text-3xl md:text-4xl lg:text-5xl font-bold text-white/[0.06] whitespace-nowrap">
                   {brand}
                 </span>
               ))}
@@ -249,93 +250,94 @@ export default function HomePage() {
       </section>
 
       {/* Testimonials - Card Stack */}
-      <section className="py-32 relative">
-        <div className="container-custom">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
+      <section className="py-20 md:py-28 relative">
+        <div className="container-custom px-4 sm:px-6">
+          <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-start lg:items-center">
             <ScrollAnimation animation="slideRight">
-              <span className="text-accent text-sm font-semibold tracking-wider uppercase mb-4 block">Отзиви</span>
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
+              <span className="text-accent text-sm font-semibold tracking-wider uppercase mb-3 block">Отзиви</span>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white leading-tight mb-4">
                 Доверени от<br />
                 <span className="text-white/30">хиляди клиенти</span>
               </h2>
-              <p className="text-white/50 text-lg mb-8 max-w-md">
+              <p className="text-white/50 text-base md:text-lg mb-6 max-w-md">
                 Присъединете се към 30,000+ доволни клиенти, които вече защитават устройствата си с нашите продукти.
               </p>
-              <div className="flex items-center gap-6">
-                <div className="flex -space-x-4">
+              <div className="flex items-center gap-4 sm:gap-6">
+                <div className="flex -space-x-3">
                   {['М', 'Г', 'Е', 'И'].map((letter, i) => (
-                    <div key={i} className="w-12 h-12 rounded-full bg-gradient-to-br from-accent to-purple-600 flex items-center justify-center text-white font-bold border-2 border-primary">
+                    <div key={i} className="w-10 h-10 md:w-11 md:h-11 rounded-full bg-gradient-to-br from-accent to-purple-600 flex items-center justify-center text-white text-sm font-bold border-2 border-primary">
                       {letter}
                     </div>
                   ))}
                 </div>
                 <div>
-                  <div className="flex items-center gap-1 text-yellow-400 mb-1">
+                  <div className="flex items-center gap-0.5 text-yellow-400 mb-0.5 text-sm">
                     {[...Array(5)].map((_, i) => <span key={i}>★</span>)}
                   </div>
-                  <span className="text-white/40 text-sm">4.9 от 2,000+ отзива</span>
+                  <span className="text-white/40 text-xs sm:text-sm">4.9 от 2,000+ отзива</span>
                 </div>
               </div>
             </ScrollAnimation>
 
-            <StaggerAnimation animation="slideUp" stagger={0.15} className="space-y-6">
+            <div className="space-y-4">
               {[
                 { name: 'Мария И.', text: 'Калъфът е невероятен! Изглежда много по-скъп отколкото е.', device: 'iPhone 15 Pro' },
                 { name: 'Георги П.', text: 'Доставката беше супер бърза. Вече поръчах и за жена ми.', device: 'Samsung S24' },
                 { name: 'Елена К.', text: 'Третата ми поръчка. Винаги съм доволна!', device: 'Xiaomi 14' },
               ].map((testimonial, i) => (
-                <div
-                  key={i}
-                  className="group relative bg-gradient-to-br from-white/[0.08] to-white/[0.02] backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:border-accent/30 transition-all duration-300 hover:translate-x-2"
-                >
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-accent/50 to-purple-600/50 flex items-center justify-center text-white font-bold shrink-0">
-                      {testimonial.name[0]}
-                    </div>
-                    <div>
-                      <p className="text-white/80 mb-3">&ldquo;{testimonial.text}&rdquo;</p>
-                      <div className="flex items-center justify-between">
-                        <span className="text-white font-medium">{testimonial.name}</span>
-                        <span className="text-white/30 text-sm">{testimonial.device}</span>
+                <ScrollAnimation key={i} animation="slideUp" delay={i * 100}>
+                  <div
+                    className="group relative bg-gradient-to-br from-white/[0.08] to-white/[0.02] backdrop-blur-sm rounded-xl md:rounded-2xl p-4 md:p-5 border border-white/10 hover:border-accent/30 transition-all duration-300"
+                  >
+                    <div className="flex items-start gap-3 md:gap-4">
+                      <div className="w-10 h-10 md:w-11 md:h-11 rounded-full bg-gradient-to-br from-accent/50 to-purple-600/50 flex items-center justify-center text-white font-bold shrink-0 text-sm">
+                        {testimonial.name[0]}
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-white/80 text-sm md:text-base mb-2">&ldquo;{testimonial.text}&rdquo;</p>
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="text-white font-medium text-sm">{testimonial.name}</span>
+                          <span className="text-white/30 text-xs">{testimonial.device}</span>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
+                </ScrollAnimation>
               ))}
-            </StaggerAnimation>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Final CTA - Full Width */}
-      <section className="relative py-32 overflow-hidden">
+      <section className="relative py-20 md:py-28 overflow-hidden">
         {/* Background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-accent/30 via-purple-600/20 to-primary" />
+        <div className="absolute inset-0 bg-gradient-to-br from-accent/20 via-purple-600/10 to-primary" />
         <div className="absolute inset-0">
-          <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-accent/30 rounded-full blur-[150px]" />
-          <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-purple-600/30 rounded-full blur-[120px]" />
+          <div className="absolute top-0 left-1/4 w-[400px] md:w-[500px] h-[400px] md:h-[500px] bg-accent/20 rounded-full blur-[120px]" />
+          <div className="absolute bottom-0 right-1/4 w-[300px] md:w-[400px] h-[300px] md:h-[400px] bg-purple-600/20 rounded-full blur-[100px]" />
         </div>
         
         {/* Grid overlay */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:50px_50px]" />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:40px_40px]" />
         
-        <div className="container-custom relative z-10">
+        <div className="container-custom relative z-10 px-4 sm:px-6">
           <ScrollAnimation animation="fadeIn">
-            <div className="max-w-4xl mx-auto text-center">
-              <h2 className="text-5xl md:text-6xl lg:text-7xl font-black text-white mb-8 leading-tight">
+            <div className="max-w-3xl mx-auto text-center">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white mb-6 leading-tight">
                 Готови за<br />
                 <span className="bg-gradient-to-r from-white via-accent to-cyan-400 bg-clip-text text-transparent">следващото ниво?</span>
               </h2>
-              <p className="text-white/60 text-xl mb-12 max-w-2xl mx-auto">
+              <p className="text-white/60 text-base md:text-lg mb-8 max-w-xl mx-auto px-4">
                 Открийте перфектния аксесоар за вашето устройство. Над 2000 продукта ви очакват.
               </p>
               <Link
                 href="/shop"
-                className="group inline-flex items-center gap-4 px-12 py-6 bg-white rounded-full text-primary font-bold text-xl transition-all duration-300 hover:scale-105 hover:shadow-[0_0_60px_rgba(255,255,255,0.4)]"
+                className="group inline-flex items-center gap-3 px-8 md:px-10 py-4 md:py-5 bg-white rounded-full text-primary font-bold text-base md:text-lg transition-all duration-300 hover:scale-105 hover:shadow-[0_0_50px_rgba(255,255,255,0.3)]"
               >
                 Започни пазаруването
-                <span className="w-10 h-10 rounded-full bg-primary flex items-center justify-center group-hover:bg-accent transition-colors">
-                  <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <span className="w-8 h-8 md:w-9 md:h-9 rounded-full bg-primary flex items-center justify-center group-hover:bg-accent transition-colors">
+                  <svg className="w-4 h-4 md:w-5 md:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                   </svg>
                 </span>
