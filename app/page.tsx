@@ -129,11 +129,7 @@ export default async function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
-      <HomePage 
-        categories={categories}
-        featuredProducts={featuredProducts}
-        topSelling={topSelling}
-      />
+      <HomePage />
     </>
   );
   } catch (error) {
