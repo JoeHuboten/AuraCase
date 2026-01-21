@@ -72,12 +72,12 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
           <>
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-              <span className="text-green-400 font-semibold">
+              <span className="text-green-400 font-semibold font-body">
                 {t('common.inStock', 'In Stock')}
               </span>
             </div>
             {product.stock <= product.lowStockThreshold && (
-              <span className="text-yellow-400 text-sm">
+              <span className="text-yellow-400 text-sm font-body">
                 ({t('product.onlyLeft', 'Only')} {product.stock} {t('product.left', 'left')})
               </span>
             )}
@@ -85,7 +85,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
         ) : (
           <div className="flex items-center gap-2">
             <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-            <span className="text-red-400 font-semibold">
+            <span className="text-red-400 font-semibold font-body">
               {t('common.outOfStock', 'Out of Stock')}
             </span>
           </div>
@@ -95,7 +95,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
       {/* Colors */}
       {colors.length > 0 && (
         <div>
-          <h3 className="text-xl font-semibold text-white mb-3">
+          <h3 className="text-xl font-heading font-semibold text-white mb-3">
             {t('product.colors', 'Colors')}
           </h3>
           <div className="flex gap-3">
@@ -103,10 +103,10 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
               <button
                 key={color}
                 onClick={() => setSelectedColor(color)}
-                className={`px-4 py-2 border rounded-lg transition-all duration-200 cursor-pointer ${
+                className={`px-4 py-2 border rounded-lg transition-all duration-200 cursor-pointer font-body ${
                   selectedColor === color
-                    ? 'border-accent bg-accent/20 text-white shadow-lg shadow-accent/20'
-                    : 'border-gray-700 text-text-secondary hover:border-accent hover:text-white hover:bg-accent/10'
+                    ? 'border-blue-500/50 bg-blue-500/20 text-white shadow-lg shadow-blue-500/20'
+                    : 'border-white/10 text-white/50 hover:border-blue-500/30 hover:text-white hover:bg-blue-500/10'
                 }`}
               >
                 {color}
@@ -119,7 +119,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
       {/* Sizes */}
       {sizes.length > 0 && (
         <div>
-          <h3 className="text-xl font-semibold text-white mb-3">
+          <h3 className="text-xl font-heading font-semibold text-white mb-3">
             {t('product.sizes', 'Sizes')}
           </h3>
           <div className="flex gap-3">
@@ -127,10 +127,10 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
               <button
                 key={size}
                 onClick={() => setSelectedSize(size)}
-                className={`px-4 py-2 border rounded-lg transition-all duration-200 cursor-pointer ${
+                className={`px-4 py-2 border rounded-lg transition-all duration-200 cursor-pointer font-body ${
                   selectedSize === size
-                    ? 'border-accent bg-accent/20 text-white shadow-lg shadow-accent/20'
-                    : 'border-gray-700 text-text-secondary hover:border-accent hover:text-white hover:bg-accent/10'
+                    ? 'border-blue-500/50 bg-blue-500/20 text-white shadow-lg shadow-blue-500/20'
+                    : 'border-white/10 text-white/50 hover:border-blue-500/30 hover:text-white hover:bg-blue-500/10'
                 }`}
               >
                 {size}
@@ -145,7 +145,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
         <button 
           onClick={handleAddToCart}
           disabled={isAddingToCart || !product.inStock}
-          className="btn-primary flex-1 py-4 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex-1 py-4 flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white rounded-xl transition-colors disabled:opacity-50 disabled:cursor-not-allowed font-body"
         >
           <FiShoppingCart size={20} />
           {!product.inStock 
@@ -156,10 +156,10 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
         </button>
         <button 
           onClick={handleWishlist}
-          className={`btn-icon px-6 py-4 border rounded-full transition-all duration-200 ${
+          className={`px-6 py-4 border rounded-xl transition-all duration-200 ${
             isWishlisted 
               ? 'border-red-500 text-red-500 bg-red-500/20 shadow-lg shadow-red-500/20' 
-              : 'border-gray-700 hover:border-accent hover:text-accent hover:shadow-md'
+              : 'border-white/10 text-white/50 hover:border-blue-500/30 hover:text-blue-400 hover:shadow-md'
           }`}
         >
           <FiHeart size={20} className={isWishlisted ? 'fill-current' : ''} />
@@ -167,7 +167,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
       </div>
 
       {/* Social Share */}
-      <div className="pt-4 border-t border-slate-700/50">
+      <div className="pt-4 border-t border-white/10">
         <SocialShare
           url={`https://auracase.bg/product/${product.slug}`}
           title={product.name}

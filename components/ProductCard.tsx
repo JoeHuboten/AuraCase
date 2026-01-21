@@ -111,12 +111,12 @@ const ProductCard = ({
 
   return (
     <Link href={`/product/${slug}`} className="group block">
-      <div className="relative bg-gradient-to-br from-primary/90 via-primary to-primary-light/50 backdrop-blur-xl border border-white/5 rounded-3xl overflow-hidden hover:border-accent/30 hover:shadow-2xl hover:shadow-accent/10 transition-all duration-500 transform hover:-translate-y-2">
+      <div className="relative bg-[#0a0a0f] border border-white/5 rounded-2xl overflow-hidden hover:border-blue-500/30 hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-500 transform hover:-translate-y-1">
         {/* Glow effect on hover */}
-        <div className="absolute inset-0 bg-gradient-to-br from-accent/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
         
         {/* Image */}
-        <div className="relative aspect-square bg-gradient-to-br from-gray-800/80 to-gray-900/80 overflow-hidden">
+        <div className="relative aspect-square bg-gradient-to-br from-white/[0.03] to-white/[0.01] overflow-hidden">
           <Image
             src={image || '/placeholder.svg'}
             alt={`${name} - Премиум мобилен аксесоар от AURACASE`}
@@ -134,7 +134,7 @@ const ProductCard = ({
           
           {/* Discount Badge */}
           {discount && (
-            <div className="absolute top-4 left-4 bg-gradient-to-r from-red-500 to-rose-600 text-white px-3 py-1.5 rounded-full text-xs font-bold shadow-lg shadow-red-500/30 z-10 flex items-center gap-1">
+            <div className="absolute top-4 left-4 bg-gradient-to-r from-red-500 to-rose-600 text-white px-3 py-1.5 rounded-full text-xs font-heading font-bold shadow-lg shadow-red-500/30 z-10 flex items-center gap-1">
               <span className="text-white/80">-</span>{discount}%
             </div>
           )}
@@ -169,7 +169,7 @@ const ProductCard = ({
             onClick={handleAddToCart}
             disabled={isAddingToCart}
             aria-label={`Добави ${name} в количката`}
-            className="absolute bottom-3 sm:bottom-4 right-3 sm:right-4 w-10 h-10 min-w-[40px] min-h-[40px] rounded-xl flex items-center justify-center bg-gradient-to-br from-accent to-accent-dark text-white opacity-100 sm:opacity-0 sm:group-hover:opacity-100 disabled:opacity-50 z-20 cursor-pointer transition-all duration-500 ease-out sm:hover:scale-110 shadow-lg shadow-accent/30 backdrop-blur-md sm:transform sm:hover:-translate-y-1"
+            className="absolute bottom-3 sm:bottom-4 right-3 sm:right-4 w-10 h-10 min-w-[40px] min-h-[40px] rounded-xl flex items-center justify-center bg-gradient-to-br from-blue-500 to-blue-600 text-white opacity-100 sm:opacity-0 sm:group-hover:opacity-100 disabled:opacity-50 z-20 cursor-pointer transition-all duration-500 ease-out sm:hover:scale-110 shadow-lg shadow-blue-500/30 backdrop-blur-md sm:transform sm:hover:-translate-y-1"
           >
             <FiShoppingCart size={16} />
           </button>
@@ -179,12 +179,12 @@ const ProductCard = ({
         <div className="p-4 sm:p-5 relative">
           {/* Category badge */}
           {category && (
-            <span className="inline-block text-[10px] sm:text-xs text-accent/80 font-medium mb-1.5 sm:mb-2 tracking-wide uppercase">
+            <span className="inline-block text-[10px] sm:text-xs text-blue-400/80 font-body font-medium mb-1.5 sm:mb-2 tracking-wide uppercase">
               {category.name}
             </span>
           )}
           
-          <h3 className="text-white font-semibold mb-2 sm:mb-3 group-hover:text-accent transition-colors duration-300 line-clamp-2 leading-snug text-sm sm:text-base">
+          <h3 className="text-white font-heading font-semibold mb-2 sm:mb-3 group-hover:text-blue-400 transition-colors duration-300 line-clamp-2 leading-snug text-sm sm:text-base">
             {name}
           </h3>
 
@@ -198,25 +198,25 @@ const ProductCard = ({
                     className={`transition-colors duration-300 ${
                       i < Math.floor(rating) 
                         ? 'text-amber-400 fill-amber-400' 
-                        : 'text-gray-600/50'
+                        : 'text-white/10'
                     }`}
                     size={12}
                   />
                 ))}
               </div>
-              <span className="text-text-secondary/70 text-[10px] sm:text-xs font-medium">
-                {rating.toFixed(1)} <span className="text-text-secondary/40">({reviews})</span>
+              <span className="text-white/40 text-[10px] sm:text-xs font-body font-medium">
+                {rating.toFixed(1)} <span className="text-white/20">({reviews})</span>
               </span>
             </div>
           )}
 
           {/* Price */}
           <div className="flex items-center gap-2 sm:gap-3">
-            <span className="font-bold text-lg sm:text-xl text-white group-hover:text-accent transition-colors duration-300">
+            <span className="font-heading font-bold text-lg sm:text-xl text-white group-hover:text-blue-400 transition-colors duration-300">
               {formatPrice(price)}
             </span>
             {oldPrice && (
-              <span className="text-text-secondary/50 line-through text-xs sm:text-sm">
+              <span className="text-white/30 line-through text-xs sm:text-sm font-body">
                 {formatPrice(oldPrice)}
               </span>
             )}

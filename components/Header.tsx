@@ -105,41 +105,41 @@ const Header = () => {
       {/* Main Header */}
       <header className={`sticky top-0 z-50 transition-all duration-300 ${
         isScrolled 
-          ? 'bg-primary/98 backdrop-blur-2xl border-b border-white/10 shadow-xl shadow-black/30' 
-          : 'bg-primary/95 backdrop-blur-xl border-b border-white/5 shadow-lg shadow-black/20'
+          ? 'bg-[#0a0a0f]/95 backdrop-blur-2xl border-b border-white/10 shadow-xl shadow-black/50' 
+          : 'bg-[#0a0a0f]/80 backdrop-blur-xl border-b border-white/5'
       }`}>
         <div className="container-custom py-4">
           <div className="flex items-center justify-between">
             {/* Logo */}
-            <Link href="/" className="text-2xl font-bold text-white flex-shrink-0 tracking-tight hover:text-accent transition-colors duration-300">
-              <span className="bg-gradient-to-r from-white via-white to-accent-light bg-clip-text text-transparent">AURA</span>
-              <span className="text-accent">CASE</span>
+            <Link href="/" className="text-2xl font-heading font-bold text-white flex-shrink-0 tracking-tight hover:text-accent transition-colors duration-300">
+              <span className="bg-gradient-to-r from-white via-white to-blue-400 bg-clip-text text-transparent">AURA</span>
+              <span className="text-blue-400">CASE</span>
             </Link>
 
             {/* Desktop Navigation */}
             <nav className="hidden lg:flex items-center space-x-10 mx-10">
-              <Link href="/" className="relative text-text-secondary hover:text-white transition-colors duration-300 font-medium text-sm group">
+              <Link href="/" className="relative text-white/60 hover:text-white transition-colors duration-300 font-body font-medium text-sm group">
                 {t('nav.home', 'Home')}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-accent to-accent-light group-hover:w-full transition-all duration-300"></span>
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-400 to-cyan-400 group-hover:w-full transition-all duration-300"></span>
               </Link>
-              <Link href="/shop" className="relative text-text-secondary hover:text-white transition-colors duration-300 font-medium text-sm group">
+              <Link href="/shop" className="relative text-white/60 hover:text-white transition-colors duration-300 font-body font-medium text-sm group">
                 {t('nav.shop', 'Shop')}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-accent to-accent-light group-hover:w-full transition-all duration-300"></span>
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-400 to-cyan-400 group-hover:w-full transition-all duration-300"></span>
               </Link>
-              <Link href="/about" className="relative text-text-secondary hover:text-white transition-colors duration-300 font-medium text-sm group">
+              <Link href="/about" className="relative text-white/60 hover:text-white transition-colors duration-300 font-body font-medium text-sm group">
                 {t('nav.about', 'About')}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-accent to-accent-light group-hover:w-full transition-all duration-300"></span>
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-400 to-cyan-400 group-hover:w-full transition-all duration-300"></span>
               </Link>
-              <Link href="/contact" className="relative text-text-secondary hover:text-white transition-colors duration-300 font-medium text-sm group">
+              <Link href="/contact" className="relative text-white/60 hover:text-white transition-colors duration-300 font-body font-medium text-sm group">
                 {t('nav.contact', 'Contact')}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-accent to-accent-light group-hover:w-full transition-all duration-300"></span>
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-blue-400 to-cyan-400 group-hover:w-full transition-all duration-300"></span>
               </Link>
             </nav>
 
             {/* Search Bar */}
             <div className="hidden md:flex items-center flex-1 max-w-sm mx-6">
               <div className="relative w-full group">
-                <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-white/60 group-focus-within:text-accent transition-colors duration-300" />
+                <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40 group-focus-within:text-blue-400 transition-colors duration-300" />
                 <input
                   type="text"
                   placeholder={t('search.placeholder', 'Search products...')}
@@ -148,7 +148,7 @@ const Header = () => {
                   onKeyPress={(e) => e.key === 'Enter' && handleSearch(searchQuery)}
                   onFocus={() => setShowSuggestions(searchQuery.trim().length > 1)}
                   onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
-                  className="w-full bg-background-secondary/80 backdrop-blur-sm text-white pl-11 pr-10 py-2.5 rounded-xl border border-white/10 focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent/40 transition-all duration-300 placeholder:text-text-secondary/60"
+                  className="w-full bg-white/[0.03] backdrop-blur-sm text-white pl-11 pr-10 py-2.5 rounded-xl border border-white/10 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/40 transition-all duration-300 placeholder:text-white/30 font-body"
                   suppressHydrationWarning
                 />
                 {searchQuery && (
@@ -157,7 +157,7 @@ const Header = () => {
                       setSearchQuery('');
                       setShowSuggestions(false);
                     }}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-text-secondary hover:text-white transition-colors p-1 hover:bg-white/10 rounded-full"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-colors p-1 hover:bg-white/10 rounded-full"
                   >
                     <FiX size={14} />
                   </button>
@@ -165,9 +165,9 @@ const Header = () => {
 
                 {/* Search Suggestions Dropdown */}
                 {showSuggestions && searchSuggestions.length > 0 && (
-                  <div className="absolute top-full left-0 right-0 mt-3 bg-primary/98 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-2xl shadow-black/40 z-50 max-h-96 overflow-y-auto overflow-x-hidden">
+                  <div className="absolute top-full left-0 right-0 mt-3 bg-[#0a0a0f]/98 backdrop-blur-2xl border border-white/10 rounded-2xl shadow-2xl shadow-black/60 z-50 max-h-96 overflow-y-auto overflow-x-hidden">
                     <div className="p-3">
-                      <div className="text-xs text-text-secondary/70 mb-2 px-2 uppercase tracking-wider font-medium">Suggestions</div>
+                      <div className="text-xs text-white/40 mb-2 px-2 uppercase tracking-wider font-body font-medium">Suggestions</div>
                       {searchSuggestions.map((product) => (
                         <button
                           key={product.id}
@@ -178,7 +178,7 @@ const Header = () => {
                           }}
                           className="w-full flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-all duration-200 text-left group border border-transparent hover:border-white/5"
                         >
-                          <div className="relative w-14 h-14 rounded-xl overflow-hidden bg-gradient-to-br from-gray-700 to-gray-800 flex-shrink-0">
+                          <div className="relative w-14 h-14 rounded-xl overflow-hidden bg-gradient-to-br from-white/5 to-white/10 flex-shrink-0">
                             <img
                               src={product.image}
                               alt={product.name}
@@ -186,12 +186,12 @@ const Header = () => {
                             />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <div className="text-white font-medium group-hover:text-accent transition-colors truncate text-sm">
+                            <div className="text-white font-body font-medium group-hover:text-blue-400 transition-colors truncate text-sm">
                               {product.name}
                             </div>
-                            <div className="text-text-secondary text-xs mt-0.5 flex items-center gap-2">
-                              <span className="text-accent font-semibold">${product.price.toFixed(2)}</span>
-                              <span className="text-text-secondary/50">•</span>
+                            <div className="text-white/40 text-xs mt-0.5 flex items-center gap-2 font-body">
+                              <span className="text-blue-400 font-semibold">${product.price.toFixed(2)}</span>
+                              <span className="text-white/20">•</span>
                               <span>{product.category?.name}</span>
                             </div>
                           </div>
@@ -200,7 +200,7 @@ const Header = () => {
                       <div className="border-t border-white/5 mt-3 pt-3">
                         <button
                           onClick={() => handleSearch(searchQuery)}
-                          className="w-full text-center text-accent hover:text-accent-light transition-colors py-2.5 text-sm font-medium rounded-xl hover:bg-accent/10"
+                          className="w-full text-center text-blue-400 hover:text-blue-300 transition-colors py-2.5 text-sm font-body font-medium rounded-xl hover:bg-blue-500/10"
                         >
                           View all results for "{searchQuery}"
                         </button>
@@ -218,32 +218,32 @@ const Header = () => {
               </div>
               <button 
                 onClick={() => setIsAdvancedSearchOpen(true)}
-                className="hidden sm:flex p-2.5 text-text-secondary hover:text-accent hover:bg-white/5 rounded-xl transition-all duration-300"
+                className="hidden sm:flex p-2.5 text-white/50 hover:text-blue-400 hover:bg-white/5 rounded-xl transition-all duration-300"
                 aria-label="Отвори разширено търсене"
               >
                 <FiSearch size={20} />
               </button>
-              <Link href="/account" className="p-2 sm:p-2.5 text-text-secondary hover:text-accent hover:bg-white/5 rounded-xl transition-all duration-300" aria-label="Моят акаунт">
+              <Link href="/account" className="p-2 sm:p-2.5 text-white/50 hover:text-blue-400 hover:bg-white/5 rounded-xl transition-all duration-300" aria-label="Моят акаунт">
                 <FiUser size={20} />
               </Link>
-              <Link href="/cart" className="relative p-2 sm:p-2.5 text-text-secondary hover:text-accent hover:bg-white/5 rounded-xl transition-all duration-300" aria-label={`Количка${cartItemsCount > 0 ? ` (${cartItemsCount} продукта)` : ''}`}>
+              <Link href="/cart" className="relative p-2 sm:p-2.5 text-white/50 hover:text-blue-400 hover:bg-white/5 rounded-xl transition-all duration-300" aria-label={`Количка${cartItemsCount > 0 ? ` (${cartItemsCount} продукта)` : ''}`}>
                 <FiShoppingCart size={20} />
                 {cartItemsCount > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 bg-gradient-to-br from-accent to-accent-dark text-white text-[10px] sm:text-xs font-bold rounded-full h-4 w-4 sm:h-5 sm:w-5 flex items-center justify-center shadow-lg shadow-accent/30 ring-2 ring-primary">
+                  <span className="absolute -top-0.5 -right-0.5 bg-gradient-to-br from-blue-500 to-cyan-500 text-white text-[10px] sm:text-xs font-bold rounded-full h-4 w-4 sm:h-5 sm:w-5 flex items-center justify-center shadow-lg shadow-blue-500/30 ring-2 ring-[#0a0a0f]">
                     {cartItemsCount}
                   </span>
                 )}
               </Link>
-              <Link href="/wishlist" className="relative p-2 sm:p-2.5 text-text-secondary hover:text-red-400 hover:bg-white/5 rounded-xl transition-all duration-300 hidden sm:flex" aria-label={`Любими${wishlistItemsCount > 0 ? ` (${wishlistItemsCount} продукта)` : ''}`}>
+              <Link href="/wishlist" className="relative p-2 sm:p-2.5 text-white/50 hover:text-red-400 hover:bg-white/5 rounded-xl transition-all duration-300 hidden sm:flex" aria-label={`Любими${wishlistItemsCount > 0 ? ` (${wishlistItemsCount} продукта)` : ''}`}>
                 <FiHeart size={20} />
                 {wishlistItemsCount > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 bg-gradient-to-br from-red-500 to-red-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center shadow-lg shadow-red-500/30 ring-2 ring-primary">
+                  <span className="absolute -top-0.5 -right-0.5 bg-gradient-to-br from-red-500 to-red-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center shadow-lg shadow-red-500/30 ring-2 ring-[#0a0a0f]">
                     {wishlistItemsCount}
                   </span>
                 )}
               </Link>
               <button
-                className="p-3 lg:hidden text-text-secondary hover:text-white hover:bg-white/5 rounded-xl transition-all duration-300 min-w-[44px] min-h-[44px] flex items-center justify-center"
+                className="p-3 lg:hidden text-white/50 hover:text-white hover:bg-white/5 rounded-xl transition-all duration-300 min-w-[44px] min-h-[44px] flex items-center justify-center"
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 aria-label={mobileMenuOpen ? 'Затвори менюто' : 'Отвори менюто'}
                 aria-expanded={mobileMenuOpen}
@@ -256,42 +256,42 @@ const Header = () => {
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="lg:hidden bg-primary-light/95 backdrop-blur-xl border-t border-white/5">
+          <div className="lg:hidden bg-[#0a0a0f]/98 backdrop-blur-xl border-t border-white/5">
             <nav className="container-custom py-4 flex flex-col space-y-1">
               <Link
                 href="/"
-                className="text-text-secondary hover:text-white hover:bg-white/5 transition-all duration-300 font-medium px-4 py-3.5 rounded-xl text-base"
+                className="text-white/60 hover:text-white hover:bg-white/5 transition-all duration-300 font-body font-medium px-4 py-3.5 rounded-xl text-base"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {t('nav.home', 'Home')}
               </Link>
               <Link
                 href="/shop"
-                className="text-text-secondary hover:text-white hover:bg-white/5 transition-all duration-300 font-medium px-4 py-3.5 rounded-xl text-base"
+                className="text-white/60 hover:text-white hover:bg-white/5 transition-all duration-300 font-body font-medium px-4 py-3.5 rounded-xl text-base"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {t('nav.shop', 'Shop')}
               </Link>
               <Link
                 href="/about"
-                className="text-text-secondary hover:text-white hover:bg-white/5 transition-all duration-300 font-medium px-4 py-3.5 rounded-xl text-base"
+                className="text-white/60 hover:text-white hover:bg-white/5 transition-all duration-300 font-body font-medium px-4 py-3.5 rounded-xl text-base"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {t('nav.about', 'About')}
               </Link>
               <Link
                 href="/contact"
-                className="text-text-secondary hover:text-white hover:bg-white/5 transition-all duration-300 font-medium px-4 py-3.5 rounded-xl text-base"
+                className="text-white/60 hover:text-white hover:bg-white/5 transition-all duration-300 font-body font-medium px-4 py-3.5 rounded-xl text-base"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 {t('nav.contact', 'Contact')}
               </Link>
               
               {/* Mobile-only items */}
-              <div className="border-t border-white/10 mt-2 pt-2">
+              <div className="border-t border-white/5 mt-2 pt-2">
                 <Link
                   href="/wishlist"
-                  className="text-text-secondary hover:text-white hover:bg-white/5 transition-all duration-300 font-medium px-4 py-3.5 rounded-xl text-base flex items-center gap-3"
+                  className="text-white/60 hover:text-white hover:bg-white/5 transition-all duration-300 font-body font-medium px-4 py-3.5 rounded-xl text-base flex items-center gap-3"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   <FiHeart size={18} />

@@ -24,16 +24,36 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    checkAuth();
+    setMounted(true);
   }, []);
 
+  useEffect(() => {
+    if (mounted) {
+      checkAuth();
+    }
+  }, [mounted]);
+
   const checkAuth = async () => {
+    // Only run in browser environment
+    if (typeof window === 'undefined') {
+      setLoading(false);
+      return;
+    }
+
     try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+
       const response = await fetch('/api/auth/me', {
         credentials: 'include',
+        signal: controller.signal,
       });
+
+      clearTimeout(timeoutId);
+
       if (response.ok) {
         const data = await response.json();
         setUser(data.user);
@@ -41,7 +61,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser(null);
       }
     } catch (error) {
-      console.error('Error checking auth:', error);
+      // Silently handle network errors during initial load
+      if (error instanceof Error && error.name === 'AbortError') {
+        console.warn('Auth check timed out');
+      } else if (error instanceof TypeError && error.message === 'Failed to fetch') {
+        // This can happen during SSR or when the server is unavailable
+        console.warn('Auth check failed - server may be unavailable');
+      } else {
+        console.error('Error checking auth:', error);
+      }
       setUser(null);
     } finally {
       setLoading(false);

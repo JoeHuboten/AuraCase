@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Space_Grotesk, Outfit } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -13,7 +13,17 @@ import ServiceWorkerRegistration from "@/components/ServiceWorkerRegistration";
 import { ToastProvider } from "@/components/Toast";
 import BackToTop from "@/components/BackToTop";
 
-const inter = Inter({ subsets: ["latin"] });
+const spaceGrotesk = Space_Grotesk({ 
+  subsets: ["latin"],
+  variable: '--font-heading',
+  display: 'swap',
+});
+
+const outfit = Outfit({ 
+  subsets: ["latin"],
+  variable: '--font-body',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   title: {
@@ -125,8 +135,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="bg">
-      <body className={inter.className}>
+    <html lang="bg" className={`${spaceGrotesk.variable} ${outfit.variable}`}>
+      <body className={outfit.className}>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

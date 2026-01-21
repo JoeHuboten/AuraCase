@@ -75,7 +75,7 @@ export default function ProductPageClient({ product, relatedProducts }: ProductP
   })();
 
   return (
-    <div className="min-h-screen bg-background text-white">
+    <div className="min-h-screen bg-[#0a0a0f] text-white">
       {/* Breadcrumb */}
       <div className="container-custom">
         <Breadcrumbs
@@ -95,7 +95,7 @@ export default function ProductPageClient({ product, relatedProducts }: ProductP
           {/* Product Info */}
           <div className="space-y-6">
             <div>
-              <h1 className="text-4xl font-bold text-white mb-2">{product.name}</h1>
+              <h1 className="text-4xl font-heading font-bold text-white mb-2">{product.name}</h1>
               <div className="flex items-center gap-4 mb-4">
                 <div className="flex items-center gap-2">
                   <div className="flex items-center">
@@ -103,13 +103,13 @@ export default function ProductPageClient({ product, relatedProducts }: ProductP
                       <FiStar
                         key={i}
                         className={`${
-                          i < Math.floor(product.rating) ? 'text-yellow-400 fill-yellow-400' : 'text-gray-600'
+                          i < Math.floor(product.rating) ? 'text-yellow-400 fill-yellow-400' : 'text-white/20'
                         }`}
                         size={20}
                       />
                     ))}
                   </div>
-                  <span className="text-text-secondary">
+                  <span className="text-white/50 font-body">
                     {product.rating} ({product.reviews} {t('product.reviews', 'reviews')})
                   </span>
                 </div>
@@ -118,12 +118,12 @@ export default function ProductPageClient({ product, relatedProducts }: ProductP
 
             {/* Price */}
             <div className="flex items-center gap-4">
-              <span className="text-4xl font-bold text-white">{formatPrice(product.price)}</span>
+              <span className="text-4xl font-heading font-bold text-white">{formatPrice(product.price)}</span>
               {product.oldPrice && (
                 <>
-                  <span className="text-2xl text-text-secondary line-through">{formatPrice(product.oldPrice)}</span>
+                  <span className="text-2xl text-white/40 line-through font-body">{formatPrice(product.oldPrice)}</span>
                   {product.discount && (
-                    <span className="bg-red-500/20 text-red-400 px-3 py-1 rounded-full text-sm font-semibold">
+                    <span className="bg-red-500/20 text-red-400 px-3 py-1 rounded-full text-sm font-semibold font-body">
                       -{product.discount}%
                     </span>
                   )}
@@ -133,10 +133,10 @@ export default function ProductPageClient({ product, relatedProducts }: ProductP
 
             {/* Description */}
             <div>
-              <h3 className="text-xl font-semibold text-white mb-3">
+              <h3 className="text-xl font-heading font-semibold text-white mb-3">
                 {t('product.description', 'Description')}
               </h3>
-              <p className="text-text-secondary leading-relaxed">{product.description}</p>
+              <p className="text-white/60 leading-relaxed font-body">{product.description}</p>
             </div>
 
             {/* Interactive Product Details */}
@@ -145,13 +145,13 @@ export default function ProductPageClient({ product, relatedProducts }: ProductP
             {/* Specifications */}
             {product.specifications && (
               <div>
-                <h3 className="text-xl font-semibold text-white mb-3">
+                <h3 className="text-xl font-heading font-semibold text-white mb-3">
                   {t('product.specifications', 'Specifications')}
                 </h3>
                 <div className="space-y-2">
                   {Object.entries(product.specifications as Record<string, any>).map(([key, value]) => (
-                    <div key={key} className="flex justify-between">
-                      <span className="text-text-secondary capitalize">{key}:</span>
+                    <div key={key} className="flex justify-between font-body">
+                      <span className="text-white/50 capitalize">{key}:</span>
                       <span className="text-white">
                         {Array.isArray(value) ? value.join(', ') : value}
                       </span>
@@ -171,7 +171,7 @@ export default function ProductPageClient({ product, relatedProducts }: ProductP
         {/* Related Products */}
         {relatedProducts.length > 0 && (
           <div className="mt-16">
-            <h2 className="text-3xl font-bold text-white mb-8">
+            <h2 className="text-3xl font-heading font-bold text-white mb-8">
               {t('product.relatedProducts', 'Related Products')}
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -179,9 +179,9 @@ export default function ProductPageClient({ product, relatedProducts }: ProductP
                 <Link
                   key={relatedProduct.id}
                   href={`/product/${relatedProduct.slug}`}
-                  className="group bg-background-secondary rounded-2xl overflow-hidden hover:ring-2 hover:ring-accent transition"
+                  className="group bg-white/[0.02] border border-white/5 rounded-2xl overflow-hidden hover:border-blue-500/30 transition"
                 >
-                  <div className="relative aspect-square bg-gray-800">
+                  <div className="relative aspect-square bg-white/[0.02]">
                     <Image
                       src={relatedProduct.image}
                       alt={relatedProduct.name}
@@ -190,13 +190,13 @@ export default function ProductPageClient({ product, relatedProducts }: ProductP
                     />
                   </div>
                   <div className="p-4">
-                    <h3 className="text-white font-semibold mb-2 group-hover:text-accent transition">
+                    <h3 className="text-white font-heading font-semibold mb-2 group-hover:text-blue-400 transition">
                       {relatedProduct.name}
                     </h3>
                     <div className="flex items-center gap-3">
-                      <span className="text-white font-bold">{formatPrice(relatedProduct.price)}</span>
+                      <span className="text-white font-bold font-body">{formatPrice(relatedProduct.price)}</span>
                       {relatedProduct.oldPrice && (
-                        <span className="text-text-secondary line-through">{formatPrice(relatedProduct.oldPrice)}</span>
+                        <span className="text-white/40 line-through font-body">{formatPrice(relatedProduct.oldPrice)}</span>
                       )}
                     </div>
                   </div>

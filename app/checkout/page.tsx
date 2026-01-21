@@ -159,9 +159,9 @@ export default function CheckoutPage() {
     error?: string;
   }) => (
     <div>
-      <label className="block text-sm font-medium text-gray-300 mb-2">
+      <label className="block text-sm font-medium text-white/70 mb-2 font-body">
         <span className="flex items-center gap-2">
-          <Icon size={16} className="text-accent" />
+          <Icon size={16} className="text-blue-400" />
           {label} {required && <span className="text-red-400">*</span>}
         </span>
       </label>
@@ -173,31 +173,31 @@ export default function CheckoutPage() {
           if (errors[name]) setErrors(prev => ({ ...prev, [name]: undefined }));
         }}
         placeholder={placeholder}
-        className={`w-full px-4 py-3 bg-background border rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 transition-all ${
+        className={`w-full px-4 py-3 bg-white/[0.03] border rounded-lg text-white placeholder-white/30 focus:outline-none focus:ring-2 transition-all font-body ${
           fieldError 
             ? 'border-red-500 focus:ring-red-500/50' 
-            : 'border-gray-700 focus:ring-accent/50 focus:border-accent'
+            : 'border-white/10 focus:ring-blue-500/50 focus:border-blue-500'
         }`}
       />
-      {fieldError && <p className="text-red-400 text-sm mt-1">{fieldError}</p>}
+      {fieldError && <p className="text-red-400 text-sm mt-1 font-body">{fieldError}</p>}
     </div>
   );
 
   if (authLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="animate-spin h-12 w-12 border-4 border-accent border-t-transparent rounded-full" />
+      <div className="min-h-screen flex items-center justify-center bg-[#0a0a0f]">
+        <div className="animate-spin h-12 w-12 border-4 border-blue-500 border-t-transparent rounded-full" />
       </div>
     );
   }
 
   if (!PAYPAL_CLIENT_ID || PAYPAL_CLIENT_ID === 'your_paypal_client_id') {
     return (
-      <div className="min-h-screen flex items-center justify-center px-4 bg-background">
-        <div className="bg-primary border border-gray-800 rounded-xl p-8 max-w-md text-center">
-          <h2 className="text-2xl font-bold text-white mb-4">PayPal не е конфигуриран</h2>
-          <p className="text-gray-400 mb-6">Моля, конфигурирайте PayPal в .env файла</p>
-          <button onClick={() => router.push('/cart')} className="btn-primary">
+      <div className="min-h-screen flex items-center justify-center px-4 bg-[#0a0a0f]">
+        <div className="bg-white/[0.02] border border-white/10 rounded-xl p-8 max-w-md text-center">
+          <h2 className="text-2xl font-heading font-bold text-white mb-4">PayPal не е конфигуриран</h2>
+          <p className="text-white/50 mb-6 font-body">Моля, конфигурирайте PayPal в .env файла</p>
+          <button onClick={() => router.push('/cart')} className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-xl font-body">
             Обратно към кошницата
           </button>
         </div>
@@ -207,7 +207,7 @@ export default function CheckoutPage() {
 
   return (
     <PayPalScriptProvider options={{ clientId: PAYPAL_CLIENT_ID, currency: 'EUR' }}>
-      <div className="min-h-screen bg-background py-6 sm:py-8 md:py-12">
+      <div className="min-h-screen bg-[#0a0a0f] py-6 sm:py-8 md:py-12">
         <div className="container mx-auto px-4 max-w-6xl">
           {/* Email Verification Warning */}
           {user && !user.emailVerified && (
@@ -215,8 +215,8 @@ export default function CheckoutPage() {
               <div className="flex items-start gap-2 sm:gap-3">
                 <FiMail className="text-yellow-500 mt-0.5 flex-shrink-0" size={18} />
                 <div>
-                  <p className="text-yellow-500 font-medium mb-1 text-sm sm:text-base">Email Not Verified</p>
-                  <p className="text-yellow-400 text-xs sm:text-sm">
+                  <p className="text-yellow-500 font-medium mb-1 text-sm sm:text-base font-body">Email Not Verified</p>
+                  <p className="text-yellow-400 text-xs sm:text-sm font-body">
                     Please verify your email address to complete your purchase. Check your inbox for the verification link.
                   </p>
                 </div>
@@ -226,28 +226,28 @@ export default function CheckoutPage() {
 
           {/* Header with Steps */}
           <div className="mb-6 sm:mb-8">
-            <h1 className="text-2xl sm:text-3xl font-bold text-white mb-4 sm:mb-6">Плащане</h1>
+            <h1 className="text-2xl sm:text-3xl font-heading font-bold text-white mb-4 sm:mb-6">Плащане</h1>
             
             {/* Progress Steps */}
             <div className="flex items-center gap-2 sm:gap-4">
-              <div className={`flex items-center gap-1.5 sm:gap-2 ${step === 'shipping' ? 'text-accent' : 'text-green-400'}`}>
+              <div className={`flex items-center gap-1.5 sm:gap-2 ${step === 'shipping' ? 'text-blue-400' : 'text-green-400'}`}>
                 <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-sm ${
-                  step === 'shipping' ? 'bg-accent' : 'bg-green-500'
+                  step === 'shipping' ? 'bg-blue-500' : 'bg-green-500'
                 }`}>
                   {step === 'payment' ? <FiCheckCircle size={16} /> : '1'}
                 </div>
-                <span className="font-medium text-sm sm:text-base">Доставка</span>
+                <span className="font-medium text-sm sm:text-base font-body">Доставка</span>
               </div>
               
-              <div className={`flex-1 h-0.5 sm:h-1 ${step === 'payment' ? 'bg-green-500' : 'bg-gray-700'}`} />
+              <div className={`flex-1 h-0.5 sm:h-1 ${step === 'payment' ? 'bg-green-500' : 'bg-white/10'}`} />
               
-              <div className={`flex items-center gap-1.5 sm:gap-2 ${step === 'payment' ? 'text-accent' : 'text-gray-500'}`}>
+              <div className={`flex items-center gap-1.5 sm:gap-2 ${step === 'payment' ? 'text-blue-400' : 'text-white/40'}`}>
                 <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-sm ${
-                  step === 'payment' ? 'bg-accent' : 'bg-gray-700'
+                  step === 'payment' ? 'bg-blue-500' : 'bg-white/10'
                 }`}>
                   2
                 </div>
-                <span className="font-medium text-sm sm:text-base">Плащане</span>
+                <span className="font-medium text-sm sm:text-base font-body">Плащане</span>
               </div>
             </div>
           </div>
@@ -263,9 +263,9 @@ export default function CheckoutPage() {
             <div className="lg:col-span-2 space-y-4 sm:space-y-6">
               {step === 'shipping' ? (
                 /* Shipping Form */
-                <div className="bg-primary border border-gray-800 rounded-xl p-4 sm:p-6">
-                  <h2 className="text-lg sm:text-xl font-bold text-white mb-4 sm:mb-6 flex items-center gap-2">
-                    <FiTruck className="text-accent" size={20} />
+                <div className="bg-white/[0.02] border border-white/10 rounded-xl p-4 sm:p-6">
+                  <h2 className="text-lg sm:text-xl font-heading font-bold text-white mb-4 sm:mb-6 flex items-center gap-2">
+                    <FiTruck className="text-blue-400" size={20} />
                     Адрес за доставка
                   </h2>
                   
@@ -340,9 +340,9 @@ export default function CheckoutPage() {
                   </div>
 
                   <div className="mt-4">
-                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                    <label className="block text-sm font-medium text-white/70 mb-2 font-body">
                       <span className="flex items-center gap-2">
-                        <FiFileText size={16} className="text-accent" />
+                        <FiFileText size={16} className="text-blue-400" />
                         Бележки към поръчката (по избор)
                       </span>
                     </label>
@@ -351,14 +351,14 @@ export default function CheckoutPage() {
                       onChange={(e) => setShippingAddress(prev => ({ ...prev, notes: e.target.value }))}
                       placeholder="Допълнителни инструкции за доставка..."
                       rows={3}
-                      className="w-full px-4 py-3 bg-background border border-gray-700 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent transition-all resize-none"
+                      className="w-full px-4 py-3 bg-white/[0.03] border border-white/10 rounded-lg text-white placeholder-white/30 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-all resize-none font-body"
                     />
                   </div>
 
                   <button
                     onClick={handleContinueToPayment}
                     disabled={isValidating}
-                    className="w-full mt-6 bg-accent hover:bg-accent-light text-white font-bold py-4 rounded-lg transition-colors disabled:opacity-50"
+                    className="w-full mt-6 bg-blue-500 hover:bg-blue-600 text-white font-bold py-4 rounded-xl transition-colors disabled:opacity-50 font-body"
                   >
                     {isValidating ? 'Валидиране...' : 'Продължи към плащане'}
                   </button>
@@ -367,20 +367,20 @@ export default function CheckoutPage() {
                 /* Payment Step */
                 <div className="space-y-6">
                   {/* Shipping Summary */}
-                  <div className="bg-primary border border-gray-800 rounded-xl p-6">
+                  <div className="bg-white/[0.02] border border-white/10 rounded-xl p-6">
                     <div className="flex items-center justify-between mb-4">
-                      <h2 className="text-lg font-bold text-white flex items-center gap-2">
-                        <FiTruck className="text-accent" />
+                      <h2 className="text-lg font-heading font-bold text-white flex items-center gap-2">
+                        <FiTruck className="text-blue-400" />
                         Адрес за доставка
                       </h2>
                       <button 
                         onClick={() => setStep('shipping')}
-                        className="text-accent hover:text-accent-light text-sm"
+                        className="text-blue-400 hover:text-blue-300 text-sm font-body"
                       >
                         Промени
                       </button>
                     </div>
-                    <div className="text-gray-300 text-sm space-y-1">
+                    <div className="text-white/60 text-sm space-y-1 font-body">
                       <p className="font-medium text-white">
                         {shippingAddress.firstName} {shippingAddress.lastName}
                       </p>
@@ -392,14 +392,14 @@ export default function CheckoutPage() {
                   </div>
 
                   {/* Payment */}
-                  <div className="bg-primary border border-gray-800 rounded-xl p-6">
-                    <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
-                      <FiShield className="text-accent" />
+                  <div className="bg-white/[0.02] border border-white/10 rounded-xl p-6">
+                    <h2 className="text-xl font-heading font-bold text-white mb-6 flex items-center gap-2">
+                      <FiShield className="text-blue-400" />
                       Метод на плащане
                     </h2>
                     
-                    <div className="bg-background/50 p-4 rounded-lg mb-4">
-                      <p className="text-gray-400 text-sm mb-4">
+                    <div className="bg-white/[0.03] p-4 rounded-lg mb-4">
+                      <p className="text-white/50 text-sm mb-4 font-body">
                         Плащането се обработва сигурно чрез PayPal. Можете да платите с PayPal акаунт или директно с карта.
                       </p>
                     </div>
@@ -413,7 +413,7 @@ export default function CheckoutPage() {
 
                     <button 
                       onClick={() => setStep('shipping')}
-                      className="w-full mt-4 border border-gray-700 text-gray-300 hover:text-white py-3 rounded-lg transition-colors"
+                      className="w-full mt-4 border border-white/10 text-white/60 hover:text-white hover:border-white/20 py-3 rounded-xl transition-colors font-body"
                     >
                       ← Обратно към адреса
                     </button>
@@ -424,8 +424,8 @@ export default function CheckoutPage() {
 
             {/* Order Summary Sidebar */}
             <div className="lg:col-span-1">
-              <div className="bg-primary border border-gray-800 rounded-xl p-6 sticky top-8">
-                <h2 className="text-xl font-bold text-white mb-6">Обобщение на поръчката</h2>
+              <div className="bg-white/[0.02] border border-white/10 rounded-xl p-6 sticky top-8">
+                <h2 className="text-xl font-heading font-bold text-white mb-6">Обобщение на поръчката</h2>
                 
                 {/* Items */}
                 <div className="space-y-4 mb-6 max-h-64 overflow-y-auto">
@@ -438,16 +438,16 @@ export default function CheckoutPage() {
                           fill 
                           className="object-cover rounded-lg" 
                         />
-                        <span className="absolute -top-2 -right-2 w-5 h-5 bg-accent rounded-full text-xs flex items-center justify-center text-white">
+                        <span className="absolute -top-2 -right-2 w-5 h-5 bg-blue-500 rounded-full text-xs flex items-center justify-center text-white">
                           {item.quantity}
                         </span>
                       </div>
                       <div className="flex-1 min-w-0">
-                        <p className="text-white text-sm font-medium truncate">{item.name}</p>
-                        {item.color && <p className="text-gray-500 text-xs">Цвят: {item.color}</p>}
-                        {item.size && <p className="text-gray-500 text-xs">Размер: {item.size}</p>}
+                        <p className="text-white text-sm font-medium truncate font-body">{item.name}</p>
+                        {item.color && <p className="text-white/40 text-xs font-body">Цвят: {item.color}</p>}
+                        {item.size && <p className="text-white/40 text-xs font-body">Размер: {item.size}</p>}
                       </div>
-                      <p className="text-white font-bold text-sm">
+                      <p className="text-white font-bold text-sm font-body">
                         {(item.price * item.quantity).toFixed(2)} лв
                       </p>
                     </div>
@@ -455,32 +455,32 @@ export default function CheckoutPage() {
                 </div>
 
                 {/* Totals */}
-                <div className="border-t border-gray-700 pt-4 space-y-3">
-                  <div className="flex justify-between text-gray-400">
+                <div className="border-t border-white/10 pt-4 space-y-3">
+                  <div className="flex justify-between text-white/50 font-body">
                     <span>Междинна сума</span>
                     <span>{getSubtotal().toFixed(2)} лв</span>
                   </div>
                   
                   {discountCode && (
-                    <div className="flex justify-between text-green-400">
+                    <div className="flex justify-between text-green-400 font-body">
                       <span>Отстъпка ({discountCode.percentage}%)</span>
                       <span>-{getDiscount().toFixed(2)} лв</span>
                     </div>
                   )}
                   
-                  <div className="flex justify-between text-gray-400">
+                  <div className="flex justify-between text-white/50 font-body">
                     <span>Доставка</span>
                     <span className="text-green-400">Безплатна</span>
                   </div>
                   
-                  <div className="flex justify-between text-white font-bold text-xl pt-2 border-t border-gray-700">
-                    <span>Общо</span>
-                    <span className="text-accent">{getTotal().toFixed(2)} лв</span>
+                  <div className="flex justify-between text-white font-bold text-xl pt-2 border-t border-white/10">
+                    <span className="font-heading">Общо</span>
+                    <span className="text-blue-400 font-heading">{getTotal().toFixed(2)} лв</span>
                   </div>
                 </div>
 
                 {/* Security Badge */}
-                <div className="mt-6 flex items-center gap-2 text-gray-400 text-sm">
+                <div className="mt-6 flex items-center gap-2 text-white/50 text-sm font-body">
                   <FiShield className="text-green-400" />
                   <span>Сигурно плащане с SSL криптиране</span>
                 </div>

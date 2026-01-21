@@ -21,7 +21,7 @@ export default function Error({ error, reset }: ErrorProps) {
   }, [error]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-primary/10 to-background flex items-center justify-center px-4">
+    <div className="min-h-screen bg-[#0a0a0f] flex items-center justify-center px-4">
       <div className="text-center max-w-lg">
         {/* Error Icon */}
         <div className="relative mb-8">
@@ -31,11 +31,11 @@ export default function Error({ error, reset }: ErrorProps) {
           <div className="absolute inset-0 w-32 h-32 mx-auto rounded-full border-4 border-red-500/30 animate-ping" />
         </div>
 
-        <h1 className="text-4xl font-bold text-white mb-4">
+        <h1 className="text-4xl font-heading font-bold text-white mb-4">
           Something Went Wrong
         </h1>
         
-        <p className="text-text-secondary text-lg mb-4">
+        <p className="text-white/50 text-lg mb-4 font-body">
           We apologize for the inconvenience. An unexpected error occurred.
         </p>
 
@@ -55,7 +55,7 @@ export default function Error({ error, reset }: ErrorProps) {
 
         {/* Production Error Message */}
         {process.env.NODE_ENV === 'production' && error.digest && (
-          <p className="text-text-secondary text-sm mb-8">
+          <p className="text-white/40 text-sm mb-8 font-body">
             Error ID: {error.digest}
           </p>
         )}
@@ -64,7 +64,7 @@ export default function Error({ error, reset }: ErrorProps) {
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <button
             onClick={reset}
-            className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-accent to-accent-light text-white px-8 py-4 rounded-xl font-medium hover:scale-105 transition-transform shadow-lg shadow-accent/20"
+            className="inline-flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white px-8 py-4 rounded-xl font-medium hover:scale-105 transition-transform shadow-lg shadow-blue-500/20 font-body"
           >
             <FiRefreshCw size={20} />
             Try Again
@@ -72,7 +72,7 @@ export default function Error({ error, reset }: ErrorProps) {
           
           <Link
             href="/"
-            className="inline-flex items-center justify-center gap-2 bg-gray-700 hover:bg-gray-600 text-white px-8 py-4 rounded-xl font-medium transition-colors"
+            className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white px-8 py-4 rounded-xl font-medium transition-colors font-body"
           >
             <FiHome size={20} />
             Go Home
@@ -80,10 +80,10 @@ export default function Error({ error, reset }: ErrorProps) {
         </div>
 
         {/* Support Link */}
-        <div className="mt-12 pt-8 border-t border-gray-800">
-          <p className="text-text-secondary text-sm">
+        <div className="mt-12 pt-8 border-t border-white/10">
+          <p className="text-white/40 text-sm font-body">
             If this problem persists, please{' '}
-            <Link href="/contact" className="text-accent hover:text-accent-light transition-colors">
+            <Link href="/contact" className="text-blue-400 hover:text-blue-300 transition-colors">
               contact support
             </Link>
           </p>
