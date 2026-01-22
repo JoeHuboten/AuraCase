@@ -6,6 +6,13 @@ import { useRouter } from 'next/navigation';
 import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
 import Image from 'next/image';
 import { FiUser, FiMapPin, FiPhone, FiMail, FiFileText, FiTruck, FiShield, FiCheckCircle } from 'react-icons/fi';
+import dynamic from 'next/dynamic';
+
+// Dynamically import Apple Pay button to avoid SSR issues
+const ApplePayButton = dynamic(() => import('@/components/ApplePayButton'), { 
+  ssr: false,
+  loading: () => null,
+});
 
 interface ShippingAddress {
   firstName: string;
@@ -428,6 +435,35 @@ export default function CheckoutPage() {
                       <FiShield className="text-blue-400" />
                       Метод на плащане
                     </h2>
+                    
+                    {/* Apple Pay / Google Pay */}
+                    <div className="mb-4">
+                      <ApplePayButton
+                        amount={getTotal()}
+                        items={items.map(item => ({
+                          ...item,
+                          productId: item.id,
+                        }))}
+                        shippingAddress={shippingAddress}
+                        discountCode={discountCode?.code}
+                        onSuccess={(orderId) => {
+                          setPaymentComplete(true);
+                          clearCart();
+                          router.push(`/payment/success?orderId=${orderId}`);
+                        }}
+                        onError={(err) => setError(err)}
+                      />
+                    </div>
+
+                    {/* Divider */}
+                    <div className="relative my-6">
+                      <div className="absolute inset-0 flex items-center">
+                        <div className="w-full border-t border-white/10"></div>
+                      </div>
+                      <div className="relative flex justify-center text-sm">
+                        <span className="px-4 bg-[#0a0a0f] text-white/40 font-body">или платете с PayPal</span>
+                      </div>
+                    </div>
                     
                     <div className="bg-white/[0.03] p-4 rounded-lg mb-4">
                       <p className="text-white/50 text-sm mb-4 font-body">
