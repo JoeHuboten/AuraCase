@@ -1,9 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getUserFromRequest } from '@/lib/auth-utils';
 import { prisma } from '@/lib/prisma';
+import { apiRateLimit } from '@/lib/rate-limit';
+import { validateCsrf } from '@/lib/csrf';
 
 // GET - Retrieve user's saved cart
 export async function GET(request: NextRequest) {
+  // Rate limiting
+  const rateLimitResult = await apiRateLimit(request);
+  if (!rateLimitResult.success) {
+    return NextResponse.json(
+      { error: 'Too many requests. Please try again later.' },
+      { status: 429 }
+    );
+  }
   try {
     const user = await getUserFromRequest(request);
     
@@ -43,13 +53,33 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json({ items });
   } catch (error) {
-    console.error('Error fetching cart:', error);
+    if (process.env.NODE_ENV !== 'production') {
+      console.error('Error fetching cart:', error);
+    }
     return NextResponse.json({ items: [] });
   }
 }
 
 // POST - Sync user's cart (merge or replace)
 export async function POST(request: NextRequest) {
+  // Rate limiting
+  const rateLimitResult = await apiRateLimit(request);
+  if (!rateLimitResult.success) {
+    return NextResponse.json(
+      { error: 'Too many requests. Please try again later.' },
+      { status: 429 }
+    );
+  }
+
+  // CSRF protection
+  const csrfResult = validateCsrf(request);
+  if (!csrfResult.valid) {
+    return NextResponse.json(
+      { error: csrfResult.error || 'Invalid request' },
+      { status: 403 }
+    );
+  }
+
   try {
     const user = await getUserFromRequest(request);
     
@@ -104,7 +134,9 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error('Error saving cart:', error);
+    if (process.env.NODE_ENV !== 'production') {
+      console.error('Error saving cart:', error);
+    }
     return NextResponse.json(
       { error: 'Failed to save cart' },
       { status: 500 }
@@ -114,6 +146,24 @@ export async function POST(request: NextRequest) {
 
 // DELETE - Clear user's cart
 export async function DELETE(request: NextRequest) {
+  // Rate limiting
+  const rateLimitResult = await apiRateLimit(request);
+  if (!rateLimitResult.success) {
+    return NextResponse.json(
+      { error: 'Too many requests. Please try again later.' },
+      { status: 429 }
+    );
+  }
+
+  // CSRF protection
+  const csrfResult = validateCsrf(request);
+  if (!csrfResult.valid) {
+    return NextResponse.json(
+      { error: csrfResult.error || 'Invalid request' },
+      { status: 403 }
+    );
+  }
+
   try {
     const user = await getUserFromRequest(request);
     
@@ -130,7 +180,9 @@ export async function DELETE(request: NextRequest) {
 
     return NextResponse.json({ success: true });
   } catch (error) {
-    console.error('Error clearing cart:', error);
+    if (process.env.NODE_ENV !== 'production') {
+      console.error('Error clearing cart:', error);
+    }
     return NextResponse.json(
       { error: 'Failed to clear cart' },
       { status: 500 }

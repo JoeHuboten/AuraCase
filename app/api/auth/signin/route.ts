@@ -19,7 +19,9 @@ export async function POST(request: NextRequest) {
     const { email, password, rememberMe } = body;
 
     if (!email || !password) {
-      console.log('Missing email or password');
+      if (process.env.NODE_ENV !== 'production') {
+        console.log('Missing email or password');
+      }
       return NextResponse.json(
         { error: 'Email and password are required' },
         { status: 400 }
@@ -78,10 +80,14 @@ export async function POST(request: NextRequest) {
       path: '/',
     });
 
-    console.log('✅ Sign-in successful - Cookie set for user:', user.email);
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('✅ Sign-in successful - Cookie set for user:', user.email);
+    }
     return response;
   } catch (error) {
-    console.error('Sign in error:', error);
+    if (process.env.NODE_ENV !== 'production') {
+      console.error('Sign in error:', error);
+    }
     return NextResponse.json(
       { error: 'Authentication failed. Please try again.' },
       { status: 500 }

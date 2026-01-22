@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { apiRateLimit } from '@/lib/rate-limit';
+import { validateCsrf } from '@/lib/csrf';
 
 export async function POST(request: NextRequest) {
   // Rate limiting
@@ -9,6 +10,15 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       { error: 'Too many requests. Please try again later.' },
       { status: 429 }
+    );
+  }
+
+  // CSRF protection
+  const csrfResult = validateCsrf(request);
+  if (!csrfResult.valid) {
+    return NextResponse.json(
+      { error: csrfResult.error || 'Invalid request' },
+      { status: 403 }
     );
   }
 

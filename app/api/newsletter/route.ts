@@ -2,12 +2,32 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/database';
 import { z } from 'zod';
 import { sendNewsletterWelcomeEmail } from '@/lib/email';
+import { apiRateLimit } from '@/lib/rate-limit';
+import { validateCsrf } from '@/lib/csrf';
 
 const newsletterSchema = z.object({
   email: z.string().email('Невалиден имейл адрес'),
 });
 
 export async function POST(request: NextRequest) {
+  // Rate limiting
+  const rateLimitResult = await apiRateLimit(request);
+  if (!rateLimitResult.success) {
+    return NextResponse.json(
+      { error: 'Too many requests. Please try again later.' },
+      { status: 429 }
+    );
+  }
+
+  // CSRF protection
+  const csrfResult = validateCsrf(request);
+  if (!csrfResult.valid) {
+    return NextResponse.json(
+      { error: csrfResult.error || 'Invalid request' },
+      { status: 403 }
+    );
+  }
+
   try {
     const body = await request.json();
     
@@ -65,7 +85,9 @@ export async function POST(request: NextRequest) {
       { status: 201 }
     );
   } catch (error) {
-    console.error('Newsletter subscription error:', error);
+    if (process.env.NODE_ENV !== 'production') {
+      console.error('Newsletter subscription error:', error);
+    }
     return NextResponse.json(
       { error: 'Възникна грешка. Моля, опитайте отново.' },
       { status: 500 }
@@ -75,6 +97,15 @@ export async function POST(request: NextRequest) {
 
 // Unsubscribe endpoint
 export async function DELETE(request: NextRequest) {
+  // Rate limiting
+  const rateLimitResult = await apiRateLimit(request);
+  if (!rateLimitResult.success) {
+    return NextResponse.json(
+      { error: 'Too many requests. Please try again later.' },
+      { status: 429 }
+    );
+  }
+
   try {
     const { searchParams } = new URL(request.url);
     const email = searchParams.get('email');

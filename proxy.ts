@@ -74,7 +74,57 @@ export default async function proxy(request: NextRequest) {
     }
   }
   
-  return NextResponse.next();
+  // Create response with security headers
+  const response = NextResponse.next();
+  
+  // Security Headers
+  const headers = response.headers;
+
+  // Prevent clickjacking
+  headers.set('X-Frame-Options', 'DENY');
+
+  // Prevent MIME type sniffing
+  headers.set('X-Content-Type-Options', 'nosniff');
+
+  // Enable XSS filter in browsers
+  headers.set('X-XSS-Protection', '1; mode=block');
+
+  // Referrer policy - don't leak referrer to external sites
+  headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+
+  // Permissions policy - restrict browser features
+  headers.set(
+    'Permissions-Policy',
+    'camera=(), microphone=(), geolocation=(), interest-cohort=()'
+  );
+
+  // Content Security Policy
+  const csp = [
+    "default-src 'self'",
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.paypal.com https://www.sandbox.paypal.com https://*.paypal.com",
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+    "font-src 'self' https://fonts.gstatic.com data:",
+    "img-src 'self' data: blob: https: http:",
+    "connect-src 'self' https://www.paypal.com https://www.sandbox.paypal.com https://*.paypal.com https://api-m.paypal.com https://api-m.sandbox.paypal.com",
+    "frame-src 'self' https://www.paypal.com https://www.sandbox.paypal.com https://*.paypal.com",
+    "object-src 'none'",
+    "base-uri 'self'",
+    "form-action 'self'",
+    "frame-ancestors 'none'",
+    "upgrade-insecure-requests",
+  ].join('; ');
+
+  headers.set('Content-Security-Policy', csp);
+
+  // Strict Transport Security (HTTPS only)
+  if (process.env.NODE_ENV === 'production') {
+    headers.set(
+      'Strict-Transport-Security',
+      'max-age=31536000; includeSubDomains; preload'
+    );
+  }
+
+  return response;
 }
 
 // Configure which routes use this middleware

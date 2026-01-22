@@ -1,7 +1,27 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { apiRateLimit } from '@/lib/rate-limit';
+import { validateCsrf } from '@/lib/csrf';
 
 export async function POST(request: NextRequest) {
+  // Rate limiting
+  const rateLimitResult = await apiRateLimit(request);
+  if (!rateLimitResult.success) {
+    return NextResponse.json(
+      { error: 'Too many requests. Please try again later.' },
+      { status: 429 }
+    );
+  }
+
+  // CSRF protection
+  const csrfResult = validateCsrf(request);
+  if (!csrfResult.valid) {
+    return NextResponse.json(
+      { error: csrfResult.error || 'Invalid request' },
+      { status: 403 }
+    );
+  }
+
   try {
     const body = await request.json();
     const { code } = body;
@@ -61,7 +81,9 @@ export async function POST(request: NextRequest) {
       message: `${updatedCode.percentage}% discount applied successfully!`,
     });
   } catch (error) {
-    console.error('Error applying discount code:', error);
+    if (process.env.NODE_ENV !== 'production') {
+      console.error('Error applying discount code:', error);
+    }
     return NextResponse.json(
       { error: 'Failed to apply discount code' },
       { status: 500 }

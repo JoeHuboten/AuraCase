@@ -31,7 +31,9 @@ export async function POST(request: NextRequest) {
 
     // Return error if user not found
     if (!user) {
-      console.log(`Password reset requested for non-existent email: ${email}`);
+      if (process.env.NODE_ENV !== 'production') {
+        console.log(`Password reset requested for non-existent email: ${email}`);
+      }
       return NextResponse.json(
         { error: 'No account found with this email address.' },
         { status: 404 }

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getUserFromRequest } from '@/lib/auth-utils';
 import { prisma } from '@/lib/prisma';
 import { apiRateLimit } from '@/lib/rate-limit';
+import { validateCsrf } from '@/lib/csrf';
 
 // GET - Fetch user's wishlist
 export async function GET(request: NextRequest) {
@@ -67,6 +68,15 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       { error: 'Too many requests. Please try again later.' },
       { status: 429 }
+    );
+  }
+
+  // CSRF protection
+  const csrfResult = validateCsrf(request);
+  if (!csrfResult.valid) {
+    return NextResponse.json(
+      { error: csrfResult.error || 'Invalid request' },
+      { status: 403 }
     );
   }
 
@@ -138,7 +148,9 @@ export async function POST(request: NextRequest) {
       },
     });
   } catch (error) {
-    console.error('Error adding to wishlist:', error);
+    if (process.env.NODE_ENV !== 'production') {
+      console.error('Error adding to wishlist:', error);
+    }
     return NextResponse.json(
       { error: 'Failed to add to wishlist' },
       { status: 500 }
@@ -153,6 +165,15 @@ export async function DELETE(request: NextRequest) {
     return NextResponse.json(
       { error: 'Too many requests. Please try again later.' },
       { status: 429 }
+    );
+  }
+
+  // CSRF protection
+  const csrfResult = validateCsrf(request);
+  if (!csrfResult.valid) {
+    return NextResponse.json(
+      { error: csrfResult.error || 'Invalid request' },
+      { status: 403 }
     );
   }
 
