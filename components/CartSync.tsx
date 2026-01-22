@@ -8,63 +8,79 @@ export default function CartSync() {
   const { user, loading } = useAuth();
   const syncedRef = useRef(false);
   const previousUserIdRef = useRef<string | null>(null);
+  const initialSyncDoneRef = useRef(false);
   
   const items = useCartStore((state) => state.items);
   const hasHydrated = useCartStore((state) => state._hasHydrated);
 
+  // Handle user login/logout sync - only runs once per login
   useEffect(() => {
-    // Wait for hydration and auth to be ready
     if (!hasHydrated || loading) return;
 
     const currentUserId = user?.id || null;
     const previousUserId = previousUserIdRef.current;
 
-    // User just logged in
+    // User just logged in - sync once
     if (currentUserId && !previousUserId && !syncedRef.current) {
       syncedRef.current = true;
+      initialSyncDoneRef.current = false;
       
-      // Merge local cart with server cart
       const syncCart = async () => {
         try {
-          // First, upload local cart items to server (merge mode)
-          if (items.length > 0) {
-            await fetch('/api/cart', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ items, merge: true }),
-            });
-          }
-
-          // Then fetch the merged cart from server
+          // Get current local items before any server fetch
+          const localItems = useCartStore.getState().items;
+          
+          // Fetch server cart
           const response = await fetch('/api/cart');
           if (response.ok) {
             const data = await response.json();
-            if (data.items && data.items.length > 0) {
-              // Replace local cart with server cart
-              useCartStore.setState({ items: data.items });
+            const serverItems = data.items || [];
+            
+            // Merge: combine unique items from both
+            const mergedItems = [...serverItems];
+            for (const localItem of localItems) {
+              const exists = mergedItems.some(
+                s => s.id === localItem.id && s.color === localItem.color && s.size === localItem.size
+              );
+              if (!exists) {
+                mergedItems.push(localItem);
+              }
+            }
+            
+            // Update local store with merged items
+            useCartStore.setState({ items: mergedItems });
+            
+            // Save merged cart to server
+            if (mergedItems.length > 0) {
+              await fetch('/api/cart', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ items: mergedItems, merge: false }),
+              });
             }
           }
         } catch (error) {
           console.error('Error syncing cart:', error);
+        } finally {
+          initialSyncDoneRef.current = true;
         }
       };
 
       syncCart();
     }
 
-    // User just logged out
+    // User logged out
     if (!currentUserId && previousUserId) {
       syncedRef.current = false;
-      // Optionally clear cart on logout
-      // useCartStore.getState().clearCart();
+      initialSyncDoneRef.current = false;
     }
 
     previousUserIdRef.current = currentUserId;
-  }, [user?.id, loading, hasHydrated, items]);
+  }, [user?.id, loading, hasHydrated]);
 
-  // Sync cart to server when items change (debounced)
+  // Sync cart changes to server (debounced) - only after initial sync is done
   useEffect(() => {
-    if (!user?.id || !hasHydrated || !syncedRef.current) return;
+    if (!user?.id || !hasHydrated || !syncedRef.current || !initialSyncDoneRef.current) return;
 
     const debounceTimer = setTimeout(async () => {
       try {
@@ -76,10 +92,10 @@ export default function CartSync() {
       } catch (error) {
         console.error('Error saving cart to server:', error);
       }
-    }, 1000); // 1 second debounce
+    }, 1000);
 
     return () => clearTimeout(debounceTimer);
   }, [items, user?.id, hasHydrated]);
 
-  return null; // This is a logic-only component
+  return null;
 }
