@@ -104,7 +104,7 @@ function PaymentSuccessContent() {
                 )}
                 <div className="flex justify-between pt-3 border-t border-gray-800">
                   <span className="text-gray-400">Total Paid:</span>
-                  <span className="text-white font-bold text-lg">${order.total.toFixed(2)}</span>
+                  <span className="text-white font-bold text-lg">{order.total != null ? `${order.total.toFixed(2)} лв` : 'N/A'}</span>
                 </div>
               </div>
             </div>

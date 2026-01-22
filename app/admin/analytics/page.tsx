@@ -96,7 +96,7 @@ export default function AdminAnalytics() {
           <div className="flex items-center justify-between mb-4">
             <div>
               <p className="text-text-secondary text-sm">Total Revenue</p>
-              <p className="text-3xl font-bold text-white">${stats.totalRevenue.toFixed(2)}</p>
+              <p className="text-3xl font-bold text-white">${(stats.totalRevenue ?? 0).toFixed(2)}</p>
             </div>
             <div className="bg-accent/20 p-3 rounded-lg">
               <FiDollarSign className="h-8 w-8 text-accent" />
@@ -172,19 +172,19 @@ export default function AdminAnalytics() {
           <div>
             <p className="text-text-secondary text-sm mb-2">Average Order Value</p>
             <p className="text-2xl font-bold text-white">
-              ${stats.totalOrders > 0 ? (stats.totalRevenue / stats.totalOrders).toFixed(2) : '0.00'}
+              ${(stats.totalOrders ?? 0) > 0 ? ((stats.totalRevenue ?? 0) / stats.totalOrders).toFixed(2) : '0.00'}
             </p>
           </div>
           <div>
             <p className="text-text-secondary text-sm mb-2">Orders per User</p>
             <p className="text-2xl font-bold text-white">
-              {stats.totalUsers > 0 ? (stats.totalOrders / stats.totalUsers).toFixed(2) : '0.00'}
+              {(stats.totalUsers ?? 0) > 0 ? ((stats.totalOrders ?? 0) / stats.totalUsers).toFixed(2) : '0.00'}
             </p>
           </div>
           <div>
             <p className="text-text-secondary text-sm mb-2">Products per Category</p>
             <p className="text-2xl font-bold text-white">
-              {stats.totalCategories > 0 ? (stats.totalProducts / stats.totalCategories).toFixed(1) : '0.0'}
+              {(stats.totalCategories ?? 0) > 0 ? ((stats.totalProducts ?? 0) / stats.totalCategories).toFixed(1) : '0.0'}
             </p>
           </div>
         </div>

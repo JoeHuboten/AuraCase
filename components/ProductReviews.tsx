@@ -185,9 +185,9 @@ export default function ProductReviews({ productId, productName }: ProductReview
           </h3>
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
-              {renderStars(Math.round(averageRating))}
+              {renderStars(Math.round(averageRating ?? 0))}
               <span className="text-white font-medium">
-                {averageRating.toFixed(1)} ({totalReviews} {t('product.reviews', 'reviews')})
+                {(averageRating ?? 0).toFixed(1)} ({totalReviews ?? 0} {t('product.reviews', 'reviews')})
               </span>
             </div>
           </div>

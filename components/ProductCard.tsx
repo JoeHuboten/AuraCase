@@ -205,7 +205,7 @@ const ProductCard = ({
                 ))}
               </div>
               <span className="text-white/40 text-[10px] sm:text-xs font-body font-medium">
-                {rating.toFixed(1)} <span className="text-white/20">({reviews})</span>
+                {(rating ?? 0).toFixed(1)} <span className="text-white/20">({reviews ?? 0})</span>
               </span>
             </div>
           )}

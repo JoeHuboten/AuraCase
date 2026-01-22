@@ -99,15 +99,15 @@ export async function POST(request: NextRequest) {
         intent: 'CAPTURE',
         purchase_units: [{
           amount: {
-            currency_code: 'USD',
+            currency_code: 'EUR',
             value: total,
             breakdown: {
               item_total: {
-                currency_code: 'USD',
+                currency_code: 'EUR',
                 value: subtotal.toFixed(2),
               },
               discount: discount > 0 ? {
-                currency_code: 'USD',
+                currency_code: 'EUR',
                 value: discount.toFixed(2),
               } : undefined,
             },
@@ -115,7 +115,7 @@ export async function POST(request: NextRequest) {
           items: items.map((item: any) => ({
             name: item.name,
             unit_amount: {
-              currency_code: 'USD',
+              currency_code: 'EUR',
               value: item.price.toFixed(2),
             },
             quantity: item.quantity.toString(),

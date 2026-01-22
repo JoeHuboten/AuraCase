@@ -19,6 +19,55 @@ interface ShippingAddress {
   notes: string;
 }
 
+// InputField component defined outside to prevent re-creation on every render
+const InputField = ({ 
+  icon: Icon, 
+  label, 
+  name, 
+  type = 'text', 
+  placeholder,
+  required = true,
+  error: fieldError,
+  value,
+  onChange,
+  onClearError
+}: { 
+  icon: any; 
+  label: string; 
+  name: string; 
+  type?: string;
+  placeholder: string;
+  required?: boolean;
+  error?: string;
+  value: string;
+  onChange: (value: string) => void;
+  onClearError?: () => void;
+}) => (
+  <div>
+    <label className="block text-sm font-medium text-white/70 mb-2 font-body">
+      <span className="flex items-center gap-2">
+        <Icon size={16} className="text-blue-400" />
+        {label} {required && <span className="text-red-400">*</span>}
+      </span>
+    </label>
+    <input
+      type={type}
+      value={value}
+      onChange={(e) => {
+        onChange(e.target.value);
+        if (fieldError && onClearError) onClearError();
+      }}
+      placeholder={placeholder}
+      className={`w-full px-4 py-3 bg-white/[0.03] border rounded-lg text-white placeholder-white/30 focus:outline-none focus:ring-2 transition-all font-body ${
+        fieldError 
+          ? 'border-red-500 focus:ring-red-500/50' 
+          : 'border-white/10 focus:ring-blue-500/50 focus:border-blue-500'
+      }`}
+    />
+    {fieldError && <p className="text-red-400 text-sm mt-1 font-body">{fieldError}</p>}
+  </div>
+);
+
 export default function CheckoutPage() {
   const { user, loading: authLoading } = useAuth();
   const router = useRouter();
@@ -141,48 +190,6 @@ export default function CheckoutPage() {
     }
   };
 
-  const InputField = ({ 
-    icon: Icon, 
-    label, 
-    name, 
-    type = 'text', 
-    placeholder,
-    required = true,
-    error: fieldError 
-  }: { 
-    icon: any; 
-    label: string; 
-    name: keyof ShippingAddress; 
-    type?: string;
-    placeholder: string;
-    required?: boolean;
-    error?: string;
-  }) => (
-    <div>
-      <label className="block text-sm font-medium text-white/70 mb-2 font-body">
-        <span className="flex items-center gap-2">
-          <Icon size={16} className="text-blue-400" />
-          {label} {required && <span className="text-red-400">*</span>}
-        </span>
-      </label>
-      <input
-        type={type}
-        value={shippingAddress[name]}
-        onChange={(e) => {
-          setShippingAddress(prev => ({ ...prev, [name]: e.target.value }));
-          if (errors[name]) setErrors(prev => ({ ...prev, [name]: undefined }));
-        }}
-        placeholder={placeholder}
-        className={`w-full px-4 py-3 bg-white/[0.03] border rounded-lg text-white placeholder-white/30 focus:outline-none focus:ring-2 transition-all font-body ${
-          fieldError 
-            ? 'border-red-500 focus:ring-red-500/50' 
-            : 'border-white/10 focus:ring-blue-500/50 focus:border-blue-500'
-        }`}
-      />
-      {fieldError && <p className="text-red-400 text-sm mt-1 font-body">{fieldError}</p>}
-    </div>
-  );
-
   if (authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#0a0a0f]">
@@ -276,6 +283,9 @@ export default function CheckoutPage() {
                       name="firstName"
                       placeholder="Въведете името си"
                       error={errors.firstName}
+                      value={shippingAddress.firstName}
+                      onChange={(value) => setShippingAddress(prev => ({ ...prev, firstName: value }))}
+                      onClearError={() => setErrors(prev => ({ ...prev, firstName: undefined }))}
                     />
                     <InputField
                       icon={FiUser}
@@ -283,6 +293,9 @@ export default function CheckoutPage() {
                       name="lastName"
                       placeholder="Въведете фамилията си"
                       error={errors.lastName}
+                      value={shippingAddress.lastName}
+                      onChange={(value) => setShippingAddress(prev => ({ ...prev, lastName: value }))}
+                      onClearError={() => setErrors(prev => ({ ...prev, lastName: undefined }))}
                     />
                   </div>
 
@@ -294,6 +307,9 @@ export default function CheckoutPage() {
                       type="email"
                       placeholder="email@example.com"
                       error={errors.email}
+                      value={shippingAddress.email}
+                      onChange={(value) => setShippingAddress(prev => ({ ...prev, email: value }))}
+                      onClearError={() => setErrors(prev => ({ ...prev, email: undefined }))}
                     />
                     <InputField
                       icon={FiPhone}
@@ -302,6 +318,9 @@ export default function CheckoutPage() {
                       type="tel"
                       placeholder="+359 888 123 456"
                       error={errors.phone}
+                      value={shippingAddress.phone}
+                      onChange={(value) => setShippingAddress(prev => ({ ...prev, phone: value }))}
+                      onClearError={() => setErrors(prev => ({ ...prev, phone: undefined }))}
                     />
                   </div>
 
@@ -312,6 +331,9 @@ export default function CheckoutPage() {
                       name="address"
                       placeholder="ул. Примерна 123, бл. 1, ап. 1"
                       error={errors.address}
+                      value={shippingAddress.address}
+                      onChange={(value) => setShippingAddress(prev => ({ ...prev, address: value }))}
+                      onClearError={() => setErrors(prev => ({ ...prev, address: undefined }))}
                     />
                   </div>
 
@@ -322,6 +344,9 @@ export default function CheckoutPage() {
                       name="city"
                       placeholder="София"
                       error={errors.city}
+                      value={shippingAddress.city}
+                      onChange={(value) => setShippingAddress(prev => ({ ...prev, city: value }))}
+                      onClearError={() => setErrors(prev => ({ ...prev, city: undefined }))}
                     />
                     <InputField
                       icon={FiMapPin}
@@ -329,6 +354,9 @@ export default function CheckoutPage() {
                       name="postalCode"
                       placeholder="1000"
                       error={errors.postalCode}
+                      value={shippingAddress.postalCode}
+                      onChange={(value) => setShippingAddress(prev => ({ ...prev, postalCode: value }))}
+                      onClearError={() => setErrors(prev => ({ ...prev, postalCode: undefined }))}
                     />
                     <InputField
                       icon={FiMapPin}
@@ -336,6 +364,9 @@ export default function CheckoutPage() {
                       name="country"
                       placeholder="България"
                       error={errors.country}
+                      value={shippingAddress.country}
+                      onChange={(value) => setShippingAddress(prev => ({ ...prev, country: value }))}
+                      onClearError={() => setErrors(prev => ({ ...prev, country: undefined }))}
                     />
                   </div>
 
@@ -448,7 +479,7 @@ export default function CheckoutPage() {
                         {item.size && <p className="text-white/40 text-xs font-body">Размер: {item.size}</p>}
                       </div>
                       <p className="text-white font-bold text-sm font-body">
-                        {(item.price * item.quantity).toFixed(2)} лв
+                        {((item.price ?? 0) * (item.quantity ?? 0)).toFixed(2)} лв
                       </p>
                     </div>
                   ))}
@@ -458,13 +489,13 @@ export default function CheckoutPage() {
                 <div className="border-t border-white/10 pt-4 space-y-3">
                   <div className="flex justify-between text-white/50 font-body">
                     <span>Междинна сума</span>
-                    <span>{getSubtotal().toFixed(2)} лв</span>
+                    <span>{(getSubtotal() ?? 0).toFixed(2)} лв</span>
                   </div>
                   
                   {discountCode && (
                     <div className="flex justify-between text-green-400 font-body">
                       <span>Отстъпка ({discountCode.percentage}%)</span>
-                      <span>-{getDiscount().toFixed(2)} лв</span>
+                      <span>-{(getDiscount() ?? 0).toFixed(2)} лв</span>
                     </div>
                   )}
                   
@@ -475,7 +506,7 @@ export default function CheckoutPage() {
                   
                   <div className="flex justify-between text-white font-bold text-xl pt-2 border-t border-white/10">
                     <span className="font-heading">Общо</span>
-                    <span className="text-blue-400 font-heading">{getTotal().toFixed(2)} лв</span>
+                    <span className="text-blue-400 font-heading">{(getTotal() ?? 0).toFixed(2)} лв</span>
                   </div>
                 </div>
 

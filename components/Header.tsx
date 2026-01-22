@@ -220,7 +220,7 @@ const Header = () => {
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="text-white text-sm truncate group-hover:text-cyan-400 transition-colors duration-200">{p.name}</div>
-                  <div className="text-cyan-400 text-xs font-medium">${p.price.toFixed(2)}</div>
+                  <div className="text-cyan-400 text-xs font-medium">${(p.price ?? 0).toFixed(2)}</div>
                 </div>
                 <FiArrowRight className="text-white/20 group-hover:text-cyan-400 transition-colors duration-200" size={14} />
               </button>

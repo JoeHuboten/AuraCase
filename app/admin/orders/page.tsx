@@ -267,7 +267,7 @@ export default function AdminOrders() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className="text-sm font-semibold text-white">
-                        ${order.total.toFixed(2)}
+                        ${(order.total ?? 0).toFixed(2)}
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
@@ -367,7 +367,7 @@ export default function AdminOrders() {
                         </p>
                       </div>
                       <p className="text-white font-semibold">
-                        ${(item.price * item.quantity).toFixed(2)}
+                        ${((item.price ?? 0) * (item.quantity ?? 0)).toFixed(2)}
                       </p>
                     </div>
                   ))}
@@ -380,21 +380,21 @@ export default function AdminOrders() {
                 <div className="bg-background p-4 rounded-lg space-y-2">
                   <div className="flex justify-between text-text-secondary">
                     <span>Subtotal:</span>
-                    <span>${selectedOrder.subtotal.toFixed(2)}</span>
+                    <span>${(selectedOrder.subtotal ?? 0).toFixed(2)}</span>
                   </div>
-                  {selectedOrder.discount > 0 && (
+                  {(selectedOrder.discount ?? 0) > 0 && (
                     <div className="flex justify-between text-green-500">
                       <span>Discount:</span>
-                      <span>-${selectedOrder.discount.toFixed(2)}</span>
+                      <span>-${(selectedOrder.discount ?? 0).toFixed(2)}</span>
                     </div>
                   )}
                   <div className="flex justify-between text-text-secondary">
                     <span>Delivery Fee:</span>
-                    <span>${selectedOrder.deliveryFee.toFixed(2)}</span>
+                    <span>${(selectedOrder.deliveryFee ?? 0).toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between text-white font-semibold text-lg pt-2 border-t border-gray-700">
                     <span>Total:</span>
-                    <span>${selectedOrder.total.toFixed(2)}</span>
+                    <span>${(selectedOrder.total ?? 0).toFixed(2)}</span>
                   </div>
                 </div>
               </div>

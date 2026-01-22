@@ -21,8 +21,8 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
   }
 
   const price = product.discount 
-    ? (product.price * (1 - product.discount / 100)).toFixed(2)
-    : product.price.toFixed(2);
+    ? ((product.price ?? 0) * (1 - (product.discount ?? 0) / 100)).toFixed(2)
+    : (product.price ?? 0).toFixed(2);
 
   return {
     title: `${product.name} | AURACASE`,

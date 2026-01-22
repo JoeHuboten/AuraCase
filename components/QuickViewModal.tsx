@@ -222,7 +222,7 @@ const QuickViewModal = ({ product, isOpen, onClose }: QuickViewModalProps) => {
                   ))}
                 </div>
                 <span className="text-text-secondary text-xs sm:text-sm">
-                  {product.rating.toFixed(1)} ({product.reviews} отзива)
+                  {(product.rating ?? 0).toFixed(1)} ({product.reviews ?? 0} отзива)
                 </span>
               </div>
             )}

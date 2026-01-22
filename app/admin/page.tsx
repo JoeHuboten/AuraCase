@@ -213,7 +213,7 @@ export default async function AdminDashboard() {
                       </p>
                     </div>
                     <div className="text-right">
-                      <p className="text-white font-bold">${order.total.toFixed(2)}</p>
+                      <p className="text-white font-bold">${(order.total ?? 0).toFixed(2)}</p>
                       <p className="text-text-secondary text-xs">
                         {new Date(order.createdAt).toLocaleDateString()}
                       </p>
