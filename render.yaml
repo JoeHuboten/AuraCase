@@ -6,6 +6,14 @@ services:
     region: frankfurt
     plan: free
     healthCheckPath: /api/health
+    # Docker build args for NEXT_PUBLIC_ variables
+    dockerBuildArgs:
+      - key: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+        fromEnvVar: NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+      - key: NEXT_PUBLIC_PAYPAL_CLIENT_ID
+        fromEnvVar: NEXT_PUBLIC_PAYPAL_CLIENT_ID
+      - key: NEXT_PUBLIC_SITE_URL
+        fromEnvVar: NEXT_PUBLIC_SITE_URL
     envVars:
       - key: DATABASE_URL
         sync: false
@@ -23,5 +31,5 @@ services:
         value: sandbox
       - key: NODE_ENV
         value: production
-      - key: NEXT_PUBLIC_APP_URL
+      - key: NEXT_PUBLIC_SITE_URL
         sync: false
