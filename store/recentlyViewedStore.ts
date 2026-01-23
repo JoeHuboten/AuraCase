@@ -49,7 +49,7 @@ export const useRecentlyViewedStore = create<RecentlyViewedState>()(
       },
     }),
     {
-      name: 'auracase-recently-viewed',
+      name: 'justcases-recently-viewed',
     }
   )
 );

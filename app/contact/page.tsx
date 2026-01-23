@@ -279,7 +279,7 @@ export default function ContactPage() {
                 Опитайте нашите продукти лично и получете експертни съвети от нашия екип.
               </p>
               <div className="bg-white/[0.03] border border-white/10 rounded-lg p-6 max-w-md mx-auto">
-                <p className="text-white font-heading font-semibold mb-2">AURACASE Флагмански магазин</p>
+                <p className="text-white font-heading font-semibold mb-2">Just Cases Флагмански магазин</p>
                 <p className="text-white/60 text-sm font-body">
                   бул. Витоша 123<br />
                   Център<br />

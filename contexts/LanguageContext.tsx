@@ -220,7 +220,7 @@ const translations = {
     'product.reviews.failedSubmit': 'Неуспешно публикуване на отзива',
     'product.reviews.failedUpdate': 'Неуспешно обновяване на отзива',
     'product.reviews.failedDelete': 'Неуспешно изтриване на отзива',
-    'product.premiumAccessory': 'Премиум мобилен аксесоар от AURACASE',
+    'product.premiumAccessory': 'Премиум мобилен аксесоар от Just Cases',
     
     // Wishlist
     'wishlist.title': 'Списък с желания',
@@ -294,17 +294,17 @@ const translations = {
     'footer.manageDeliveries': 'Управление на доставки',
     'footer.orders': 'Поръчки',
     'footer.payments': 'Плащания',
-    'footer.copyright': '© 2025 AuraCase. Всички права запазени.',
+    'footer.copyright': '© 2025 Just Cases. Всички права запазени.',
     'footer.followTwitter': 'Следвайте ни в Twitter',
     'footer.followFacebook': 'Следвайте ни във Facebook',
     'footer.followInstagram': 'Следвайте ни в Instagram',
     'footer.viewGithub': 'Вижте кода ни в GitHub',
     
     // About Page
-    'about.title': 'За AURACASE',
+    'about.title': 'За Just Cases',
     'about.subtitle': 'Страстни сме да предоставяме премиум мобилни аксесоари, които подобряват изживяването с вашето устройство, като същевременно отразяват вашия личен стил.',
     'about.mission': 'Нашата мисия',
-    'about.mission.text1': 'В AURACASE вярваме, че вашето мобилно устройство е продължение на вашата личност. Нашата мисия е да предоставяме висококачествени, стилни аксесоари, които не само защитават вашите устройства, но и изразяват вашия уникален стил.',
+    'about.mission.text1': 'В Just Cases вярваме, че вашето мобилно устройство е продължение на вашата личност. Нашата мисия е да предоставяме висококачествени, стилни аксесоари, които не само защитават вашите устройства, но и изразяват вашия уникален стил.',
     'about.mission.text2': 'Внимателно подбираме нашата колекция, за да гарантираме, че всеки продукт отговаря на нашите стандарти за качество, издръжливост и дизайнерско съвършенство.',
     'about.premiumQuality': 'Премиум качество',
     'about.premiumQuality.text': 'Всеки продукт в нашата колекция е избран заради своето високо качество и иновативен дизайн.',
@@ -524,7 +524,7 @@ const translations = {
     'product.reviews.failedSubmit': 'Failed to submit review',
     'product.reviews.failedUpdate': 'Failed to update review',
     'product.reviews.failedDelete': 'Failed to delete review',
-    'product.premiumAccessory': 'Premium mobile accessory from AURACASE',
+    'product.premiumAccessory': 'Premium mobile accessory from Just Cases',
     
     // Wishlist
     'wishlist.title': 'Wishlist',
@@ -598,17 +598,17 @@ const translations = {
     'footer.manageDeliveries': 'Manage Deliveries',
     'footer.orders': 'Orders',
     'footer.payments': 'Payments',
-    'footer.copyright': '© 2025 AuraCase. All Rights Reserved.',
+    'footer.copyright': '© 2025 Just Cases. All Rights Reserved.',
     'footer.followTwitter': 'Follow us on Twitter',
     'footer.followFacebook': 'Follow us on Facebook',
     'footer.followInstagram': 'Follow us on Instagram',
     'footer.viewGithub': 'View our code on GitHub',
     
     // About Page
-    'about.title': 'About AURACASE',
+    'about.title': 'About Just Cases',
     'about.subtitle': 'We are passionate about providing premium mobile accessories that enhance your device experience while reflecting your personal style.',
     'about.mission': 'Our Mission',
-    'about.mission.text1': 'At AURACASE, we believe your mobile device is an extension of your personality. Our mission is to provide high-quality, stylish accessories that not only protect your devices but also express your unique style.',
+    'about.mission.text1': 'At Just Cases, we believe your mobile device is an extension of your personality. Our mission is to provide high-quality, stylish accessories that not only protect your devices but also express your unique style.',
     'about.mission.text2': 'We carefully curate our collection to ensure every product meets our standards for quality, durability, and design excellence.',
     'about.premiumQuality': 'Premium Quality',
     'about.premiumQuality.text': 'Every product in our collection is chosen for its high quality and innovative design.',

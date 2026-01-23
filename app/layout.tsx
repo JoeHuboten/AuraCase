@@ -27,8 +27,8 @@ const outfit = Outfit({
 
 export const metadata: Metadata = {
   title: {
-    default: "AURACASE - Премиум мобилни аксесоари | Защитни калъфи, безжично зареждане, слушалки",
-    template: "%s | AURACASE"
+    default: "Just Cases - Премиум мобилни аксесоари | Защитни калъфи, безжично зареждане, слушалки",
+    template: "%s | Just Cases"
   },
   description: "Открийте премиум мобилни аксесоари за всички устройства. Защитни калъфи, безжично зареждане, слушалки, power bank-ове и много повече. Безплатна доставка над 50 лв.",
   keywords: [
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     "iPhone аксесоари",
     "Samsung аксесоари",
     "премиум качество",
-    "AURACASE",
+    "Just Cases",
     "мобилни калъфи",
     "защитни стъкла",
     "безжични слушалки",
@@ -48,15 +48,15 @@ export const metadata: Metadata = {
     "USB кабели",
     "адаптери"
   ],
-  authors: [{ name: "AURACASE" }],
-  creator: "AURACASE",
-  publisher: "AURACASE",
+  authors: [{ name: "Just Cases" }],
+  creator: "Just Cases",
+  publisher: "Just Cases",
   formatDetection: {
     email: false,
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://auracase.bg'),
+  metadataBase: new URL('https://justcases.bg'),
   alternates: {
     canonical: '/',
     languages: {
@@ -67,24 +67,24 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'bg_BG',
-    url: 'https://auracase.bg',
-    siteName: 'AURACASE',
-    title: 'AURACASE - Премиум мобилни аксесоари',
+    url: 'https://justcases.bg',
+    siteName: 'Just Cases',
+    title: 'Just Cases - Премиум мобилни аксесоари',
     description: 'Открийте премиум мобилни аксесоари за всички устройства. Защитни калъфи, безжично зареждане, слушалки, power bank-ове и много повече.',
     images: [
       {
         url: '/og-image.jpg',
         width: 1200,
         height: 630,
-        alt: 'AURACASE - Премиум мобилни аксесоари',
+        alt: 'Just Cases - Премиум мобилни аксесоари',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    site: '@auracase',
-    creator: '@auracase',
-    title: 'AURACASE - Премиум мобилни аксесоари',
+    site: '@justcases',
+    creator: '@justcases',
+    title: 'Just Cases - Премиум мобилни аксесоари',
     description: 'Открийте премиум мобилни аксесоари за всички устройства. Защитни калъфи, безжично зареждане, слушалки, power bank-ове и много повече.',
     images: ['/og-image.jpg'],
   },

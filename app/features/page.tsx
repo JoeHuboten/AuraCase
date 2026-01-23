@@ -8,12 +8,12 @@ export default function FeaturesPage() {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    "name": "Функции на AURACASE - Премиум мобилни аксесоари",
+    "name": "Функции на Just Cases - Премиум мобилни аксесоари",
     "description": "Открийте защо нашите премиум мобилни аксесоари са изборът на хиляди клиенти. Максимална защита, бързо зареждане, универсална съвместимост и много повече.",
     "url": "https://auracase.bg/features",
     "mainEntity": {
       "@type": "Organization",
-      "name": "AURACASE",
+      "name": "Just Cases",
       "description": "Премиум мобилни аксесоари за всички устройства",
       "url": "https://auracase.bg",
       "logo": "https://auracase.bg/logo.png",
@@ -45,10 +45,10 @@ export default function FeaturesPage() {
   return (
     <>
       <Head>
-        <title>Функции на AURACASE - Премиум мобилни аксесоари | Максимална защита и бързо зареждане</title>
+        <title>Функции на Just Cases - Премиум мобилни аксесоари | Максимална защита и бързо зареждане</title>
         <meta name="description" content="Открийте защо нашите премиум мобилни аксесоари са изборът на хиляди клиенти. Максимална защита, бързо зареждане, универсална съвместимост, премиум звук, дълготрайна батерия и безжична технология." />
-        <meta name="keywords" content="мобилни аксесоари, защитни калъфи, безжично зареждане, слушалки, power bank, iPhone аксесоари, Samsung аксесоари, премиум качество, AURACASE" />
-        <meta name="author" content="AURACASE" />
+        <meta name="keywords" content="мобилни аксесоари, защитни калъфи, безжично зареждане, слушалки, power bank, iPhone аксесоари, Samsung аксесоари, премиум качество, Just Cases" />
+        <meta name="author" content="Just Cases" />
         <meta name="robots" content="index, follow" />
         <meta name="language" content="bg" />
         <meta name="revisit-after" content="7 days" />
@@ -56,16 +56,16 @@ export default function FeaturesPage() {
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://auracase.bg/features" />
-        <meta property="og:title" content="Функции на AURACASE - Премиум мобилни аксесоари" />
+        <meta property="og:title" content="Функции на Just Cases - Премиум мобилни аксесоари" />
         <meta property="og:description" content="Открийте защо нашите премиум мобилни аксесоари са изборът на хиляди клиенти. Максимална защита, бързо зареждане, универсална съвместимост и много повече." />
         <meta property="og:image" content="https://auracase.bg/og-features.jpg" />
-        <meta property="og:site_name" content="AURACASE" />
+        <meta property="og:site_name" content="Just Cases" />
         <meta property="og:locale" content="bg_BG" />
         
         {/* Twitter */}
         <meta property="twitter:card" content="summary_large_image" />
         <meta property="twitter:url" content="https://auracase.bg/features" />
-        <meta property="twitter:title" content="Функции на AURACASE - Премиум мобилни аксесоари" />
+        <meta property="twitter:title" content="Функции на Just Cases - Премиум мобилни аксесоари" />
         <meta property="twitter:description" content="Открийте защо нашите премиум мобилни аксесоари са изборът на хиляди клиенти. Максимална защита, бързо зареждане, универсална съвместимост и много повече." />
         <meta property="twitter:image" content="https://auracase.bg/og-features.jpg" />
         
@@ -87,8 +87,8 @@ export default function FeaturesPage() {
         <div className="absolute bottom-20 left-10 w-72 h-72 bg-accent/10 rounded-full blur-3xl opacity-20" />
         <div className="container-custom relative">
           <ScrollAnimation animation="fadeIn" className="text-center">
-            <span className="text-eyebrow">Защо AURACASE</span>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 heading-display heading-glow">Функции на AURACASE</h1>
+            <span className="text-eyebrow">Защо Just Cases</span>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 heading-display heading-glow">Функции на Just Cases</h1>
             <p className="text-lead max-w-3xl mx-auto">
               Открийте защо нашите премиум мобилни аксесоари са изборът на хиляди клиенти по целия свят.
             </p>

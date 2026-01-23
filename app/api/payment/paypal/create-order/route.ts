@@ -123,7 +123,7 @@ export async function POST(request: NextRequest) {
           custom_id: user.id,
         }],
         application_context: {
-          brand_name: 'AuraCase',
+          brand_name: 'Just Cases',
           shipping_preference: 'NO_SHIPPING',
           user_action: 'PAY_NOW',
           return_url: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/payment/success`,

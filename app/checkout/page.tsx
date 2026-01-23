@@ -5,13 +5,20 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/navigation';
 import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
 import Image from 'next/image';
-import { FiUser, FiMapPin, FiPhone, FiMail, FiFileText, FiTruck, FiShield, FiCheckCircle } from 'react-icons/fi';
+import { FiUser, FiMapPin, FiPhone, FiMail, FiFileText, FiTruck, FiShield, FiCheckCircle, FiCreditCard } from 'react-icons/fi';
 import dynamic from 'next/dynamic';
 
-// Dynamically import Apple Pay button to avoid SSR issues
+// Dynamically import payment components to avoid SSR issues
 const ApplePayButton = dynamic(() => import('@/components/ApplePayButton'), { 
   ssr: false,
   loading: () => null,
+});
+
+const StripeCardPayment = dynamic(() => import('@/components/StripeCardPayment'), {
+  ssr: false,
+  loading: () => (
+    <div className="animate-pulse bg-white/[0.03] rounded-lg h-32" />
+  ),
 });
 
 interface ShippingAddress {
@@ -436,9 +443,32 @@ export default function CheckoutPage() {
                       Метод на плащане
                     </h2>
                     
-                    {/* Apple Pay / Google Pay */}
+                    {/* Apple Pay / Google Pay (only shows on supported devices) */}
                     <div className="mb-4">
                       <ApplePayButton
+                        amount={getTotal()}
+                        items={items.map(item => ({
+                          ...item,
+                          productId: item.id,
+                        }))}
+                        shippingAddress={shippingAddress}
+                        discountCode={discountCode?.code}
+                        onSuccess={(orderId) => {
+                          setPaymentComplete(true);
+                          clearCart();
+                          router.push(`/payment/success?orderId=${orderId}`);
+                        }}
+                        onError={(err) => setError(err)}
+                      />
+                    </div>
+
+                    {/* Stripe Card Payment */}
+                    <div className="mb-6">
+                      <div className="flex items-center gap-2 mb-4">
+                        <FiCreditCard className="text-blue-400" size={20} />
+                        <span className="text-white font-medium">Плащане с карта</span>
+                      </div>
+                      <StripeCardPayment
                         amount={getTotal()}
                         items={items.map(item => ({
                           ...item,

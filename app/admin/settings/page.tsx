@@ -6,7 +6,7 @@ import { FiSave, FiMail, FiGlobe, FiDollarSign, FiTruck, FiShield } from 'react-
 export default function AdminSettings() {
   const [settings, setSettings] = useState({
     // General Settings
-    siteName: 'AuraCase',
+    siteName: 'Just Cases',
     siteDescription: 'Premium phone cases and accessories',
     siteUrl: 'https://auracase.com',
     contactEmail: 'support@auracase.com',

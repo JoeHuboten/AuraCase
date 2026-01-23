@@ -1,5 +1,5 @@
 /**
- * Shared TypeScript interfaces for the AuraCase application
+ * Shared TypeScript interfaces for the Just Cases application
  */
 
 // Category types

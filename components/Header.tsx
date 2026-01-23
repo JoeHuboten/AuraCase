@@ -101,7 +101,7 @@ const Header = () => {
               <span className="relative z-10 text-white font-bold text-sm">A</span>
               <div className="absolute inset-0 bg-gradient-to-br from-cyan-400 to-violet-600 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             </div>
-            <span className="hidden sm:block text-white font-semibold text-sm">AuraCase</span>
+            <span className="hidden sm:block text-white font-semibold text-sm">Just Cases</span>
           </Link>
 
           {/* Center Nav */}

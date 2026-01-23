@@ -116,7 +116,7 @@ export const emailTemplates = {
     </div>
     
     <div class="footer">
-      <p>AURACASE - ${isBulgarian ? 'Премиум мобилни аксесоари' : 'Premium Mobile Accessories'}</p>
+      <p>Just Cases - ${isBulgarian ? 'Премиум мобилни аксесоари' : 'Premium Mobile Accessories'}</p>
       <p><a href="${SITE_URL}" style="color: #667eea;">www.auracase.bg</a></p>
     </div>
   </div>
@@ -140,7 +140,7 @@ ${isBulgarian ? 'Обща сума:' : 'Total:'} ${data.total.toFixed(2)} ${curr
 ${isBulgarian ? 'Виж поръчката:' : 'View your order:'} ${SITE_URL}/orders
 
 ${isBulgarian ? 'Благодарим Ви!' : 'Thank you!'}
-AURACASE
+Just Cases
     `.trim();
 
     return { subject, html, text };
@@ -214,7 +214,7 @@ AURACASE
     </div>
     
     <div class="footer">
-      <p>AURACASE - ${isBulgarian ? 'Премиум мобилни аксесоари' : 'Premium Mobile Accessories'}</p>
+      <p>Just Cases - ${isBulgarian ? 'Премиум мобилни аксесоари' : 'Premium Mobile Accessories'}</p>
       <p><a href="${SITE_URL}" style="color: #667eea;">www.auracase.bg</a></p>
     </div>
   </div>
@@ -233,7 +233,7 @@ ${data.courierService ? `${isBulgarian ? 'Куриер:' : 'Courier:'} ${data.co
 
 ${isBulgarian ? 'Проследи поръчката:' : 'Track your order:'} ${SITE_URL}/orders/track?trackingNumber=${data.trackingNumber || data.orderId}
 
-AURACASE
+Just Cases
     `.trim();
 
     return { subject, html, text };
@@ -249,8 +249,8 @@ AURACASE
     const resetUrl = `${SITE_URL}/auth/reset-password?token=${data.resetToken}`;
     
     const subject = isBulgarian 
-      ? 'Нулиране на парола - AURACASE' 
-      : 'Reset Your Password - AURACASE';
+      ? 'Нулиране на парола - Just Cases' 
+      : 'Reset Your Password - Just Cases';
 
     const html = `
 <!DOCTYPE html>
@@ -277,8 +277,8 @@ AURACASE
       <p>${isBulgarian ? 'Здравейте' : 'Hello'} ${data.name},</p>
       
       <p>${isBulgarian 
-        ? 'Получихме заявка за нулиране на паролата за Вашия акаунт в AURACASE.' 
-        : 'We received a request to reset the password for your AURACASE account.'}</p>
+        ? 'Получихме заявка за нулиране на паролата за Вашия акаунт в Just Cases.' 
+        : 'We received a request to reset the password for your Just Cases account.'}</p>
       
       <center>
         <a href="${resetUrl}" class="button">
@@ -300,7 +300,7 @@ AURACASE
     </div>
     
     <div class="footer">
-      <p>AURACASE - ${isBulgarian ? 'Премиум мобилни аксесоари' : 'Premium Mobile Accessories'}</p>
+      <p>Just Cases - ${isBulgarian ? 'Премиум мобилни аксесоари' : 'Premium Mobile Accessories'}</p>
       <p><a href="${SITE_URL}" style="color: #667eea;">www.auracase.bg</a></p>
     </div>
   </div>
@@ -322,7 +322,7 @@ ${isBulgarian
   ? 'Този линк е валиден само 1 час.' 
   : 'This link is valid for 1 hour only.'}
 
-AURACASE
+Just Cases
     `.trim();
 
     return { subject, html, text };
@@ -390,7 +390,7 @@ AURACASE
     </div>
     
     <div class="footer">
-      <p>AURACASE - ${isBulgarian ? 'Премиум мобилни аксесоари' : 'Premium Mobile Accessories'}</p>
+      <p>Just Cases - ${isBulgarian ? 'Премиум мобилни аксесоари' : 'Premium Mobile Accessories'}</p>
       <p><a href="${SITE_URL}" style="color: #667eea;">www.auracase.bg</a></p>
     </div>
   </div>
@@ -411,7 +411,7 @@ ${data.expiresAt ? `${isBulgarian ? 'Валиден до:' : 'Valid until:'} ${n
 
 ${isBulgarian ? 'Пазарувай сега:' : 'Shop now:'} ${SITE_URL}/shop
 
-AURACASE
+Just Cases
     `.trim();
 
     return { subject, html, text };
@@ -425,8 +425,8 @@ AURACASE
     const isBulgarian = data.language === 'bg';
     
     const subject = isBulgarian 
-      ? '🎉 Добре дошли в AURACASE бюлетина!' 
-      : '🎉 Welcome to AURACASE Newsletter!';
+      ? '🎉 Добре дошли в Just Cases бюлетина!' 
+      : '🎉 Welcome to Just Cases Newsletter!';
 
     const html = `
 <!DOCTYPE html>
@@ -458,8 +458,8 @@ AURACASE
     <div class="content">
       <p style="font-size: 16px;">
         ${isBulgarian 
-          ? 'Вече сте част от AURACASE семейството! 🎊' 
-          : 'You\'re now part of the AURACASE family! 🎊'}
+          ? 'Вече сте част от Just Cases семейството! 🎊' 
+          : 'You\'re now part of the Just Cases family! 🎊'}
       </p>
       
       <p>
@@ -530,7 +530,7 @@ AURACASE
     </div>
     
     <div class="footer">
-      <p><strong>AURACASE</strong> - ${isBulgarian ? 'Премиум мобилни аксесоари' : 'Premium Mobile Accessories'}</p>
+      <p><strong>Just Cases</strong> - ${isBulgarian ? 'Премиум мобилни аксесоари' : 'Premium Mobile Accessories'}</p>
       <p><a href="${SITE_URL}" style="color: #667eea; text-decoration: none;">www.auracase.bg</a></p>
       
       <p class="unsubscribe">
@@ -548,7 +548,7 @@ AURACASE
     `;
 
     const text = `
-${isBulgarian ? 'Добре дошли в AURACASE!' : 'Welcome to AURACASE!'}
+${isBulgarian ? 'Добре дошли в Just Cases!' : 'Welcome to Just Cases!'}
 
 ${isBulgarian ? 'Благодарим, че се абонирахте за нашия бюлетин!' : 'Thank you for subscribing to our newsletter!'}
 
@@ -563,7 +563,7 @@ ${isBulgarian ? 'Разгледайте магазина:' : 'Browse our shop:'}
 
 ${isBulgarian ? 'За отписване:' : 'To unsubscribe:'} ${SITE_URL}/newsletter/unsubscribe?email=${encodeURIComponent(data.email)}
 
-AURACASE - ${isBulgarian ? 'Премиум мобилни аксесоари' : 'Premium Mobile Accessories'}
+Just Cases - ${isBulgarian ? 'Премиум мобилни аксесоари' : 'Premium Mobile Accessories'}
     `.trim();
 
     return { subject, html, text };
@@ -607,7 +607,7 @@ AURACASE - ${isBulgarian ? 'Премиум мобилни аксесоари' : 
 <body>
   <div class="container">
     <div class="header">
-      <h1 style="margin: 0; font-size: 28px;">🎉 AURACASE</h1>
+      <h1 style="margin: 0; font-size: 28px;">🎉 Just Cases</h1>
       <div style="opacity: 0.95; margin-top: 8px; font-size: 18px;">${data.subject}</div>
     </div>
     
@@ -643,7 +643,7 @@ AURACASE - ${isBulgarian ? 'Премиум мобилни аксесоари' : 
     </div>
     
     <div class="footer">
-      <p style="margin: 0;">© ${new Date().getFullYear()} AURACASE</p>
+      <p style="margin: 0;">© ${new Date().getFullYear()} Just Cases</p>
       <p style="margin: 4px 0 0;">${isBulgarian ? 'Премиум мобилни аксесоари' : 'Premium Mobile Accessories'}</p>
     </div>
   </div>
@@ -665,7 +665,7 @@ ${isBulgarian ? 'Пазарувай сега:' : 'Shop now:'} ${SITE_URL}/shop
 
 ${isBulgarian ? 'За отписване:' : 'To unsubscribe:'} ${SITE_URL}/newsletter/unsubscribe?email=${encodeURIComponent(data.email)}
 
-AURACASE - ${isBulgarian ? 'Премиум мобилни аксесоари' : 'Premium Mobile Accessories'}
+Just Cases - ${isBulgarian ? 'Премиум мобилни аксесоари' : 'Premium Mobile Accessories'}
     `.trim();
 
     return { subject, html, text };
@@ -708,7 +708,7 @@ AURACASE - ${isBulgarian ? 'Премиум мобилни аксесоари' : 
 <body>
   <div class="container">
     <div class="header">
-      <h1 style="margin: 0; font-size: 28px;">📰 AURACASE</h1>
+      <h1 style="margin: 0; font-size: 28px;">📰 Just Cases</h1>
       <div style="opacity: 0.95; margin-top: 8px; font-size: 18px;">${isBulgarian ? 'Новини и актуализации' : 'News & Updates'}</div>
     </div>
     
@@ -734,7 +734,7 @@ AURACASE - ${isBulgarian ? 'Премиум мобилни аксесоари' : 
       ` : ''}
       
       <p style="margin-top: 32px; padding-top: 24px; border-top: 1px solid #e5e7eb;">
-        ${isBulgarian ? 'Благодарим, че сте част от общността на AuraCase!' : 'Thank you for being part of the AuraCase community!'}
+        ${isBulgarian ? 'Благодарим, че сте част от общността на Just Cases!' : 'Thank you for being part of the Just Cases community!'}
       </p>
       
       <p class="small">
@@ -746,7 +746,7 @@ AURACASE - ${isBulgarian ? 'Премиум мобилни аксесоари' : 
     </div>
     
     <div class="footer">
-      <p style="margin: 0;">© ${new Date().getFullYear()} AURACASE</p>
+      <p style="margin: 0;">© ${new Date().getFullYear()} Just Cases</p>
       <p style="margin: 4px 0 0;">${isBulgarian ? 'Премиум мобилни аксесоари' : 'Premium Mobile Accessories'}</p>
     </div>
   </div>
@@ -763,11 +763,11 @@ ${data.message}
 
 ${data.ctaText && data.ctaUrl ? `${data.ctaText}: ${data.ctaUrl}` : ''}
 
-${isBulgarian ? 'Благодарим, че сте част от общността на AuraCase!' : 'Thank you for being part of the AuraCase community!'}
+${isBulgarian ? 'Благодарим, че сте част от общността на Just Cases!' : 'Thank you for being part of the Just Cases community!'}
 
 ${isBulgarian ? 'За отписване:' : 'To unsubscribe:'} ${SITE_URL}/newsletter/unsubscribe?email=${encodeURIComponent(data.email)}
 
-AURACASE - ${isBulgarian ? 'Премиум мобилни аксесоари' : 'Premium Mobile Accessories'}
+Just Cases - ${isBulgarian ? 'Премиум мобилни аксесоари' : 'Premium Mobile Accessories'}
     `.trim();
 
     return { subject, html, text };
@@ -822,7 +822,7 @@ AURACASE - ${isBulgarian ? 'Премиум мобилни аксесоари' : 
 <body>
   <div class="container">
     <div class="header">
-      <h1 style="margin: 0; font-size: 28px;">🚀 ${isBulgarian ? 'Ново в AURACASE' : 'New at AURACASE'}</h1>
+      <h1 style="margin: 0; font-size: 28px;">🚀 ${isBulgarian ? 'Ново в Just Cases' : 'New at Just Cases'}</h1>
       <div style="opacity: 0.95; margin-top: 8px; font-size: 18px;">
         ${isBulgarian ? 'Ексклузивен продукт за вас!' : 'Exclusive Product for You!'}
       </div>
@@ -882,7 +882,7 @@ AURACASE - ${isBulgarian ? 'Премиум мобилни аксесоари' : 
     </div>
     
     <div class="footer">
-      <p style="margin: 0;">© ${new Date().getFullYear()} AURACASE</p>
+      <p style="margin: 0;">© ${new Date().getFullYear()} Just Cases</p>
       <p style="margin: 4px 0 0;">${isBulgarian ? 'Премиум мобилни аксесоари' : 'Premium Mobile Accessories'}</p>
     </div>
   </div>
@@ -891,7 +891,7 @@ AURACASE - ${isBulgarian ? 'Премиум мобилни аксесоари' : 
     `.trim();
 
     const text = `
-${isBulgarian ? 'Ново в AURACASE!' : 'New at AURACASE!'}
+${isBulgarian ? 'Ново в Just Cases!' : 'New at Just Cases!'}
 
 ${isBulgarian ? 'Здравейте' : 'Hello'},
 
@@ -907,7 +907,7 @@ ${isBulgarian ? 'Бъдете сред първите, които ще прит�
 
 ${isBulgarian ? 'За отписване:' : 'To unsubscribe:'} ${SITE_URL}/newsletter/unsubscribe?email=${encodeURIComponent(data.email)}
 
-AURACASE - ${isBulgarian ? 'Премиум мобилни аксесоари' : 'Premium Mobile Accessories'}
+Just Cases - ${isBulgarian ? 'Премиум мобилни аксесоари' : 'Premium Mobile Accessories'}
     `.trim();
 
     return { subject, html, text };
@@ -922,8 +922,8 @@ AURACASE - ${isBulgarian ? 'Премиум мобилни аксесоари' : 
     const isBulgarian = data.language === 'bg';
     
     const subject = isBulgarian 
-      ? 'Потвърдете имейл адреса си - AuraCase' 
-      : 'Verify Your Email Address - AuraCase';
+      ? 'Потвърдете имейл адреса си - Just Cases' 
+      : 'Verify Your Email Address - Just Cases';
 
     const html = `
 <!DOCTYPE html>
@@ -945,15 +945,15 @@ AURACASE - ${isBulgarian ? 'Премиум мобилни аксесоари' : 
 <body>
   <div class="container">
     <div class="header">
-      <h1>${isBulgarian ? '🎉 Добре дошли в AuraCase!' : '🎉 Welcome to AuraCase!'}</h1>
+      <h1>${isBulgarian ? '🎉 Добре дошли в Just Cases!' : '🎉 Welcome to Just Cases!'}</h1>
     </div>
     
     <div class="content">
       <p>${isBulgarian ? 'Здравейте' : 'Hi'} ${data.name || (isBulgarian ? 'там' : 'there')},</p>
       
       <p>${isBulgarian 
-        ? 'Благодарим Ви, че се регистрирахте в AuraCase! Радваме се, че се присъединихте към нашата общност.' 
-        : 'Thank you for registering with AuraCase! We\'re excited to have you join our community.'}</p>
+        ? 'Благодарим Ви, че се регистрирахте в Just Cases! Радваме се, че се присъединихте към нашата общност.' 
+        : 'Thank you for registering with Just Cases! We\'re excited to have you join our community.'}</p>
       
       <p>${isBulgarian 
         ? 'За да завършите регистрацията и да получите пълен достъп за покупка на премиум калъфи за телефон, моля потвърдете имейл адреса си, като кликнете на бутона по-долу:' 
@@ -980,18 +980,18 @@ AURACASE - ${isBulgarian ? 'Премиум мобилни аксесоари' : 
       
       <p style="font-size: 14px; color: #666; margin-top: 30px; padding-top: 20px; border-top: 1px solid #ddd;">
         ${isBulgarian 
-          ? 'Ако не сте създали акаунт в AuraCase, можете спокойно да игнорирате този имейл.' 
-          : 'If you didn\'t create an account with AuraCase, you can safely ignore this email.'}
+          ? 'Ако не сте създали акаунт в Just Cases, можете спокойно да игнорирате този имейл.' 
+          : 'If you didn\'t create an account with Just Cases, you can safely ignore this email.'}
       </p>
       
       <p style="margin-top: 30px;">
         ${isBulgarian ? 'Поздрави' : 'Best regards'},<br>
-        <strong>${isBulgarian ? 'Екипът на AuraCase' : 'The AuraCase Team'}</strong>
+        <strong>${isBulgarian ? 'Екипът на Just Cases' : 'The Just Cases Team'}</strong>
       </p>
     </div>
     
     <div class="footer">
-      <p>© ${new Date().getFullYear()} AuraCase. ${isBulgarian ? 'Всички права запазени.' : 'All rights reserved.'}</p>
+      <p>© ${new Date().getFullYear()} Just Cases. ${isBulgarian ? 'Всички права запазени.' : 'All rights reserved.'}</p>
     </div>
   </div>
 </body>
@@ -999,23 +999,23 @@ AURACASE - ${isBulgarian ? 'Премиум мобилни аксесоари' : 
     `.trim();
 
     const text = `
-${isBulgarian ? 'Добре дошли в AuraCase!' : 'Welcome to AuraCase!'}
+${isBulgarian ? 'Добре дошли в Just Cases!' : 'Welcome to Just Cases!'}
 
 ${isBulgarian ? 'Здравейте' : 'Hi'} ${data.name || (isBulgarian ? 'там' : 'there')},
 
 ${isBulgarian 
-  ? 'Благодарим Ви, че се регистрирахте в AuraCase! За да завършите регистрацията, моля потвърдете имейл адреса си.' 
-  : 'Thank you for registering with AuraCase! To complete your registration, please verify your email address.'}
+  ? 'Благодарим Ви, че се регистрирахте в Just Cases! За да завършите регистрацията, моля потвърдете имейл адреса си.' 
+  : 'Thank you for registering with Just Cases! To complete your registration, please verify your email address.'}
 
 ${isBulgarian ? 'Линк за потвърждение:' : 'Verification link:'}
 ${data.verificationUrl}
 
 ${isBulgarian 
-  ? 'Този линк ще изтече след 24 часа. Ако не сте създали акаунт в AuraCase, можете спокойно да игнорирате този имейл.' 
-  : 'This link will expire in 24 hours. If you didn\'t create an account with AuraCase, you can safely ignore this email.'}
+  ? 'Този линк ще изтече след 24 часа. Ако не сте създали акаунт в Just Cases, можете спокойно да игнорирате този имейл.' 
+  : 'This link will expire in 24 hours. If you didn\'t create an account with Just Cases, you can safely ignore this email.'}
 
 ${isBulgarian ? 'Поздрави,' : 'Best regards,'}
-${isBulgarian ? 'Екипът на AuraCase' : 'The AuraCase Team'}
+${isBulgarian ? 'Екипът на Just Cases' : 'The Just Cases Team'}
     `.trim();
 
     return { subject, html, text };
@@ -1029,8 +1029,8 @@ ${isBulgarian ? 'Екипът на AuraCase' : 'The AuraCase Team'}
     const isBulgarian = data.language === 'bg';
     
     const subject = isBulgarian 
-      ? '✓ Имейлът е потвърден - AuraCase' 
-      : '✓ Email Verified - AuraCase';
+      ? '✓ Имейлът е потвърден - Just Cases' 
+      : '✓ Email Verified - Just Cases';
 
     const html = `
 <!DOCTYPE html>
@@ -1060,8 +1060,8 @@ ${isBulgarian ? 'Екипът на AuraCase' : 'The AuraCase Team'}
       <p>${isBulgarian ? 'Здравейте' : 'Hi'} ${data.name || (isBulgarian ? 'там' : 'there')},</p>
       
       <p>${isBulgarian 
-        ? 'Отлични новини! Вашият имейл адрес беше успешно потвърден. Сега имате пълен достъп до всички функции на AuraCase, включително:' 
-        : 'Great news! Your email has been successfully verified. You now have full access to all features on AuraCase, including:'}</p>
+        ? 'Отлични новини! Вашият имейл адрес беше успешно потвърден. Сега имате пълен достъп до всички функции на Just Cases, включително:' 
+        : 'Great news! Your email has been successfully verified. You now have full access to all features on Just Cases, including:'}</p>
       
       <div class="features">
         <ul>
@@ -1081,12 +1081,12 @@ ${isBulgarian ? 'Екипът на AuraCase' : 'The AuraCase Team'}
       
       <p style="margin-top: 30px;">
         ${isBulgarian ? 'Поздрави' : 'Best regards'},<br>
-        <strong>${isBulgarian ? 'Екипът на AuraCase' : 'The AuraCase Team'}</strong>
+        <strong>${isBulgarian ? 'Екипът на Just Cases' : 'The Just Cases Team'}</strong>
       </p>
     </div>
     
     <div class="footer">
-      <p>© ${new Date().getFullYear()} AuraCase. ${isBulgarian ? 'Всички права запазени.' : 'All rights reserved.'}</p>
+      <p>© ${new Date().getFullYear()} Just Cases. ${isBulgarian ? 'Всички права запазени.' : 'All rights reserved.'}</p>
     </div>
   </div>
 </body>
@@ -1099,13 +1099,13 @@ ${isBulgarian ? 'Имейлът е потвърден!' : 'Email Verified!'}
 ${isBulgarian ? 'Здравейте' : 'Hi'} ${data.name || (isBulgarian ? 'там' : 'there')},
 
 ${isBulgarian 
-  ? 'Отлични новини! Вашият имейл адрес беше успешно потвърден. Сега имате пълен достъп до всички функции на AuraCase.' 
-  : 'Great news! Your email has been successfully verified. You now have full access to all features on AuraCase.'}
+  ? 'Отлични новини! Вашият имейл адрес беше успешно потвърден. Сега имате пълен достъп до всички функции на Just Cases.' 
+  : 'Great news! Your email has been successfully verified. You now have full access to all features on Just Cases.'}
 
 ${isBulgarian ? 'Започнете пазаруването:' : 'Start shopping:'} ${SITE_URL}/shop
 
 ${isBulgarian ? 'Поздрави,' : 'Best regards,'}
-${isBulgarian ? 'Екипът на AuraCase' : 'The AuraCase Team'}
+${isBulgarian ? 'Екипът на Just Cases' : 'The Just Cases Team'}
     `.trim();
 
     return { subject, html, text };

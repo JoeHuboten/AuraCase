@@ -4,9 +4,9 @@ services:
   # Database service
   postgres:
     image: postgres:15-alpine
-    container_name: auracase-db
+    container_name: justcases-db
     environment:
-      POSTGRES_DB: auracase
+      POSTGRES_DB: justcases
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password123
     ports:
@@ -14,15 +14,15 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
-      - auracase-network
+      - justcases-network
 
   # Application service
   app:
     build: .
-    container_name: auracase-app
+    container_name: justcases-app
     environment:
       - NODE_ENV=production
-      - DATABASE_URL=postgresql://postgres:password123@postgres:5432/auracase
+      - DATABASE_URL=postgresql://postgres:password123@postgres:5432/justcases
       - JWT_SECRET=your-super-secret-jwt-key-change-this-in-production
       - NEXTAUTH_URL=http://localhost:3000
     ports:
@@ -30,7 +30,7 @@ services:
     depends_on:
       - postgres
     networks:
-      - auracase-network
+      - justcases-network
     volumes:
       - ./prisma:/app/prisma
     command: >
@@ -45,5 +45,5 @@ volumes:
   postgres_data:
 
 networks:
-  auracase-network:
+  justcases-network:
     driver: bridge

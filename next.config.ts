@@ -36,7 +36,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'auracase.bg',
+        hostname: 'justcases.bg',
       },
     ],
     formats: ['image/webp', 'image/avif'],

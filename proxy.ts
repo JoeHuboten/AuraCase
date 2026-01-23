@@ -101,12 +101,15 @@ export default async function proxy(request: NextRequest) {
   // Content Security Policy
   const csp = [
     "default-src 'self'",
-    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.paypal.com https://www.sandbox.paypal.com https://*.paypal.com",
+    // Allow PayPal and Stripe scripts
+    "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.paypal.com https://www.sandbox.paypal.com https://*.paypal.com https://js.stripe.com",
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
     "font-src 'self' https://fonts.gstatic.com data:",
     "img-src 'self' data: blob: https: http:",
-    "connect-src 'self' https://www.paypal.com https://www.sandbox.paypal.com https://*.paypal.com https://api-m.paypal.com https://api-m.sandbox.paypal.com",
-    "frame-src 'self' https://www.paypal.com https://www.sandbox.paypal.com https://*.paypal.com",
+    // Allow PayPal and Stripe API connections
+    "connect-src 'self' https://www.paypal.com https://www.sandbox.paypal.com https://*.paypal.com https://api-m.paypal.com https://api-m.sandbox.paypal.com https://api.stripe.com",
+    // Allow PayPal and Stripe frames
+    "frame-src 'self' https://www.paypal.com https://www.sandbox.paypal.com https://*.paypal.com https://js.stripe.com",
     "object-src 'none'",
     "base-uri 'self'",
     "form-action 'self'",

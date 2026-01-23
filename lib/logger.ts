@@ -1,5 +1,5 @@
 /**
- * Structured logging utility for AuraCase
+ * Structured logging utility for Just Cases
  * Replaces console.log statements with proper log levels
  */
 

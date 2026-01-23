@@ -96,7 +96,7 @@ export function ChatWindow() {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: '1',
-      text: 'Здравейте! 👋 Добре дошли в AURACASE поддръжка. Как можем да ви помогнем днес?',
+      text: 'Здравейте! 👋 Добре дошли в Just Cases поддръжка. Как можем да ви помогнем днес?',
       sender: 'agent',
       timestamp: new Date(),
     },
@@ -260,7 +260,7 @@ export function ChatWindow() {
               <FiHeadphones className="text-white text-xl" />
             </div>
             <div>
-              <h3 className="text-white font-bold">AURACASE Поддръжка</h3>
+              <h3 className="text-white font-bold">Just Cases Поддръжка</h3>
               <p className="text-white/80 text-sm flex items-center">
                 <span className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
                 Онлайн

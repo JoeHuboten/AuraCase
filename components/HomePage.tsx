@@ -291,7 +291,7 @@ export default function HomePage() {
                         <div className="w-16 h-16 mb-4 rounded-2xl bg-gradient-to-br from-violet-500 to-cyan-500 flex items-center justify-center">
                           <span className="font-heading text-2xl text-white font-bold">A</span>
                         </div>
-                        <span className="font-heading text-white text-lg font-semibold">AURACASE</span>
+                        <span className="font-heading text-white text-lg font-semibold">JUST CASES</span>
                         <span className="font-body text-white/40 text-xs mt-1">Premium Protection</span>
                       </div>
                       {/* Screen Glare */}
@@ -486,7 +486,7 @@ export default function HomePage() {
                 { 
                   name: 'Елена Костова', 
                   role: 'Xiaomi 14 Pro', 
-                  text: 'Третата ми поръчка от AURACASE. Винаги съм доволна от качеството и обслужването. Горещо препоръчвам!',
+                  text: 'Третата ми поръчка от Just Cases. Винаги съм доволна от качеството и обслужването. Горещо препоръчвам!',
                   avatar: 'Е'
                 },
               ].map((testimonial, i) => (

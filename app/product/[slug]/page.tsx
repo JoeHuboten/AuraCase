@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
 
   if (!product) {
     return {
-      title: 'Продукт не е намерен | AURACASE',
+      title: 'Продукт не е намерен | Just Cases',
       description: 'Този продукт не съществува или е премахнат.',
     };
   }
@@ -25,12 +25,12 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
     : (product.price ?? 0).toFixed(2);
 
   return {
-    title: `${product.name} | AURACASE`,
-    description: product.description?.slice(0, 160) || `Купете ${product.name} от AURACASE. Премиум качество, бърза доставка.`,
-    keywords: [product.name, product.category?.name || 'аксесоари', 'мобилни аксесоари', 'калъфи', 'AURACASE'].filter(Boolean),
+    title: `${product.name} | Just Cases`,
+    description: product.description?.slice(0, 160) || `Купете ${product.name} от Just Cases. Премиум качество, бърза доставка.`,
+    keywords: [product.name, product.category?.name || 'аксесоари', 'мобилни аксесоари', 'калъфи', 'Just Cases'].filter(Boolean),
     openGraph: {
       title: product.name,
-      description: product.description?.slice(0, 160) || `Купете ${product.name} от AURACASE`,
+      description: product.description?.slice(0, 160) || `Купете ${product.name} от Just Cases`,
       type: 'website',
       url: `https://auracase.bg/product/${slug}`,
       images: product.image ? [
@@ -41,13 +41,13 @@ export async function generateMetadata({ params }: ProductPageProps): Promise<Me
           alt: product.name,
         }
       ] : [],
-      siteName: 'AURACASE',
+      siteName: 'Just Cases',
       locale: 'bg_BG',
     },
     twitter: {
       card: 'summary_large_image',
       title: product.name,
-      description: product.description?.slice(0, 160) || `Купете ${product.name} от AURACASE`,
+      description: product.description?.slice(0, 160) || `Купете ${product.name} от Just Cases`,
       images: product.image ? [product.image] : [],
     },
     other: {

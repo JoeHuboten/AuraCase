@@ -1,5 +1,5 @@
 /**
- * Image optimization utilities for AuraCase
+ * Image optimization utilities for Just Cases
  */
 
 // Generate optimized image URL with Next.js Image Optimization API
@@ -85,17 +85,17 @@ export const generateAltText = (
   name: string,
   additionalInfo?: string
 ): string => {
-  const baseText = `${name} - AURACASE`;
+  const baseText = `${name} - Just Cases`;
   
   switch (type) {
     case 'product':
-      return `${name} - Премиум мобилен аксесоар от AURACASE${additionalInfo ? ` - ${additionalInfo}` : ''}`;
+      return `${name} - Премиум мобилен аксесоар от Just Cases${additionalInfo ? ` - ${additionalInfo}` : ''}`;
     case 'category':
-      return `${name} - Категория мобилни аксесоари от AURACASE`;
+      return `${name} - Категория мобилни аксесоари от Just Cases`;
     case 'brand':
-      return `Лого на ${name} - Партньор на AURACASE`;
+      return `Лого на ${name} - Партньор на Just Cases`;
     case 'hero':
-      return `${name} - Премиум мобилни аксесоари от AURACASE`;
+      return `${name} - Премиум мобилни аксесоари от Just Cases`;
     default:
       return baseText;
   }

@@ -2,7 +2,7 @@ import HomePage from '@/components/HomePage';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "AURACASE - Премиум мобилни аксесоари | Защитни калъфи, безжично зареждане, слушалки",
+  title: "Just Cases - Премиум мобилни аксесоари | Защитни калъфи, безжично зареждане, слушалки",
   description: "Открийте премиум мобилни аксесоари за всички устройства. Защитни калъфи, безжично зареждане, слушалки, power bank-ове и много повече. Безплатна доставка над 50 лв.",
   keywords: [
     "мобилни аксесоари",
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     "iPhone аксесоари",
     "Samsung аксесоари",
     "премиум качество",
-    "AURACASE",
+    "Just Cases",
     "мобилни калъфи",
     "защитни стъкла",
     "безжични слушалки",
@@ -23,9 +23,9 @@ export const metadata: Metadata = {
     "онлайн магазин",
     "доставка"
   ],
-  authors: [{ name: "AURACASE" }],
-  creator: "AURACASE",
-  publisher: "AURACASE",
+  authors: [{ name: "Just Cases" }],
+  creator: "Just Cases",
+  publisher: "Just Cases",
   formatDetection: {
     email: false,
     address: false,
@@ -40,16 +40,16 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: "AURACASE - Премиум мобилни аксесоари",
+    title: "Just Cases - Премиум мобилни аксесоари",
     description: "Открийте премиум мобилни аксесоари за всички устройства. Защитни калъфи, безжично зареждане, слушалки, power bank-ове и много повече.",
     url: "https://auracase.bg",
-    siteName: "AURACASE",
+    siteName: "Just Cases",
     images: [
       {
         url: "/og-homepage.jpg",
         width: 1200,
         height: 630,
-        alt: "AURACASE - Премиум мобилни аксесоари",
+        alt: "Just Cases - Премиум мобилни аксесоари",
       },
     ],
     locale: "bg_BG",
@@ -57,7 +57,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "AURACASE - Премиум мобилни аксесоари",
+    title: "Just Cases - Премиум мобилни аксесоари",
     description: "Открийте премиум мобилни аксесоари за всички устройства. Защитни калъфи, безжично зареждане, слушалки, power bank-ове и много повече.",
     images: ["/og-homepage.jpg"],
   },
@@ -78,7 +78,7 @@ export default function Home() {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "name": "AURACASE",
+    "name": "Just Cases",
     "description": "Премиум мобилни аксесоари за всички устройства",
     "url": "https://auracase.bg",
     "potentialAction": {

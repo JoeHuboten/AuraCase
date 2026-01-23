@@ -39,7 +39,7 @@ export default function AdminSidebar() {
         {/* Logo */}
         <div className="flex items-center justify-center h-16 border-b border-gray-800">
           <Link href="/admin" className="text-xl font-bold text-white">
-            AURACASE ADMIN
+            Just Cases ADMIN
           </Link>
         </div>
 

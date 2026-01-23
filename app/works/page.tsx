@@ -8,12 +8,12 @@ export default function WorksPage() {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    "name": "Как работи AURACASE - Процес на поръчка и доставка",
+    "name": "Как работи Just Cases - Процес на поръчка и доставка",
     "description": "Научете как лесно и бързо можете да намерите и поръчате идеалните мобилни аксесоари за вашето устройство. 4-стъпков процес на поръчка.",
     "url": "https://auracase.bg/works",
     "mainEntity": {
       "@type": "Organization",
-      "name": "AURACASE",
+      "name": "Just Cases",
       "description": "Премиум мобилни аксесоари за всички устройства",
       "url": "https://auracase.bg"
     },
@@ -39,10 +39,10 @@ export default function WorksPage() {
   return (
     <>
       <Head>
-        <title>Как работи AURACASE - Процес на поръчка и доставка | 4 лесни стъпки</title>
+        <title>Как работи Just Cases - Процес на поръчка и доставка | 4 лесни стъпки</title>
         <meta name="description" content="Научете как лесно и бързо можете да намерите и поръчате идеалните мобилни аксесоари за вашето устройство. 4-стъпков процес: изберете продукт, платете безопасно, получите бърза доставка, насладете се." />
-        <meta name="keywords" content="как да поръчам, процес на поръчка, доставка, плащане, мобилни аксесоари, AURACASE, онлайн пазаруване, безопасно плащане" />
-        <meta name="author" content="AURACASE" />
+        <meta name="keywords" content="как да поръчам, процес на поръчка, доставка, плащане, мобилни аксесоари, Just Cases, онлайн пазаруване, безопасно плащане" />
+        <meta name="author" content="Just Cases" />
         <meta name="robots" content="index, follow" />
         <meta name="language" content="bg" />
         <meta name="revisit-after" content="7 days" />
@@ -50,16 +50,16 @@ export default function WorksPage() {
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://auracase.bg/works" />
-        <meta property="og:title" content="Как работи AURACASE - Процес на поръчка и доставка" />
+        <meta property="og:title" content="Как работи Just Cases - Процес на поръчка и доставка" />
         <meta property="og:description" content="Научете как лесно и бързо можете да намерите и поръчате идеалните мобилни аксесоари за вашето устройство. 4-стъпков процес на поръчка." />
         <meta property="og:image" content="https://auracase.bg/og-works.jpg" />
-        <meta property="og:site_name" content="AURACASE" />
+        <meta property="og:site_name" content="Just Cases" />
         <meta property="og:locale" content="bg_BG" />
         
         {/* Twitter */}
         <meta property="twitter:card" content="summary_large_image" />
         <meta property="twitter:url" content="https://auracase.bg/works" />
-        <meta property="twitter:title" content="Как работи AURACASE - Процес на поръчка и доставка" />
+        <meta property="twitter:title" content="Как работи Just Cases - Процес на поръчка и доставка" />
         <meta property="twitter:description" content="Научете как лесно и бързо можете да намерите и поръчате идеалните мобилни аксесоари за вашето устройство. 4-стъпков процес на поръчка." />
         <meta property="twitter:image" content="https://auracase.bg/og-works.jpg" />
         
@@ -78,7 +78,7 @@ export default function WorksPage() {
       <header className="bg-gradient-to-r from-gray-800 to-gray-700 py-20">
         <div className="container-custom">
           <ScrollAnimation animation="fadeIn" className="text-center">
-            <h1 className="text-5xl font-bold text-white mb-6">Как работи AURACASE</h1>
+            <h1 className="text-5xl font-bold text-white mb-6">Как работи Just Cases</h1>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
               Открийте как лесно и бързо можете да намерите и поръчате идеалните мобилни аксесоари за вашето устройство.
             </p>

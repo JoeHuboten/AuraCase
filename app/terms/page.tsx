@@ -35,8 +35,8 @@ export default function TermsPage() {
                 </h2>
                 <div className="text-gray-300 space-y-4">
                   <p>
-                    Добре дошли в AURACASE! Тези условия за ползване ("Условия") регулират използването на нашия уебсайт 
-                    и услуги, предоставяни от AURACASE ("Ние", "Нас", "Наш").
+                    Добре дошли в Just Cases! Тези условия за ползване ("Условия") регулират използването на нашия уебсайт 
+                    и услуги, предоставяни от Just Cases ("Ние", "Нас", "Наш").
                   </p>
                   <p>
                     Като използвате нашия уебсайт или поръчвате продукти от нас, вие се съгласявате да бъдете обвързани 
@@ -56,7 +56,7 @@ export default function TermsPage() {
                 <div className="text-gray-300 space-y-4">
                   <div>
                     <h3 className="text-white font-bold mb-2">"Ние", "Нас", "Наш"</h3>
-                    <p>Отнася се до AURACASE и нашите служители, агенти и партньори.</p>
+                    <p>Отнася се до Just Cases и нашите служители, агенти и партньори.</p>
                   </div>
                   <div>
                     <h3 className="text-white font-bold mb-2">"Вие", "Ваш"</h3>
@@ -180,7 +180,7 @@ export default function TermsPage() {
                 <h2 className="text-3xl font-bold text-white mb-6">7. Ограничение на отговорността</h2>
                 <div className="text-gray-300 space-y-4">
                   <p>
-                    В максималната степен, разрешена от закона, AURACASE не носи отговорност за:
+                    В максималната степен, разрешена от закона, Just Cases не носи отговорност за:
                   </p>
                   <ul className="list-disc list-inside space-y-2 ml-4">
                     <li>Косвени, случайни или последващи щети</li>

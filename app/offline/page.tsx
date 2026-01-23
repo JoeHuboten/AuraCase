@@ -51,7 +51,7 @@ export default function OfflinePage() {
           {/* Description */}
           <p className="text-text-secondary mb-8 leading-relaxed">
             {isOnline 
-              ? 'Great! Your internet connection is back. You can now continue browsing AuraCase.'
+              ? 'Great! Your internet connection is back. You can now continue browsing Just Cases.'
               : 'It looks like you\'re not connected to the internet. Some features may not be available, but you can still browse cached content.'
             }
           </p>

@@ -8,17 +8,17 @@ export default function CareerPage() {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    "name": "Кариера в AURACASE - Работни места и възможности",
-    "description": "Присъединете се към екипа на AURACASE! Открийте отворени позиции, предимства и възможности за професионално развитие в иновативната компания за мобилни аксесоари.",
+    "name": "Кариера в Just Cases - Работни места и възможности",
+    "description": "Присъединете се към екипа на Just Cases! Открийте отворени позиции, предимства и възможности за професионално развитие в иновативната компания за мобилни аксесоари.",
     "url": "https://auracase.bg/career",
     "mainEntity": {
       "@type": "Organization",
-      "name": "AURACASE",
+      "name": "Just Cases",
       "description": "Премиум мобилни аксесоари за всички устройства",
       "url": "https://auracase.bg",
       "hiringOrganization": {
         "@type": "Organization",
-        "name": "AURACASE"
+        "name": "Just Cases"
       }
     },
     "breadcrumb": {
@@ -43,10 +43,10 @@ export default function CareerPage() {
   return (
     <>
       <Head>
-        <title>Кариера в AURACASE - Работни места и възможности | Присъединете се към екипа</title>
-        <meta name="description" content="Присъединете се към екипа на AURACASE! Открийте отворени позиции, предимства и възможности за професионално развитие в иновативната компания за мобилни аксесоари." />
-        <meta name="keywords" content="кариера, работни места, AURACASE, работа, позиции, развитие, екип, мобилни аксесоари, технология, иновации" />
-        <meta name="author" content="AURACASE" />
+        <title>Кариера в Just Cases - Работни места и възможности | Присъединете се към екипа</title>
+        <meta name="description" content="Присъединете се към екипа на Just Cases! Открийте отворени позиции, предимства и възможности за професионално развитие в иновативната компания за мобилни аксесоари." />
+        <meta name="keywords" content="кариера, работни места, Just Cases, работа, позиции, развитие, екип, мобилни аксесоари, технология, иновации" />
+        <meta name="author" content="Just Cases" />
         <meta name="robots" content="index, follow" />
         <meta name="language" content="bg" />
         <meta name="revisit-after" content="7 days" />
@@ -54,17 +54,17 @@ export default function CareerPage() {
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://auracase.bg/career" />
-        <meta property="og:title" content="Кариера в AURACASE - Работни места и възможности" />
-        <meta property="og:description" content="Присъединете се към екипа на AURACASE! Открийте отворени позиции, предимства и възможности за професионално развитие в иновативната компания за мобилни аксесоари." />
+        <meta property="og:title" content="Кариера в Just Cases - Работни места и възможности" />
+        <meta property="og:description" content="Присъединете се към екипа на Just Cases! Открийте отворени позиции, предимства и възможности за професионално развитие в иновативната компания за мобилни аксесоари." />
         <meta property="og:image" content="https://auracase.bg/og-career.jpg" />
-        <meta property="og:site_name" content="AURACASE" />
+        <meta property="og:site_name" content="Just Cases" />
         <meta property="og:locale" content="bg_BG" />
         
         {/* Twitter */}
         <meta property="twitter:card" content="summary_large_image" />
         <meta property="twitter:url" content="https://auracase.bg/career" />
-        <meta property="twitter:title" content="Кариера в AURACASE - Работни места и възможности" />
-        <meta property="twitter:description" content="Присъединете се към екипа на AURACASE! Открийте отворени позиции, предимства и възможности за професионално развитие в иновативната компания за мобилни аксесоари." />
+        <meta property="twitter:title" content="Кариера в Just Cases - Работни места и възможности" />
+        <meta property="twitter:description" content="Присъединете се към екипа на Just Cases! Открийте отворени позиции, предимства и възможности за професионално развитие в иновативната компания за мобилни аксесоари." />
         <meta property="twitter:image" content="https://auracase.bg/og-career.jpg" />
         
         {/* Canonical URL */}
@@ -82,7 +82,7 @@ export default function CareerPage() {
       <section className="bg-gradient-to-r from-gray-800 to-gray-700 py-20">
         <div className="container-custom">
           <ScrollAnimation animation="fadeIn" className="text-center">
-            <h1 className="text-5xl font-bold text-white mb-6">Кариера в AURACASE</h1>
+            <h1 className="text-5xl font-bold text-white mb-6">Кариера в Just Cases</h1>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
               Присъединете се към нашия екип и помогнете ни да революционизираме света на мобилните аксесоари.
             </p>

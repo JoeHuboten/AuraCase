@@ -66,7 +66,7 @@ function createEmailTemplate(data: {
 <body>
   <div class="container">
     <div class="header">
-      <h1 style="margin:0; font-size:28px;">AURACASE</h1>
+      <h1 style="margin:0; font-size:28px;">Just Cases</h1>
       <div style="opacity:.95; margin-top:6px;">${subject}</div>
     </div>
     <div class="content">
@@ -92,7 +92,7 @@ function createEmailTemplate(data: {
       </p>
     </div>
     <div class="footer">
-      AURACASE — Премиум мобилни аксесоари
+      Just Cases — Премиум мобилни аксесоари
     </div>
   </div>
 </body>

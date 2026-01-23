@@ -105,7 +105,7 @@ export default function PWAInstallPrompt() {
                 )}
               </div>
               <div>
-                <h3 className="text-white font-semibold">Install AuraCase</h3>
+                <h3 className="text-white font-semibold">Install Just Cases</h3>
                 <p className="text-text-secondary text-sm">
                   {isIOS ? 'Add to Home Screen' : 'Install App'}
                 </p>
@@ -122,8 +122,8 @@ export default function PWAInstallPrompt() {
           {/* Description */}
           <p className="text-text-secondary text-sm mb-4 leading-relaxed">
             {isIOS 
-              ? 'Install AuraCase on your home screen for quick access and a better shopping experience.'
-              : 'Install AuraCase as an app for faster access, offline browsing, and push notifications.'
+              ? 'Install Just Cases on your home screen for quick access and a better shopping experience.'
+              : 'Install Just Cases as an app for faster access, offline browsing, and push notifications.'
             }
           </p>
 

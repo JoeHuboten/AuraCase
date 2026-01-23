@@ -119,7 +119,7 @@ const ProductCard = ({
         <div className="relative aspect-square bg-gradient-to-br from-white/[0.03] to-white/[0.01] overflow-hidden">
           <Image
             src={image || '/placeholder.svg'}
-            alt={`${name} - Премиум мобилен аксесоар от AURACASE`}
+            alt={`${name} - Премиум мобилен аксесоар от Just Cases`}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="object-cover group-hover:scale-110 transition-transform duration-700 ease-out"

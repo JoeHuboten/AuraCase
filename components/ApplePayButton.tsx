@@ -1,15 +1,16 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { loadStripe, Stripe, PaymentRequest } from '@stripe/stripe-js';
+import { Stripe, PaymentRequest } from '@stripe/stripe-js';
 import {
   Elements,
   PaymentRequestButtonElement,
   useStripe,
   useElements,
 } from '@stripe/react-stripe-js';
+import getStripe from '@/lib/stripe-client';
 import { FiSmartphone } from 'react-icons/fi';
 
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || '');
+// Stripe is loaded lazily via getStripe() to avoid runtime errors when key is missing
 
 interface ApplePayButtonProps {
   amount: number; // in EUR (e.g., 29.99)
@@ -59,7 +60,7 @@ function ApplePayButtonInner({
       country: 'BG',
       currency: 'eur',
       total: {
-        label: 'AuraCase - Поръчка',
+        label: 'Just Cases - Поръчка',
         amount: Math.round(amount * 100), // Convert to cents
       },
       requestPayerName: true,
@@ -190,10 +191,21 @@ function ApplePayButtonInner({
 
 export default function ApplePayButton(props: ApplePayButtonProps) {
   const [stripeConfigured, setStripeConfigured] = useState(true);
+  const [stripePromise, setStripePromise] = useState<Promise<any> | null>(null);
 
   useEffect(() => {
-    if (!process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY) {
+    const key = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY;
+    if (!key) {
       setStripeConfigured(false);
+      setStripePromise(null);
+      return;
+    }
+    const s = getStripe();
+    if (!s) {
+      setStripeConfigured(false);
+      setStripePromise(null);
+    } else {
+      setStripePromise(s);
     }
   }, []);
 
@@ -202,7 +214,7 @@ export default function ApplePayButton(props: ApplePayButtonProps) {
   }
 
   return (
-    <Elements stripe={stripePromise}>
+    <Elements stripe={stripePromise!}>
       <ApplePayButtonInner {...props} />
     </Elements>
   );

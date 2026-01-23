@@ -327,7 +327,7 @@ export const testimonials = [
     name: 'James L.',
     verified: true,
     rating: 5,
-    text: "As someone who's always on the lookout for unique tech accessories, I'm thrilled to have stumbled upon AuraCase. The selection of products is not only diverse but also on-point with the latest trends."
+    text: "As someone who's always on the lookout for unique tech accessories, I'm thrilled to have stumbled upon Just Cases. The selection of products is not only diverse but also on-point with the latest trends."
   },
   {
     id: '2',

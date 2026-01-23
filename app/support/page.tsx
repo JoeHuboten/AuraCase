@@ -13,12 +13,12 @@ export default function SupportPage() {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    "name": "Клиентска поддръжка AURACASE - Помощ и ЧЗВ",
+    "name": "Клиентска поддръжка Just Cases - Помощ и ЧЗВ",
     "description": "Получете бърза и професионална помощ от нашия екип за поддръжка. Имейл, телефон и онлайн чат поддръжка. ЧЗВ за всички въпроси.",
     "url": "https://auracase.bg/support",
     "mainEntity": {
       "@type": "Organization",
-      "name": "AURACASE",
+      "name": "Just Cases",
       "description": "Премиум мобилни аксесоари за всички устройства",
       "url": "https://auracase.bg",
       "contactPoint": {
@@ -96,10 +96,10 @@ export default function SupportPage() {
   return (
     <>
       <Head>
-        <title>Клиентска поддръжка AURACASE - Помощ и ЧЗВ | 24/7 поддръжка</title>
+        <title>Клиентска поддръжка Just Cases - Помощ и ЧЗВ | 24/7 поддръжка</title>
         <meta name="description" content="Получете бърза и професионална помощ от нашия екип за поддръжка. Имейл, телефон и онлайн чат поддръжка. ЧЗВ за всички въпроси относно мобилни аксесоари." />
-        <meta name="keywords" content="клиентска поддръжка, помощ, ЧЗВ, AURACASE, мобилни аксесоари, техподдръжка, контакт, въпроси" />
-        <meta name="author" content="AURACASE" />
+        <meta name="keywords" content="клиентска поддръжка, помощ, ЧЗВ, Just Cases, мобилни аксесоари, техподдръжка, контакт, въпроси" />
+        <meta name="author" content="Just Cases" />
         <meta name="robots" content="index, follow" />
         <meta name="language" content="bg" />
         <meta name="revisit-after" content="7 days" />
@@ -107,16 +107,16 @@ export default function SupportPage() {
         {/* Open Graph / Facebook */}
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://auracase.bg/support" />
-        <meta property="og:title" content="Клиентска поддръжка AURACASE - Помощ и ЧЗВ" />
+        <meta property="og:title" content="Клиентска поддръжка Just Cases - Помощ и ЧЗВ" />
         <meta property="og:description" content="Получете бърза и професионална помощ от нашия екип за поддръжка. Имейл, телефон и онлайн чат поддръжка. ЧЗВ за всички въпроси." />
         <meta property="og:image" content="https://auracase.bg/og-support.jpg" />
-        <meta property="og:site_name" content="AURACASE" />
+        <meta property="og:site_name" content="Just Cases" />
         <meta property="og:locale" content="bg_BG" />
         
         {/* Twitter */}
         <meta property="twitter:card" content="summary_large_image" />
         <meta property="twitter:url" content="https://auracase.bg/support" />
-        <meta property="twitter:title" content="Клиентска поддръжка AURACASE - Помощ и ЧЗВ" />
+        <meta property="twitter:title" content="Клиентска поддръжка Just Cases - Помощ и ЧЗВ" />
         <meta property="twitter:description" content="Получете бърза и професионална помощ от нашия екип за поддръжка. Имейл, телефон и онлайн чат поддръжка. ЧЗВ за всички въпроси." />
         <meta property="twitter:image" content="https://auracase.bg/og-support.jpg" />
         

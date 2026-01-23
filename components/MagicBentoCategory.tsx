@@ -116,7 +116,7 @@ const MagicBentoCategory = ({ categories }: MagicBentoCategoryProps) => {
                 <div className="absolute inset-0">
                   <Image
                     src={category.image}
-                    alt={`${category.name} - Категория мобилни аксесоари от AURACASE`}
+                    alt={`${category.name} - Категория мобилни аксесоари от Just Cases`}
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     className="object-cover opacity-15 group-hover:opacity-25 transition-opacity duration-300"
