@@ -2,6 +2,9 @@ import { prisma } from '@/lib/prisma';
 import { FiPackage, FiGrid, FiShoppingBag, FiUsers, FiTrendingUp, FiDollarSign, FiAlertTriangle, FiAlertCircle } from 'react-icons/fi';
 import Link from 'next/link';
 
+// Force dynamic rendering - don't prerender at build time
+export const dynamic = 'force-dynamic';
+
 export default async function AdminDashboard() {
   // Fetch all data
   const [products, categories, orders, users, pendingOrders] = await Promise.all([
