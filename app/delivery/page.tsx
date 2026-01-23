@@ -32,7 +32,7 @@ export default function DeliveryPage() {
               <h3 className="text-2xl font-bold text-white mb-4 group-hover:text-accent transition-colors duration-300">Стандартна доставка</h3>
               <div className="text-3xl font-bold text-accent mb-4 group-hover:scale-110 transition-transform duration-300">Безплатно</div>
               <p className="text-gray-300 mb-4 group-hover:text-gray-200 transition-colors duration-300">
-                За поръчки над 50 лв.
+                За поръчки над 50 €.
               </p>
               <div className="space-y-2 text-gray-300 group-hover:text-gray-200 transition-colors duration-300">
                 <div className="flex items-center justify-center gap-2">
@@ -55,7 +55,7 @@ export default function DeliveryPage() {
                 <FiPackage className="text-white text-2xl" />
               </div>
               <h3 className="text-2xl font-bold text-white mb-4 group-hover:text-accent transition-colors duration-300">Експресна доставка</h3>
-              <div className="text-3xl font-bold text-accent mb-4 group-hover:scale-110 transition-transform duration-300">8.90 лв.</div>
+              <div className="text-3xl font-bold text-accent mb-4 group-hover:scale-110 transition-transform duration-300">8.90 €.</div>
               <p className="text-gray-300 mb-4 group-hover:text-gray-200 transition-colors duration-300">
                 За всички поръчки
               </p>
@@ -83,7 +83,7 @@ export default function DeliveryPage() {
                 <FiCheckCircle className="text-white text-2xl" />
               </div>
               <h3 className="text-2xl font-bold text-white mb-4 group-hover:text-accent transition-colors duration-300">Доставка в деня</h3>
-              <div className="text-3xl font-bold text-accent mb-4 group-hover:scale-110 transition-transform duration-300">15.90 лв.</div>
+              <div className="text-3xl font-bold text-accent mb-4 group-hover:scale-110 transition-transform duration-300">15.90 €.</div>
               <p className="text-gray-300 mb-4 group-hover:text-gray-200 transition-colors duration-300">
                 Само за София
               </p>

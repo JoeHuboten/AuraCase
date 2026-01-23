@@ -631,15 +631,15 @@ const translations = {
 
 // Currency conversion rates (simplified - in real app, use real-time rates)
 const currencyRates = {
-  BGN: 1,
-  USD: 0.55,
-  EUR: 0.51,
+  EUR: 1,
+  USD: 1.08,
+  BGN: 1.96,
 };
 
 const currencySymbols = {
-  BGN: 'лв',
-  USD: '$',
   EUR: '€',
+  USD: '$',
+  BGN: '€',
 };
 
 interface LanguageProviderProps {
@@ -648,7 +648,7 @@ interface LanguageProviderProps {
 
 export function LanguageProvider({ children }: LanguageProviderProps) {
   const [language, setLanguageState] = useState<Language>('bg');
-  const [currency, setCurrencyState] = useState<Currency>('BGN');
+  const [currency, setCurrencyState] = useState<Currency>('EUR');
 
   useEffect(() => {
     // Load saved preferences
@@ -691,7 +691,7 @@ export function LanguageProvider({ children }: LanguageProviderProps) {
     const convertedPrice = price * currencyRates[currency];
     const symbol = currencySymbols[currency];
     
-    if (currency === 'BGN') {
+    if (currency === 'EUR') {
       return `${convertedPrice.toFixed(2)} ${symbol}`;
     } else {
       return `${symbol}${convertedPrice.toFixed(2)}`;

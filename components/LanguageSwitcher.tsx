@@ -15,9 +15,8 @@ export default function LanguageSwitcher() {
   ];
 
   const currencies = [
-    { code: 'BGN', name: 'Bulgarian Lev', symbol: 'лв' },
-    { code: 'USD', name: 'US Dollar', symbol: '$' },
     { code: 'EUR', name: 'Euro', symbol: '€' },
+    { code: 'USD', name: 'US Dollar', symbol: '$' },
   ];
 
   const currentLanguage = languages.find(lang => lang.code === language);
@@ -130,8 +129,7 @@ export default function LanguageSwitcher() {
             <div className="text-xs text-gray-400 bg-gray-700/50 rounded-lg p-3">
               <div className="font-medium mb-1">Exchange Rates / Валутни курсове:</div>
               <div className="space-y-1">
-                <div>1 BGN = $0.55 USD</div>
-                <div>1 BGN = €0.51 EUR</div>
+                <div>1 EUR = $1.08 USD</div>
                 <div className="text-xs opacity-75 mt-2">
                   * Rates are approximate / Курсовете са приблизителни
                 </div>

@@ -360,7 +360,7 @@ export default function OrderDetailPage() {
                   </div>
                   
                   <p className="text-accent font-medium mt-2">
-                    {((item.price ?? 0) * (item.quantity ?? 0)).toFixed(2)} лв
+                    {((item.price ?? 0) * (item.quantity ?? 0)).toFixed(2)} €
                   </p>
                 </div>
               </div>
@@ -402,26 +402,26 @@ export default function OrderDetailPage() {
             <div className="space-y-3 text-text-secondary">
               <div className="flex justify-between">
                 <span>Subtotal</span>
-                <span className="text-white">{(order.subtotal ?? 0).toFixed(2)} лв</span>
+                <span className="text-white">{(order.subtotal ?? 0).toFixed(2)} €</span>
               </div>
               
               {(order.discount ?? 0) > 0 && (
                 <div className="flex justify-between text-green-400">
                   <span>Discount</span>
-                  <span>-{(order.discount ?? 0).toFixed(2)} лв</span>
+                  <span>-{(order.discount ?? 0).toFixed(2)} €</span>
                 </div>
               )}
               
               <div className="flex justify-between">
                 <span>Delivery</span>
                 <span className="text-white">
-                  {(order.deliveryFee ?? 0) > 0 ? `${(order.deliveryFee ?? 0).toFixed(2)} лв` : 'Free'}
+                  {(order.deliveryFee ?? 0) > 0 ? `${(order.deliveryFee ?? 0).toFixed(2)} €` : 'Free'}
                 </span>
               </div>
               
               <div className="flex justify-between pt-3 border-t border-gray-700 text-lg font-semibold">
                 <span className="text-white">Total</span>
-                <span className="text-accent">{(order.total ?? 0).toFixed(2)} лв</span>
+                <span className="text-accent">{(order.total ?? 0).toFixed(2)} €</span>
               </div>
             </div>
           </div>

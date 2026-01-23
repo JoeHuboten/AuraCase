@@ -413,7 +413,7 @@ export default function HomePage() {
                 </div>
                 <h3 className="font-heading text-xl font-bold text-white mb-2">Експресна доставка</h3>
                 <p className="font-body text-white/40 text-sm leading-relaxed">
-                  1-3 работни дни за цяла България. Безплатна доставка над 50лв.
+                  1-3 работни дни за цяла България. Безплатна доставка над 25€.
                 </p>
               </div>
             </div>

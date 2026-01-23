@@ -167,7 +167,7 @@ export default function WorksPage() {
                     <div>
                       <h3 className="text-xl font-bold text-white mb-2">Безплатна доставка</h3>
                       <p className="text-gray-300">
-                        Безплатна доставка за всички поръчки над 50 лв. в България.
+                        Безплатна доставка за всички поръчки над 50 €. в България.
                       </p>
                     </div>
                   </div>
@@ -245,7 +245,7 @@ export default function WorksPage() {
                 3-5 работни дни
               </p>
               <div className="text-2xl font-bold text-accent group-hover:scale-110 transition-transform duration-300">Безплатно</div>
-              <p className="text-gray-400 text-sm mt-2">за поръчки над 50 лв.</p>
+              <p className="text-gray-400 text-sm mt-2">за поръчки над 50 €.</p>
             </div>
 
             <div className="bg-primary rounded-2xl p-8 text-center border-2 border-accent hover:scale-105 hover:shadow-2xl hover:shadow-accent/30 transition-all duration-300 group">
@@ -256,7 +256,7 @@ export default function WorksPage() {
               <p className="text-gray-300 mb-4 group-hover:text-gray-200 transition-colors duration-300">
                 1-2 работни дни
               </p>
-              <div className="text-2xl font-bold text-accent group-hover:scale-110 transition-transform duration-300">8.90 лв.</div>
+              <div className="text-2xl font-bold text-accent group-hover:scale-110 transition-transform duration-300">8.90 €.</div>
               <p className="text-gray-400 text-sm mt-2">за всички поръчки</p>
               <div className="mt-4 bg-accent/20 text-accent px-3 py-1 rounded-full text-sm font-medium group-hover:bg-accent/30 transition-colors duration-300">
                 Най-популярно
@@ -271,7 +271,7 @@ export default function WorksPage() {
               <p className="text-gray-300 mb-4 group-hover:text-gray-200 transition-colors duration-300">
                 В същия ден (София)
               </p>
-              <div className="text-2xl font-bold text-accent group-hover:scale-110 transition-transform duration-300">15.90 лв.</div>
+              <div className="text-2xl font-bold text-accent group-hover:scale-110 transition-transform duration-300">15.90 €.</div>
               <p className="text-gray-400 text-sm mt-2">само за София</p>
             </div>
           </div>

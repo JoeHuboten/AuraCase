@@ -177,7 +177,7 @@ export default function OrdersPage() {
                   <div className="text-right flex items-center gap-4">
                     <div>
                       <div className="text-white font-semibold text-lg">
-                        {(order.total ?? 0).toFixed(2)} лв
+                        {(order.total ?? 0).toFixed(2)} €
                       </div>
                       <div className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(order.status)}`}>
                         {getStatusIcon(order.status)}
@@ -212,7 +212,7 @@ export default function OrdersPage() {
                           </div>
                         </div>
                         <div className="text-white font-medium text-sm">
-                          {((item.price ?? 0) * (item.quantity ?? 0)).toFixed(2)} лв
+                          {((item.price ?? 0) * (item.quantity ?? 0)).toFixed(2)} €
                         </div>
                       </div>
                     ))}
@@ -227,8 +227,8 @@ export default function OrdersPage() {
                 <div className="border-t border-gray-700 pt-4 mt-4">
                   <div className="flex justify-between items-center">
                     <div className="flex gap-4 text-sm text-text-secondary">
-                      <span>Subtotal: {(order.subtotal ?? 0).toFixed(2)} лв</span>
-                      <span>Delivery: {order.deliveryFee === 0 ? 'Free' : `${(order.deliveryFee ?? 0).toFixed(2)} лв`}</span>
+                      <span>Subtotal: {(order.subtotal ?? 0).toFixed(2)} €</span>
+                      <span>Delivery: {order.deliveryFee === 0 ? 'Free' : `${(order.deliveryFee ?? 0).toFixed(2)} €`}</span>
                     </div>
                     <span className="text-accent text-sm font-medium">View Details →</span>
                   </div>

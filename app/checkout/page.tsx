@@ -545,7 +545,7 @@ export default function CheckoutPage() {
                         {item.size && <p className="text-white/40 text-xs font-body">Размер: {item.size}</p>}
                       </div>
                       <p className="text-white font-bold text-sm font-body">
-                        {((item.price ?? 0) * (item.quantity ?? 0)).toFixed(2)} лв
+                        {((item.price ?? 0) * (item.quantity ?? 0)).toFixed(2)} €
                       </p>
                     </div>
                   ))}
@@ -555,13 +555,13 @@ export default function CheckoutPage() {
                 <div className="border-t border-white/10 pt-4 space-y-3">
                   <div className="flex justify-between text-white/50 font-body">
                     <span>Междинна сума</span>
-                    <span>{(getSubtotal() ?? 0).toFixed(2)} лв</span>
+                    <span>{(getSubtotal() ?? 0).toFixed(2)} €</span>
                   </div>
                   
                   {discountCode && (
                     <div className="flex justify-between text-green-400 font-body">
                       <span>Отстъпка ({discountCode.percentage}%)</span>
-                      <span>-{(getDiscount() ?? 0).toFixed(2)} лв</span>
+                      <span>-{(getDiscount() ?? 0).toFixed(2)} €</span>
                     </div>
                   )}
                   
@@ -572,7 +572,7 @@ export default function CheckoutPage() {
                   
                   <div className="flex justify-between text-white font-bold text-xl pt-2 border-t border-white/10">
                     <span className="font-heading">Общо</span>
-                    <span className="text-blue-400 font-heading">{(getTotal() ?? 0).toFixed(2)} лв</span>
+                    <span className="text-blue-400 font-heading">{(getTotal() ?? 0).toFixed(2)} €</span>
                   </div>
                 </div>
 

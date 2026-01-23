@@ -188,7 +188,7 @@ function StripeCardPaymentInner({
         ) : (
           <>
             <FiLock size={18} />
-            <span>Плати {amount.toFixed(2)} лв</span>
+            <span>Плати {amount.toFixed(2)} €</span>
           </>
         )}
       </button>

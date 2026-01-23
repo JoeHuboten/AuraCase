@@ -168,7 +168,7 @@ function OrderTrackingContent() {
   };
 
   const formatPrice = (price: number) => {
-    return `${(price ?? 0).toFixed(2)} лв.`;
+    return `${(price ?? 0).toFixed(2)} €.`;
   };
 
   if (loading) {

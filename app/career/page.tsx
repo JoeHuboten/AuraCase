@@ -159,7 +159,7 @@ export default function CareerPage() {
                     </div>
                     <div className="flex items-center gap-2">
                       <FiDollarSign size={16} />
-                      <span>3000-5000 лв.</span>
+                      <span>3000-5000 €.</span>
                     </div>
                   </div>
                   <p className="text-gray-300">
@@ -188,7 +188,7 @@ export default function CareerPage() {
                     </div>
                     <div className="flex items-center gap-2">
                       <FiDollarSign size={16} />
-                      <span>2500-4000 лв.</span>
+                      <span>2500-4000 €.</span>
                     </div>
                   </div>
                   <p className="text-gray-300">
@@ -217,7 +217,7 @@ export default function CareerPage() {
                     </div>
                     <div className="flex items-center gap-2">
                       <FiDollarSign size={16} />
-                      <span>2000-3500 лв.</span>
+                      <span>2000-3500 €.</span>
                     </div>
                   </div>
                   <p className="text-gray-300">
@@ -246,7 +246,7 @@ export default function CareerPage() {
                     </div>
                     <div className="flex items-center gap-2">
                       <FiDollarSign size={16} />
-                      <span>1500-2500 лв.</span>
+                      <span>1500-2500 €.</span>
                     </div>
                   </div>
                   <p className="text-gray-300">

@@ -45,7 +45,7 @@ export const emailTemplates = {
     language?: 'bg' | 'en';
   }): EmailTemplate => {
     const isBulgarian = data.language === 'bg';
-    const currency = 'лв';
+    const currency = '€';
     
     const subject = isBulgarian 
       ? `Потвърждение на поръчка #${data.orderId}` 
@@ -785,7 +785,7 @@ Just Cases - ${isBulgarian ? 'Премиум мобилни аксесоари' 
     language?: 'bg' | 'en';
   }): EmailTemplate => {
     const isBulgarian = data.language === 'bg';
-    const currency = isBulgarian ? 'лв' : 'BGN';
+    const currency = isBulgarian ? '€' : 'BGN';
     
     const subject = isBulgarian 
       ? `🚀 Нов продукт: ${data.productName}!`

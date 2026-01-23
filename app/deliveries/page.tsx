@@ -219,7 +219,7 @@ export default function DeliveriesPage() {
               <h3 className="text-2xl font-bold text-white mb-4">Стандартна доставка</h3>
               <div className="text-3xl font-bold text-accent mb-4">Безплатно</div>
               <p className="text-gray-300 mb-4">
-                За поръчки над 50 лв.
+                За поръчки над 50 €.
               </p>
               <div className="space-y-2 text-gray-300">
                 <div className="flex items-center justify-center gap-2">
@@ -238,7 +238,7 @@ export default function DeliveriesPage() {
                 <FiPackage className="text-white text-2xl" />
               </div>
               <h3 className="text-2xl font-bold text-white mb-4">Експресна доставка</h3>
-              <div className="text-3xl font-bold text-accent mb-4">8.90 лв.</div>
+              <div className="text-3xl font-bold text-accent mb-4">8.90 €.</div>
               <p className="text-gray-300 mb-4">
                 За всички поръчки
               </p>
@@ -262,7 +262,7 @@ export default function DeliveriesPage() {
                 <FiClock className="text-white text-2xl" />
               </div>
               <h3 className="text-2xl font-bold text-white mb-4">Доставка в деня</h3>
-              <div className="text-3xl font-bold text-accent mb-4">15.90 лв.</div>
+              <div className="text-3xl font-bold text-accent mb-4">15.90 €.</div>
               <p className="text-gray-300 mb-4">
                 Само за София
               </p>
